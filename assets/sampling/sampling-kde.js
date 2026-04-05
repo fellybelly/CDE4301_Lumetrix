@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const X_MAX = 0.3;
   const Y_MAX = 0.2;
   const GRID_RES = 120;
+  const FIXED_SAMPLE_COUNT = 30;
 
   function makeRng(seed) {
     let state = seed >>> 0;
@@ -226,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function runSampling() {
-    const n = Math.max(10, Math.min(200, Number(sampleInput.value) || 30));
+    const n = FIXED_SAMPLE_COUNT;
     const seed = Math.max(1, Number(seedInput.value) || 42);
 
     sampleInput.value = n;

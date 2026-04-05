@@ -8,10 +8,6 @@ const NAV_CONFIG = {
 
   items: [
     {
-      label: "Home",
-      href: "index.html",
-    },
-    {
       label: "Contents",
       href: "Table_of_Contents.html",
       matchPages: ["Table_of_Contents"],
@@ -225,9 +221,14 @@ const NAV_CONFIG = {
       href: "Section_7.html",
       matchPages: ["Section_7"],
     },
+    {
+      label: "Appendix",
+      href: "Appendix.html",
+      matchPages: ["Appendix"],
+    },
   ],
 
-  cta: { label: "Source Code", href: "#" },
+  cta: { label: "Source Code", href: "Source_Code.html" },
 };
 
 (function () {
@@ -309,8 +310,9 @@ const NAV_CONFIG = {
   });
 
   /* ── CTA + Hamburger ─────────────────────────────────── */
-  const cta = document.createElement("button");
+  const cta = document.createElement("a");
   cta.className = "nav-cta";
+  cta.href = NAV_CONFIG.cta.href;
   cta.textContent = NAV_CONFIG.cta.label;
 
   const ham = document.createElement("button");
@@ -323,6 +325,58 @@ const NAV_CONFIG = {
   nav.appendChild(linksWrap);
   nav.appendChild(cta);
   nav.appendChild(ham);
+
+  function setupDesktopNavHoverScroll(container) {
+    let enabled = false;
+    let target = 0;
+    let current = 0;
+    let rafId = null;
+
+    function animate() {
+      current += (target - current) * 0.12;
+      if (Math.abs(target - current) < 0.2) {
+        current = target;
+      }
+      container.scrollLeft = current;
+      if (Math.abs(target - current) >= 0.2) {
+        rafId = requestAnimationFrame(animate);
+      } else {
+        rafId = null;
+      }
+    }
+
+    function setTarget(nextTarget) {
+      target = nextTarget;
+      if (rafId === null) {
+        rafId = requestAnimationFrame(animate);
+      }
+    }
+
+    function updateEnabled() {
+      enabled =
+        window.innerWidth > 768 && container.scrollWidth > container.clientWidth + 4;
+      container.classList.toggle("is-overflowing", enabled);
+      if (!enabled) {
+        target = 0;
+        current = 0;
+        container.scrollLeft = 0;
+      }
+    }
+
+    container.addEventListener("mousemove", (e) => {
+      if (!enabled) return;
+      const rect = container.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const clamped = Math.max(0, Math.min(1, x));
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      setTarget(maxScroll * clamped);
+    });
+
+    window.addEventListener("resize", updateEnabled, { passive: true });
+    updateEnabled();
+  }
+
+  setupDesktopNavHoverScroll(linksWrap);
 
   /* ── Mobile drawer ───────────────────────────────────── */
   const backdrop = document.createElement("div");
@@ -436,11 +490,30 @@ const NAV_CONFIG = {
   const nav = document.getElementById("navbar");
   if (!nav) return;
   const hasHero = !!document.querySelector(".hero");
+  let lastY = window.scrollY;
+  const TOP_SHOW_Y = 20;
+  const HIDE_START_Y = 120;
+  const DELTA = 6;
+
   if (!hasHero) nav.classList.add("scrolled");
   window.addEventListener(
     "scroll",
     () => {
       if (hasHero) nav.classList.toggle("scrolled", window.scrollY > 50);
+
+      const currentY = window.scrollY;
+      const scrollingDown = currentY > lastY + DELTA;
+      const scrollingUp = currentY < lastY - DELTA;
+
+      if (currentY <= TOP_SHOW_Y || nav.classList.contains("menu-open")) {
+        nav.classList.remove("nav-hidden");
+      } else if (scrollingDown && currentY > HIDE_START_Y) {
+        nav.classList.add("nav-hidden");
+      } else if (scrollingUp) {
+        nav.classList.remove("nav-hidden");
+      }
+
+      lastY = currentY;
     },
     { passive: true },
   );
