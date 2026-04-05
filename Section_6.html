@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 6: Future Works</title>
+  <link rel="stylesheet" href="./assets/index.css">
+
+  <style>
+    body {
+      background: var(--gray-50);
+    }
+
+    .page-wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 150px 40px 140px;
+    }
+
+    /* ─── PAGE HEADER ───────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 4.5vw, 52px);
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -.5px;
+      line-height: 1.08;
+      margin-top: 6px;
+    }
+
+    .page-header .subtitle {
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ─── REPORT SECTION CARDS ──────────────────────────── */
+    .report-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeUp .5s ease both;
+    }
+
+    .report-section:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .report-section:nth-child(2) {
+      animation-delay: .10s;
+    }
+
+    .report-section:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .report-section:nth-child(4) {
+      animation-delay: .20s;
+    }
+
+    .report-section:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 28px;
+      background: linear-gradient(90deg, #f8faff, var(--white));
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 4px 11px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-sub);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-900);
+    }
+
+    .section-body {
+      padding: 28px 28px 32px;
+    }
+
+    .section-body p {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+
+    .section-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .subsection-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-700);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin: 28px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subsection-title::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--blue-400);
+      border-radius: 1px;
+    }
+
+    .callout {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-400);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--blue-800);
+    }
+
+    .obj-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .obj-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--gray-600);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .obj-list li:last-child {
+      border-bottom: none;
+    }
+
+    .obj-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 2px 9px;
+      border-radius: 50px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .sub-rule {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      margin: 24px 0;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 90px 16px 120px;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR — injected by index.js from NAV_CONFIG ══════ -->
+  <nav id="navbar"></nav>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="page-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <span class="label-pill label-pill-spacing">CDE4301</span>
+      <h1>Future Works</h1>
+      <p class="subtitle">Opportunities for further research</p>
+      <div class="header-rule"></div>
+    </div>
+
+    <!-- ── 6 FUTURE WORKS ──────────────────────────────────── -->
+    <div class="report-section" id="future-works">
+      <div class="section-heading">
+        <h2>Overview</h2>
+      </div>
+      <div class="section-body">
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_6-1.png"
+            alt="Representative plot of CO2 predictions for NODE-ED-Uncoupled with SS-C-PD diagram">
+          <figcaption>
+            <span class="fig-label">Figure 6.1</span>
+            Representative plot of CO2 predictions for NODE-ED-Uncoupled with SS-C-PD
+          </figcaption>
+        </figure>
+
+        <p>
+          To further examine the small performance improvement, the R² value for CO<sub>2</sub> prediction at each time
+          step for
+          NODE-ED-Uncoupled with SS-C-PD was analysed against the experimental data in Figure 6.1. The plot indicates
+          that prediction errors are generally small across all time steps except 8 mins, where an unexpected peak is
+          observed under certain operating conditions for the experimental data.
+        </p>
+
+        <p>This unexpected behaviour was observed at a couple of operating conditions and is also reproducible across
+          repeated experimental runs. This indicates that there is a phenomenon that is governing that behaviour, which
+          the current understanding of mass transfer and reaction kinetics cannot represent. As a result, it contributes
+          extremely disproportionately to the overall error.</p>
+
+        <p>One possible hypothesis is that hydraulic effects may have contributed to the observed peak. In packed
+          columns, hydraulics refer to fluid flow behaviour that may result in delayed transport of fluid through the
+          column. During such cases, an underdamped second-order dynamic system response may occur<sup class="fn-ref"><a
+              href="#fn-60" id="fn-ref-60">60</a></sup>, which resembles
+          closely with the sudden observed peak as shown in Figure 6.2. As such, incorporating hydraulic considerations
+          represents a promising direction for future work to address the primary source of error associated with the
+          unexplained peak.</p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_6-2.png" alt="An Underdamped Second-order Dynamic System Response diagram">
+          <figcaption>
+            <span class="fig-label">Figure 6.2</span>
+            An Underdamped Second-order Dynamic System Response
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         REFERENCES & NOTES
+    ══════════════════════════════════════════════════════ -->
+    <div class="report-section" id="references">
+      <div class="section-heading">
+        <h2>References &amp; Notes</h2>
+      </div>
+      <div class="section-body">
+        <ol class="footnotes-list">
+          <li id="fn-60">
+            <span class="fn-num">60</span>
+            <span>
+              Basilio, J. C.; Matos, S. R. Design of PI and PID Controllers with Transient Performance Specification.
+              <em>IEEE Transactions on Education</em> 2002, <em>45</em> (4), 364-370.
+              https://doi.org/10.1109/te.2002.804399.
+              <a href="#fn-ref-60" class="fn-back">↩</a>
+            </span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+  <div class="page-nav">
+    <a class="page-nav-btn" href="Section_5.html">← Previous</a>
+    <a class="page-nav-btn" href="Section_7.html">Next →</a>
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+
+</html>

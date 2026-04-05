@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 3: Experimental Data Collection</title>
+  <link rel="stylesheet" href="./assets/index.css">
+
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
+  <style>
+    body {
+      background: var(--gray-50);
+    }
+
+    .page-wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 150px 40px 140px;
+    }
+
+    /* ─── PAGE HEADER ───────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 4.5vw, 52px);
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -.5px;
+      line-height: 1.08;
+      margin-top: 6px;
+    }
+
+    .page-header .subtitle {
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ─── REPORT SECTION CARDS ──────────────────────────── */
+    .report-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeUp .5s ease both;
+    }
+
+    .report-section:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .report-section:nth-child(2) {
+      animation-delay: .10s;
+    }
+
+    .report-section:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .report-section:nth-child(4) {
+      animation-delay: .20s;
+    }
+
+    .report-section:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 28px;
+      background: linear-gradient(90deg, #f8faff, var(--white));
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 4px 11px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-sub);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-900);
+    }
+
+    .section-body {
+      padding: 28px 28px 32px;
+    }
+
+    .section-body p {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+
+    .section-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .subsection-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-700);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin: 28px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subsection-title::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--blue-400);
+      border-radius: 1px;
+    }
+
+    .callout {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-400);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--blue-800);
+    }
+
+    .obj-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .obj-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--gray-600);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .obj-list li:last-child {
+      border-bottom: none;
+    }
+
+    .obj-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 2px 9px;
+      border-radius: 50px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .sub-rule {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      margin: 24px 0;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 90px 16px 120px;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR — injected by index.js from NAV_CONFIG ══════ -->
+  <nav id="navbar"></nav>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="page-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <span class="label-pill label-pill-spacing">CDE4301</span>
+      <h1>Experimental Data Collection</h1>
+      <p class="subtitle">Experimental Set-up &amp; Sampling</p>
+      <div class="header-rule"></div>
+    </div>
+
+    <!-- ── 3.1 Experimental Set-up ──────────────────────────────────── -->
+    <div class="report-section" id="3-1">
+      <div class="section-heading">
+        <span class="section-tag">3.1</span>
+        <h2>Experimental Set-up</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          Unlike many existing studies that rely on simulated data, this study utilises experimentally obtained data. An
+          experimental setup was constructed to replicate the key features of an industrial chemisorption column at a
+          laboratory scale. The experiments were conducted in a vertical packed column with a total height of 42.5 cm
+          and an internal diameter of 2 in. The column was packed with Raschig rings having an inner diameter of 6 mm,
+          an outer diameter of 8 mm, and a length of 9 mm. NaOH liquid stream was introduced at the top of the column,
+          while the CO<sub>2</sub> gas stream was fed from the bottom. The actual experimental setup is shown in Figure
+          3.1.
+          Additionally, a labelled schematic of the setup and the range of operating parameters are presented in Figure
+          3.2 and Table 3.1 respectively.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_3-1.png" alt="Actual Experimental Set-up diagram">
+          <figcaption>
+            <span class="fig-label">Figure 3.1</span>
+            Actual Experimental Set-up
+          </figcaption>
+        </figure>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_3-2.png" alt="Schematic of Experimental Setup diagram">
+          <figcaption>
+            <span class="fig-label">Figure 3.2</span>
+            Schematic of Experimental Setup
+          </figcaption>
+        </figure>
+
+        <p>
+          Prior to each experimental run, the system was operated for 20 min under fixed inlet conditions of
+          CO<sub>2</sub> gas and
+          NaOH liquid to achieve steady state, consistent with preliminary trials indicating stabilisation within 16-20
+          mins. The outlet concentration of CO<sub>2</sub> and NaOH were then measured, denoted as CO<sub>2</sub> (t=0)
+          and NaOH (t=0),
+          representing the initial conditions.
+        </p>
+
+        <p>
+          A disturbance was subsequently introduced by instantaneously varying the inlet flow rates of the
+          CO<sub>2</sub> gas and
+          NaOH liquid streams. Flow rate was treated as the manipulated variable, directly influencing the inlet
+          composition and, consequently the outlet concentration, as described in Equation 1. The varied flow rates of
+          CO<sub>2</sub> and NaOH were denoted as CO<sub>2</sub> (i), NaOH (i). Collectively, these define a
+          four-dimensional
+          multivariate
+          input set of CO<sub>2</sub> (t=0), NaOH (t=0), CO<sub>2</sub> (i), NaOH (i).
+        </p>
+
+        <div class="formula-block">
+          <div class="formula-display">
+            <span class="f-var">Concentration, NaOH or CO<sub>2</sub></span>
+            <span class="f-eq">=</span>
+            <span class="f-frac">
+              <span class="f-num"><span class="f-var" style="font-size:.8em">Flowrate of NaOH or
+                  CO<sub>2</sub> Stream</span></span>
+              <span class="f-den"><span class="f-var" style="font-size:.8em">Flowrate of NaOH or CO<sub>2</sub>
+                  Stream + Flowrate of Diluents</span></span>
+            </span>
+          </div>
+          <p class="formula-eq-label">Equation 1</p>
+        </div>
+
+        <p>
+          Following an instantaneous change in inlet concentration, the outlet concentrations of CO<sub>2</sub> and NaOH
+          exhibits
+          dynamic temporal behaviour. The changes outlet concentrations were then measured at 4-min<sup
+            class="fn-ref"><a href="#fn-^1" id="fn-ref-^1">^1</a></sup> intervals from 4
+          to
+          16 min denoted as CO<sub>2</sub> (out) and NaOH (out), yielding eight data points across four time steps, 4
+          each for CO<sub>2</sub>
+          and NaOH.
+        </p>
+
+        <p>
+          CO<sub>2</sub> concentration was analysed using an Agilent Technologies 7890B gas chromatography system
+          equipped with a
+          thermal conductivity detector, while NaOH concentration was determined using a manual titrator with indicators
+          Phenolphthalein and Methyl Orange. The gas and liquid inlet flow rates were maintained constant at 2.20 L
+          min<sup>-1</sup> and 0.70 L min<sup>-1</sup>, respectively, with air and deionised water used as diluents to
+          achieve the desired
+          inlet compositions. All NaOH and CO<sub>2</sub> concentrations were sampled in triplicates to ensure
+          reproducibility.
+          Figure 3.3 illustrates the expected system dynamics based on the experimental methodology. The full
+          experimental methodology is detailed in Appendix B.
+        </p>
+
+        <p class="embed-label">CDE4301 Experimental Video</p>
+        <figure class="report-figure video-figure">
+          <div class="video-wrap">
+            <iframe src="https://www.youtube-nocookie.com/embed/98wkAUZSwEY?si=tAu3Tjz_cAH-oEm_"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen loading="lazy" title="CDE4301 Experimental Video">
+            </iframe>
+          </div>
+        </figure>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_3-3.png" alt="Plot of Concentration Changes diagram">
+          <figcaption>
+            <span class="fig-label">Figure 3.3</span>
+            Plot of Concentration Changes with respect to Time
+          </figcaption>
+        </figure>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 3.1</span>
+            Input Parameter Range
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Parameters</th>
+                <th>Value Ranges</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>NaOH Flowrate</td>
+                <td>
+                  0-0.3
+                </td>
+                <td>L/min</td>
+              </tr>
+              <tr>
+                <td>CO<sub>2</sub> Flowrate</td>
+                <td>
+                  0-0.2
+                </td>
+                <td>L/min</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          The operating ranges for CO<sub>2</sub> AND NaOH flow rates that control the inputs CO<sub>2</sub> (i), NaOH
+          (i) were selected based
+          on the physical constraints of the experimental setup and to ensure representative coverage of the different
+          zones (SRZ, IRZ, PAZ) described in <a href="Section_2.html#2-2-1">Section 2.2.1</a>. Flow rates beyond
+          this range were avoided, as they would
+          result in the dominance of specific zones, leading to poor representation of overall system behaviour.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── 3.2 Sampling of Data Points ──────────────────────────────────── -->
+    <div class="report-section" id="3-2">
+      <div class="section-heading">
+        <span class="section-tag">3.2</span>
+        <h2>Sampling of Data Points</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          A total of 30<sup class="fn-ref"><a href="#fn-^2" id="fn-ref-^2">^2</a></sup> data points were collected with
+          inputs generated from Latin Hypercube Sampling (LHC). LHC is a stratified sampling method that partitions each
+          of the d = 2 dimensions of the parameter space Dk, into N = 30 non-overlapping subsets, {Dk,j} j ∊ [1,...,N],
+          each with an equal probability of 1/N and hence enhances uniformity of sample coverage. Compared with simple
+          random sampling, LHC provides greater coverage of the sample space without the formation of clusters. This is
+          quantified by the method's Centered Discrepancy (CD), wherein a lower value indicates a better uniformity<sup
+            class="fn-ref"><a href="#fn-29" id="fn-ref-29">29</a></sup>: LHC achieved a CD of <span
+            id="lhc-cd-inline">0.00135</span> while random only achieved <span id="rnd-cd-inline">0.00623</span>. The
+          difference in performance is also reflected in Figure 3.4, where
+          random sampling exhibits noticeable clustering. Therefore, LHC is a more suitable sampling method to collect
+          data that is representative of the full operating conditions rather than an unintentionally biased subset.
+        </p>
+
+        <p class="embed-label">Interactive Data Sampling</p>
+        <div class="report-table-wrap">
+          <div id="figure-3-4-interactive-sampling" class="interactive-sampling-block">
+            <div class="interactive-sampling-controls">
+              <label for="sample-count">Samples</label>
+              <input id="sample-count" type="number" min="10" max="200" step="1" value="30">
+              <label for="sample-seed">Seed</label>
+              <input id="sample-seed" type="number" min="1" max="999999" step="1" value="42">
+              <button id="run-sampling" type="button">Run</button>
+            </div>
+            <div id="sampling-method-plot" class="interactive-plot" role="img"
+              aria-label="Interactive heatmap comparing LHC and random sampling"></div>
+          </div>
+          <script src="./assets/sampling/sampling-kde.js"></script>
+          <figcaption>
+            <span class="fig-label">Figure 3.4</span>
+            Heatmap of Data Points Sampled within the Parameter Space (a) LHC, (b) Random
+          </figcaption>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         REFERENCES & NOTES
+    ══════════════════════════════════════════════════════ -->
+    <div class="report-section" id="references">
+      <div class="section-heading">
+        <h2>References &amp; Notes</h2>
+      </div>
+      <div class="section-body">
+        <ol class="footnotes-list">
+          <li id="fn-^1">
+            <span class="fn-num">^1</span>
+            <span>
+              A sampling interval of 4 min was selected to accommodate the analytical runtime constraints of the gas
+              chromatography system.
+              <a href="#fn-ref-^1" class="fn-back">↩</a>
+            </span>
+          </li>
+          <li id="fn-^2">
+            <span class="fn-num">^2</span>
+            <span>
+              The sample size of 30 data points was determined based on the experimental time constraints, corresponding
+              to the maximum number of runs achievable within the six week period. 1 data point takes 4h to collect
+              <a href="#fn-ref-^2" class="fn-back">↩</a>
+            </span>
+          </li>
+          <li id="fn-29">
+            <span class="fn-num">29</span>
+            <span>
+              Hickernell, F. A Generalized Discrepancy and Quadrature Error Bound. <em>Mathematics of Computation</em>
+              1998, <em>67</em> (221), 299-322.
+              https://doi.org/10.1090/s0025-5718-98-00894-1.
+              <a href="#fn-ref-29" class="fn-back">↩</a>
+            </span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div> <!-- /page-wrapper -->
+
+  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+  <div class="page-nav">
+    <a class="page-nav-btn" href="Section_2.html">← Previous</a>
+    <a class="page-nav-btn" href="Section_4.html">Next →</a>
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+
+</html>

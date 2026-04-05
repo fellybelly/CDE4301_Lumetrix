@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 1: Introduction</title>
+  <link rel="stylesheet" href="./assets/index.css">
+
+  <style>
+    body {
+      background: var(--gray-50);
+    }
+
+    .page-wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 150px 40px 140px;
+    }
+
+    /* ─── PAGE HEADER ───────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 4.5vw, 52px);
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -.5px;
+      line-height: 1.08;
+      margin-top: 6px;
+    }
+
+    .page-header .subtitle {
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ─── REPORT SECTION CARDS ──────────────────────────── */
+    .report-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeUp .5s ease both;
+    }
+
+    .report-section:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .report-section:nth-child(2) {
+      animation-delay: .10s;
+    }
+
+    .report-section:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .report-section:nth-child(4) {
+      animation-delay: .20s;
+    }
+
+    .report-section:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 28px;
+      background: linear-gradient(90deg, #f8faff, var(--white));
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 4px 11px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-sub);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-900);
+    }
+
+    .section-body {
+      padding: 28px 28px 32px;
+    }
+
+    .section-body p {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+
+    .section-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .subsection-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-700);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin: 28px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subsection-title::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--blue-400);
+      border-radius: 1px;
+    }
+
+    .callout {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-400);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--blue-800);
+    }
+
+    .obj-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .obj-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--gray-600);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .obj-list li:last-child {
+      border-bottom: none;
+    }
+
+    .obj-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 2px 9px;
+      border-radius: 50px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .sub-rule {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      margin: 24px 0;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 90px 16px 120px;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR — injected by index.js from NAV_CONFIG ══════ -->
+  <nav id="navbar"></nav>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="page-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <span class="label-pill label-pill-spacing">CDE4301</span>
+      <h1>Introduction</h1>
+      <p class="subtitle">An overview and introduction of the report</p>
+      <div class="header-rule"></div>
+    </div>
+
+    <!-- ── Abstract ──────────────────────────────────── -->
+    <div class="report-section" id="abstract">
+      <div class="section-heading">
+        <h2>Abstract</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          Accurate modelling of chemical engineering processes is essential for reliable prediction and decision-making,
+          yet traditional analytical models are often limited by incomplete process understanding, leading to
+          oversimplified representations of complex dynamics. Machine learning (ML) offers an alternative by learning
+          input-output relationships directly from data, potentially capturing unknown physical phenomena unrepresented
+          by analytical models. However, ML is constrained by limited available data and lack of interpretability.
+          Physics-Informed Machine Learning (PIML) addresses these challenges by embedding a priori physical knowledge,
+          enabling more accurate and interpretable models from limited data. As such, this work presents a comparative
+          study on modelling limited experimental data on dynamic CO₂ chemisorption in a lab-scale packed column through
+          both architectural modifications and incorporation of governing equations. In particular, architectural
+          variants of Recurrent Neural Networks (RNN) and Neural Ordinary Differential Equations (NODE) were explored.
+          The best variant, NODE-ED-Uncoupled, was identified as the best-performing variant through 100 repeated K-fold
+          cross-validation and bootstrap aggregating, achieving a mean R² of 0.689 ± 0.101 and MSE of 0.245 ± 0.036 for
+          K-fold cross-validation. Governing equations was subsequently integrated as equation constraints, learnable
+          kinetic parameters, and collocation-based supervision across the full operating space. Collocation-based
+          supervision yields the best results of R² of 0.773 ± 0.0882 and MSE of 0.239 ± 0.070 for K-fold
+          cross-validation.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ── Overview ──────────────────────────────────── -->
+    <div class="report-section" id="1">
+      <div class="section-heading">
+        <span class="section-tag">1</span>
+        <h2>Overview</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          Chemical engineering lies at the intersection of chemistry, physics and engineering to design, optimise and
+          scale processes that transform raw materials into valuable products<sup class="fn-ref"><a href="#fn-1"
+              id="fn-ref-1">1</a></sup>. As global demand for these products
+          intensifies, chemical manufacturers are compelled towards more efficient process routes and optimal operations
+          control<sup class="fn-ref"><a href="#fn-2" id="fn-ref-2">2</a></sup>. As such, accurate process modelling has
+          become essential for reliable prediction and informed
+          decision-making to enhance process performance.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ── 1.1 First Principle Modelling (FPM) ──────────────────────────────────── -->
+    <div class="report-section" id="1-1">
+      <div class="section-heading">
+        <span class="section-tag">1.1</span>
+        <h2>First Principle Modelling (FPM)</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          Analytical models also referred to as First Principles Modelling (FPM) are conventionally utilised to help
+          engineers understand and design chemical processes<sup class="fn-ref"><a href="#fn-3"
+              id="fn-ref-3">3</a></sup>. For example, Wang et al. (2023)<sup class="fn-ref"><a href="#fn-4"
+              id="fn-ref-4">4</a></sup> employed FPMs,
+          including linear spring dashpot formulations alongside mass, momentum, energy, and species balances, to
+          simulate the hydrodynamics of coal-biomass co-gasification. This enabled prediction of system behaviour in
+          response to variations in particle size due to velocity and temperature disturbances. Similarly, Bo et al.
+          (2025)<sup class="fn-ref"><a href="#fn-5" id="fn-ref-5">5</a></sup> employed FPMs such as Newton's second
+          law, Navier-Stokes equations, momentum and energy balances,
+          to predict the heat transfer effects arising from wear mechanisms. Additionally, Kashid et al. (2007)<sup
+            class="fn-ref"><a href="#fn-6" id="fn-ref-6">6</a></sup>
+          applied Navier-Stokes and convection-diffusion equations to investigate the effects of operating conditions
+          such as viscosity on circulation patterns and mass transfer in a liquid-liquid slug flow microreactor.
+          Collectively, these studies demonstrate moderately strong agreement between FPM predictions and experimental
+          observations.
+        </p>
+        <p>
+          While these studies demonstrate the effectiveness of FPMs, chemical engineering processes tend to be complex
+          and such models are hence analytically intractable and computationally demanding<sup class="fn-ref"><a
+              href="#fn-7" id="fn-ref-7">7</a></sup>. Consequently, simplified
+          representations are frequently adopted, leading to discrepancies between model predictions and actual system
+          behaviour<sup class="fn-ref"><a href="#fn-8" id="fn-ref-8">8</a></sup>. These deviations are further
+          exacerbated by unknown variables, idealised assumptions and
+          imposed boundary conditions. For instance, linking back to the aforementioned studies, Wang et al. (2023)<sup
+            class="fn-ref"><a href="#fn-4" id="fn-ref-4">4</a></sup>
+          reported a discrepancy of approximately 15% in outlet gas mole fraction predictions due to simplifications in
+          bed configuration and chemical reaction modelling. Kashid et al. (2007)<sup class="fn-ref"><a href="#fn-6"
+              id="fn-ref-6">6</a></sup> observed deviations of about 30%
+          in titration time predictions at low velocities, largely attributed to the assumption of a flat interface
+          affecting the velocity profile. Chhabra et al. (2001)<sup class="fn-ref"><a href="#fn-9"
+              id="fn-ref-9">9</a></sup> reported average errors of 20-25% in predicting
+          minimum fluidisation velocity, with deviations reaching up to 60% in the creeping flow regime in their review
+          on non-Newtonian fluid flow. As such, these papers highlight the inherent limitations of FPM in accurately
+          capturing certain process behaviours.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ── 1.2 Machine Learning (ML) ─────────────────────────── -->
+    <div class="report-section" id="1-2">
+      <div class="section-heading">
+        <span class="section-tag">1.2</span>
+        <h2>Machine Learning (ML)</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          To address these challenges, Machine Learning (ML) has emerged as a promising alternative. It serves as a
+          surrogate model capable of capturing complex, non-linear relationships that are difficult to describe
+          analytically<sup class="fn-ref"><a href="#fn-10" id="fn-ref-10">10</a></sup>. By learning directly from data,
+          ML models can implicitly account for unknown or unmodelled
+          physics<sup class="fn-ref"><a href="#fn-11" id="fn-ref-11">11</a></sup>. For example, Serrano et al.
+          (2020)<sup class="fn-ref"><a href="#fn-12" id="fn-ref-12">12</a></sup> applied Artificial Neural Networks
+          (ANN) with
+          Levenberg-Marquardt and Bayesian Regularisation algorithms to predict the gas composition and yield of biomass
+          gasification when biomass properties and operating conditions varied. Similarly, Cu et al. (2025)<sup
+            class="fn-ref"><a href="#fn-13" id="fn-ref-13">13</a></sup>
+          explored ANN coupled with Particle Swarm Optimisation (ANN-PSO) to predict variations in heat transfer
+          coefficients under changing operating conditions. Additionally, Dahlan et al. (2025)<sup class="fn-ref"><a
+              href="#fn-14" id="fn-ref-14">14</a></sup> employed ANN in
+          conjunction with response surface methodology and various training algorithms to model and optimise
+          CO<sub>2</sub>
+          removal processes.
+        </p>
+        <p>
+          Despite these advantages, ML has not gained much traction in industrial chemical engineering applications.
+          First, ML methods are inherently data-intensive<sup class="fn-ref"><a href="#fn-8" id="fn-ref-8">8</a></sup>,
+          yet obtaining high-quality experimental data in chemical
+          engineering is often costly and time-consuming. Second, ML models are frequently criticised for their lack of
+          interpretability, whereby they function as black boxes<sup class="fn-ref"><a href="#fn-3"
+              id="fn-ref-3">3</a></sup>, which reduces trust and hinder their direct
+          application in process design. Third, the absence of explicit physical constraints may result in predictions
+          that are not physically realisable<sup class="fn-ref"><a href="#fn-15" id="fn-ref-15">15</a></sup>. For
+          instance, linking back to the aforementioned studies, Serrano et
+          al. (2020)<sup class="fn-ref"><a href="#fn-12" id="fn-ref-12">12</a></sup> reported poor predictions for
+          H<sub>2</sub>
+          gas composition, with deviations of up to 90% from
+          experimental data, likely due to the model's inability to distinguish measurement noise from underlying
+          physical behaviour. Dahlan et al. (2025)<sup class="fn-ref"><a href="#fn-14" id="fn-ref-14">14</a></sup>
+          reported that ANN was unable to quantify the individual
+          influence of input variables, highlighting the limited interpretability of purely data-driven approaches.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── 1.3 Physics-Informed Machine Learning (PIML) ─────────────────────────── -->
+    <div class="report-section" id="1-3">
+      <div class="section-heading">
+        <span class="section-tag">1.3</span>
+        <h2>Physics-Informed Machine Learning (PIML)</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          With these identified strengths and weaknesses of both existing models, this gives rise to a new advancement,
+          Physics Informed Machine Learning (PIML), which seeks to constrain the ML model to long-established physical
+          laws. By unifying physics-based and data-driven approaches, PIML can potentially deliver accurate predictions
+          that remain physically consistent while generalising beyond conventional assumptions and boundary conditions.
+          Moreover, it is reported that PIML can reduce the amount of data required for training as demonstrated by
+          Veliogulu et al. (2025)<sup class="fn-ref"><a href="#fn-16" id="fn-ref-16">16</a></sup> in their studies on a
+          Van de Vusse continuous stirred tank reactor and a
+          liquid-liquid extractor.
+        </p>
+        <p>
+          Despite their promising capabilities, PIML remains a relatively nascent field in chemical engineering. Recent
+          studies have demonstrated its applicability across a few examples. For instance, the previously mentioned
+          study by Veliogulu et al. (2025)<sup class="fn-ref"><a href="#fn-16" id="fn-ref-16">16</a></sup> investigated
+          the generalisation, state estimation and extrapolation
+          capabilities of stirred tank reactors and liquid-liquid extractors. Jalili et al. (2024)<sup class="fn-ref"><a
+              href="#fn-17" id="fn-ref-17">17</a></sup> applied PIML to
+          model the hydrodynamics and heat transfer of varying flow configurations on two-phase flow. Carranza-Abaid and
+          P.Jakobsen (2022)<sup class="fn-ref"><a href="#fn-18" id="fn-ref-18">18</a></sup> incorporated FPM into
+          structured ANN models to predict distillate and bottoms purity in
+          flash and distillation columns. A couple of papers studied PIML application on reaction kinetics and polymer
+          systems. Alizadeh et al. (2025)<sup class="fn-ref"><a href="#fn-19" id="fn-ref-19">19</a></sup> analysed
+          kinetic modelling in heavy oil hydrocracking, Wu and Li (2024)<sup class="fn-ref"><a href="#fn-20"
+              id="fn-ref-20">20</a></sup> studied a plate reactor system with a heating cylinder, while Ma et al.
+          (2025)<sup class="fn-ref"><a href="#fn-21" id="fn-ref-21">21</a></sup> evaluated for food
+          kinetics purposes. Additionally, Ghaderi et al. (2020)<sup class="fn-ref"><a href="#fn-22"
+              id="fn-ref-22">22</a></sup> applied a feedforward Physics-Informed Neural
+          Network to predict inelasticity in cross-linked polymers.
+        </p>
+        <p>
+          While these studies demonstrate the promise of PIML in chemical engineering applications, several limitations
+          remain that constrain their broader adoption in this field. First, approximately 70% of reported results have
+          been trained and validated primarily on simulated data. This suggests that the learning process only reflects
+          known physical relationships rather than genuinely uncovering unknown physical phenomena. As such, the
+          evaluations of current PIML may have inflated the perceived effectiveness of PIML relative to their
+          performance on real systems. Second, even among studies that utilise experimental data, they provide limited
+          comparative analysis, if any, between the PIML models explored. These papers often focus solely on the
+          potential of PIML to fit the data rather than a rigorous evaluation into the reproducibility of their results
+          via statistical significance testing. Third, the majority of existing studies focus on simple case studies
+          that predominantly involve a single governing physical principle. For instance, many of the aforementioned
+          works primarily examine the application of PIML to reaction kinetic modelling. In contrast, systems
+          characterised by strong interdependencies between multiple coupled physical phenomena remain significantly
+          underexplored, despite being representative of most real-world chemical engineering processes<sup
+            class="fn-ref"><a href="#fn-23" id="fn-ref-23">23</a></sup>. This is
+          likely attributed to the limited physical understanding of the underlying system. Therefore, further research
+          of PIML capabilities in this area is warranted, especially where conventional FPM approaches are inadequate.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── 1.4 Objective & Scope ─────────────────────────── -->
+    <div class="report-section" id="1-4">
+      <div class="section-heading">
+        <span class="section-tag">1.4</span>
+        <h2>Objective &amp; Scope</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          Accordingly, the scope of this study is guided by the central research question:
+        </p>
+        <div class="callout">
+          <em>“To what extent can Physics-Informed Machine Learning (PIML) models trained on limited experimental data,
+            with
+            varying degrees of physics incorporation, inherently improve the accuracy and precision of modelling
+            chemical
+            engineering systems with limited physical knowledge?”</em>
+        </div>
+
+        <p>
+          To address this research question, the study is organised into four sections as shown in Figure 1.1.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_1-1.svg" alt="Study Scope Diagram">
+          <figcaption>
+            <span class="fig-label">Figure 1.1</span>
+            Study Scope
+          </figcaption>
+        </figure>
+
+        <p>
+          To answer the research question, a rigorous selection of an appropriate case study is undertaken to anchor the
+          discussion <a href="Section_2.html">(Section 2)</a>. This is followed by the design of a data acquisition
+          methodology to ensure that the
+          collected dataset captures key manipulated and response variables that reflect realistic process variability
+          <a href="Section_3.html">(Section 3)</a>. An architectural evaluation is subsequently conducted on two key
+          model classes: Recurrent Neural
+          Networks (RNN) and Neural Ordinary Differential Equations (NODE). Variants of these architectures are explored
+          and compared to identify the most suitable model architecture for subsequent development <a
+            href="Section_4.html">(Section 4)</a>. Finally,
+          the selected architecture is extended to incorporate limited governing physical equations currently known,
+          with varying levels of enforcement <a href="Section_5.html">(Section 5)</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         REFERENCES & NOTES
+    ══════════════════════════════════════════════════════ -->
+    <div class="report-section" id="references">
+      <div class="section-heading">
+        <h2>References &amp; Notes</h2>
+      </div>
+      <div class="section-body">
+        <ol class="footnotes-list">
+          <li id="fn-1">
+            <span class="fn-num">1</span>
+            <span>
+              Wu, Z.; Wang, H.; He, C.; Zhang, B.; Xu, T.; Chen, Q. The Application of Physics-Informed Machine Learning
+              in Multiphysics Modeling in Chemical Engineering. <em>Industrial &amp; Engineering Chemistry Research</em>
+              2023, <em>62</em> (44), 18178-18204.
+              https://doi.org/10.1021/acs.iecr.3c02383.
+              <a href="#fn-ref-1" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-2">
+            <span class="fn-num">2</span>
+            <span>
+              Mitsos, A.; Asprion, N.; Floudas, C. A.; Bortz, M.; Baldea, M.; Bonvin, D.; Caspari, A.; Pascal Schäfer.
+              Challenges in Process Optimization for New Feedstocks and Energy Sources. <em>Computers &amp; Chemical
+                Engineering</em> 2018, <em>113</em>, 209-221.
+              https://doi.org/10.1016/j.compchemeng.2018.03.013.
+              <a href="#fn-ref-2" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-3">
+            <span class="fn-num">3</span>
+            <span>
+              Dobbelaere, M. R.; Plehiers, P. P.; Van de Vijver, R.; Stevens, C. V.; Van Geem, K. M. Machine Learning in
+              Chemical Engineering: Strengths, Weaknesses, Opportunities, and Threats. <em>Engineering</em> 2021,
+              <em>7</em> (9).
+              https://doi.org/10.1016/j.eng.2021.03.019.
+              <a href="#fn-ref-3" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-4">
+            <span class="fn-num">4</span>
+            <span>
+              Du, S.; Wang, J.; Yu, Y.; Zhou, Q. <em>Sign in</em>. Sciencedirect.com.
+              https://www.sciencedirect.com/science/article/abs/pii/S096014812201713X (accessed 2026-04-05).
+              <a href="#fn-ref-4" class="fn-back">↩</a>
+            </span>
+          </li>
+          <li id="fn-5">
+            <span class="fn-num">5</span>
+            <span>
+              Bo, H.; Fu, Y.; Shao, Y.; Zhong, W. Effects of Particle Size Reduction due to Wear on Heat Transfer in a
+              Fluidized Bed: A CFD-DEM Study. <em>Particuology</em> 2025, <em>103</em>, 176-192.
+              https://doi.org/10.1016/j.partic.2025.05.017.
+              <a href="#fn-ref-5" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-6">
+            <span class="fn-num">6</span>
+            <span>
+              Kashid, M. N.; Agar, D. W.; Turek, S. CFD Modelling of Mass Transfer with and without Chemical Reaction in
+              the Liquid-Liquid Slug Flow Microreactor. <em>Chemical Engineering Science</em> 2007, <em>62</em> (18-20),
+              5102-5109.
+              https://doi.org/10.1016/j.ces.2007.01.068.
+              <a href="#fn-ref-6" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-7">
+            <span class="fn-num">7</span>
+            <span>
+              Munck, M. J. A. de; Peters, E. A. J. F.; Kuipers, J. A. M. Fluidized bed-gas-solid heat transfer using a
+              CFD-DEM coarse-graining technique.
+              https://www.sciencedirect.com/science/article/pii/S0009250923006048 (accessed 2026-01-11).
+              <a href="#fn-ref-7" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-8">
+            <span class="fn-num">8</span>
+            <span>
+              Schweidtmann, A. M.; Esche, E.; Fischer, A.; Kloft, M.; Repke, J.; Sager, S.; Mitsos, A. Machine Learning
+              in Chemical Engineering: A Perspective. <em>Chemie Ingenieur Technik</em> 2021, <em>93</em> (12),
+              2029-2039.
+              https://doi.org/10.1002/cite.202100083.
+              <a href="#fn-ref-8" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-9">
+            <span class="fn-num">9</span>
+            <span>
+              Chhabra, R. P.; Comiti, J.; Machač, I. Flow of Non-Newtonian Fluids in Fixed and Fluidised Beds.
+              <em>Chemical Engineering Science</em> 2001, <em>56</em> (1), 1-27.
+              https://doi.org/10.1016/s0009-2509(00)00207-4.
+              <a href="#fn-ref-9" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-10">
+            <span class="fn-num">10</span>
+            <span>
+              Thebelt, A.; Wiebe, J.; Kronqvist, J.; Tsay, C.; Misener, R. Maximizing Information from Chemical
+              Engineering Data Sets: Applications to Machine Learning. <em>Chemical Engineering Science</em> 2022,
+              <em>252</em>, 117469.
+              https://doi.org/10.1016/j.ces.2022.117469.
+              <a href="#fn-ref-10" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-11">
+            <span class="fn-num">11</span>
+            <span>
+              Chen, Z.; Liu, Y.; Sun, H. Physics-Informed Learning of Governing Equations from Scarce Data. <em>Nature
+                Communications</em> 2021, <em>12</em> (1).
+              https://doi.org/10.1038/s41467-021-26434-1.
+              <a href="#fn-ref-11" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-12">
+            <span class="fn-num">12</span>
+            <span>
+              Serrano, D.; Golpour, I.; Sánchez-Delgado, S. Predicting the Effect of Bed Materials in Bubbling Fluidized
+              Bed Gasification Using Artificial Neural Networks (ANNs) Modeling Approach. <em>Fuel</em> 2020,
+              <em>266</em>, 117021.
+              https://doi.org/10.1016/j.fuel.2020.117021.
+              <a href="#fn-ref-12" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-13">
+            <span class="fn-num">13</span>
+            <span>
+              Cu, W.; Fang, J.; Guo, X.; Chen, K.; Zheng, N.; Xiao, B.; Wei, J. Prediction and Analysis of Bed-To-Tube
+              Heat Transfer in Fluidized Bed Heat Exchangers Based on ANN-PSO Hybrid Approach and CFD Simulation.
+              <em>International Journal of Heat and Mass Transfer</em> 2025, <em>252</em>, 127490.
+              https://doi.org/10.1016/j.ijheatmasstransfer.2025.127490.
+              <a href="#fn-ref-13" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-14">
+            <span class="fn-num">14</span>
+            <span>
+              Dahlan, I.; Suhaimi, M. H. M. Adsorption of CO2 Using NaOH-Modified Nanoclay Montmorillonite Adsorbent:
+              Comparative Analysis of RSM-Based Central Composite Design and ANN-Based Models in Modelling and
+              Optimization. <em>Arabian Journal for Science and Engineering</em> 2025, <em>50</em> (24), 21011-21027.
+              https://doi.org/10.1007/s13369-025-10401-9.
+              <a href="#fn-ref-14" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-15">
+            <span class="fn-num">15</span>
+            <span>
+              Wang, R.; Yu, R. Physics-Guided Deep Learning for Dynamical Systems: A Survey. <em>arXiv.org</em>.
+              https://arxiv.org/abs/2107.01272.
+              <a href="#fn-ref-15" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-16">
+            <span class="fn-num">16</span>
+            <span>
+              Velioglu, M.; Zhai, S.; Rupprecht, S.; Mitsos, A.; Jupke, A.; Dahmen, M. Physics-Informed Neural Networks
+              for Dynamic Process Operations with Limited Physical Knowledge and Data. <em>Computers &amp; Chemical
+                Engineering</em> 2024, <em>192</em>, 108899.
+              https://doi.org/10.1016/j.compchemeng.2024.108899.
+              <a href="#fn-ref-16" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-17">
+            <span class="fn-num">17</span>
+            <span>
+              Jalili, D.; Jang, S.; Jadidi, M.; Giustini, G.; Keshmiri, A.; Mahmoudi, Y. Physics-informed neural
+              networks for heat transfer prediction in two-phase flows.
+              https://www.sciencedirect.com/science/article/pii/S0017931023012346 (accessed 2026-01-20).
+              <a href="#fn-ref-17" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-18">
+            <span class="fn-num">18</span>
+            <span>
+              Carranza-Abaid, A.; P.Jakobsen, J. Neural network programming: Integrating first principles into machine
+              learning models.
+              https://www.sciencedirect.com/science/article/pii/S009813542200196X#sec0008 (accessed 2026-02-03).
+              <a href="#fn-ref-18" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-19">
+            <span class="fn-num">19</span>
+            <span>
+              Alizadeh, S.; Ta, S.; Ray, A. K.; Samavedham, L. Physics-Informed Neural Network with NSGA II and
+              Levenberg-Marquardt Method for Kinetic Modeling in Heavy Oil Hydrocracking. <em>Industrial &amp;
+                Engineering Chemistry Research</em> 2025, <em>64</em> (40), 19624-19640.
+              https://doi.org/10.1021/acs.iecr.5c02581.
+              <a href="#fn-ref-19" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-20">
+            <span class="fn-num">20</span>
+            <span>
+              Wu, Z.; Li, M.; He, C.; Zhang, B.; Ren, J.; Yu, H.; Chen, Q. Physics-Informed Learning of Chemical Reactor
+              Systems Using Decoupling-Coupling Training Framework. <em>AIChE Journal</em> 2024, <em>70</em> (7).
+              https://doi.org/10.1002/aic.18436.
+              <a href="#fn-ref-20" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-21">
+            <span class="fn-num">21</span>
+            <span>
+              Ma, Y.; Turan, D.; Maarten Schutyser. Evaluating Physics-Informed Neural Networks for Food Kinetic
+              Modeling. 2025.
+              https://doi.org/10.26434/chemrxiv-2025-t2r5k.
+              <a href="#fn-ref-21" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-22">
+            <span class="fn-num">22</span>
+            <span>
+              Ghaderi, A.; Morovati, V.; Dargazany, R. A Physics-Informed Assembly of Feed-Forward Neural Network
+              Engines to Predict Inelasticity in Cross-Linked Polymers. <em>Polymers</em> 2020, <em>12</em> (11), 2628.
+              https://doi.org/10.3390/polym12112628.
+              <a href="#fn-ref-22" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-23">
+            <span class="fn-num">23</span>
+            <span>
+              Narayanamurthi, M.; Sandu, A. Partitioned Exponential Methods for Coupled Multiphysics Systems.
+              <em>arXiv.org</em>.
+              https://arxiv.org/abs/1908.09434 (accessed 2026-04-05).
+              <a href="#fn-ref-23" class="fn-back">↩</a>
+            </span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+  <div class="page-nav">
+    <a class="page-nav-btn" href="Table_of_Contents.html">← Previous</a>
+    <a class="page-nav-btn" href="Section_2.html">Next →</a>
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+
+</html>

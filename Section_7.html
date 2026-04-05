@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 7: Conclusion</title>
+  <link rel="stylesheet" href="./assets/index.css">
+
+  <style>
+    body {
+      background: var(--gray-50);
+    }
+
+    .page-wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 150px 40px 140px;
+    }
+
+    /* ─── PAGE HEADER ───────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 4.5vw, 52px);
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -.5px;
+      line-height: 1.08;
+      margin-top: 6px;
+    }
+
+    .page-header .subtitle {
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ─── REPORT SECTION CARDS ──────────────────────────── */
+    .report-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeUp .5s ease both;
+    }
+
+    .report-section:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .report-section:nth-child(2) {
+      animation-delay: .10s;
+    }
+
+    .report-section:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .report-section:nth-child(4) {
+      animation-delay: .20s;
+    }
+
+    .report-section:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 28px;
+      background: linear-gradient(90deg, #f8faff, var(--white));
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 4px 11px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-sub);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-900);
+    }
+
+    .section-body {
+      padding: 28px 28px 32px;
+    }
+
+    .section-body p {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+
+    .section-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .subsection-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-700);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin: 28px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subsection-title::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--blue-400);
+      border-radius: 1px;
+    }
+
+    .callout {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-400);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--blue-800);
+    }
+
+    .obj-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .obj-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--gray-600);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .obj-list li:last-child {
+      border-bottom: none;
+    }
+
+    .obj-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 2px 9px;
+      border-radius: 50px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .sub-rule {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      margin: 24px 0;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 90px 16px 120px;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR — injected by index.js from NAV_CONFIG ══════ -->
+  <nav id="navbar"></nav>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="page-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <span class="label-pill label-pill-spacing">CDE4301</span>
+      <h1>Conclusion</h1>
+      <p class="subtitle">A summary of key findings and remarks</p>
+      <div class="header-rule"></div>
+    </div>
+
+    <!-- ── 7 Conclusion ──────────────────────────────────── -->
+    <div class="report-section" id="conclusion">
+      <div class="section-heading">
+        <h2>Overview</h2>
+      </div>
+      <div class="section-body">
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_7-1.png" alt="Summary of R2 Performance with 100 K-fold diagram">
+          <figcaption>
+            <span class="fig-label">Figure 7.1</span>
+            Summary of R<sup>2</sup> Performance with 100 K-fold
+          </figcaption>
+        </figure>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_7-2.png" alt="Summary of MSE Performance with 100 K-fold diagram">
+          <figcaption>
+            <span class="fig-label">Figure 7.2</span>
+            Summary of MSE Performance with 100 K-fold
+          </figcaption>
+        </figure>
+
+        <p>
+          All physics-informed models outperform the baseline RNN and NODE-ED in both R² and MSE. The best performance
+          is achieved by NODE-ED-Uncoupled (SS-C-PD), with improvements of 6.15% and 9.87% over RNN, and 5.03% and
+          12.15% over NODE-ED in R<sup>2</sup> and MSE respectively. Notably, architectural modifications alone also
+          yield
+          improvements, with NODE-ED-Uncoupled outperforming NODE-ED by 3.75% in R<sup>2</sup> and 7.54% in MSE.
+        </p>
+
+        <p>Importantly, the value of the developed PIML models extends beyond immediate performance gains, they improve
+          generalisability and ensure that predictions remain consistent with governing principles under unseen
+          conditions. As such despite a modest improvement and larger complexity, the enhanced physical interpretability
+          and model trustworthiness is valuable especially in the field of chemical engineering where predictions are
+          heavily grounded in physical phenomenon.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── 7 Appendix ──────────────────────────────────── -->
+    <div class="report-section" id="appendix">
+      <div class="section-heading">
+        <h2>Appendix</h2>
+      </div>
+      <div class="section-body">
+
+        <!-- ── Appendix A ──────────────────────────────────── -->
+        <div class="subsub-section" id="appendix">
+          <div class="subsub-heading">
+            <h3>Appendix A: Details of different zones</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              The following illustrations are a microscale representation of the gas and liquid in contact
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./" alt="Summary of MSE Performance with 100 K-fold diagram">
+              <figcaption>
+                <span class="fig-label">Figure 1</span>
+                Display of an Instance where all the Zones are Present
+              </figcaption>
+            </figure>
+
+            <figure class="report-figure full-bleed">
+              <img src="./" alt="Summary of MSE Performance with 100 K-fold diagram">
+              <figcaption>
+                <span class="fig-label">Figure 2</span>
+                Display of an Instance where all the Zones are Present
+              </figcaption>
+            </figure>
+
+
+            <p>
+              SRZ occurs at the top of the tower nearest to the liquid inlet where the concentration of NaOH absorbent
+              is highest. During this phase, the reaction between CO<sub>2</sub> and NaOH occurs extremely fast, often
+              occurring as
+              soon as CO<sub>2</sub> overcomes mass transfer resistance and dissolves into the liquid film due to the
+              high
+              concentration gradient offered by NaOH. As such, SRZ is formed because the rate of reaction is
+              significantly faster than the mass transfer of CO<sub>2</sub> away from the interface, leading to
+              immediate
+              consumption near the surface as illustrated in Figure X.
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./" alt="Summary of MSE Performance with 100 K-fold diagram">
+              <figcaption>
+                <span class="fig-label">Figure 3</span>
+                Schematic of Interior Reaction Zone (IRZ)
+              </figcaption>
+            </figure>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+  <div class="page-nav">
+    <a class="page-nav-btn" href="Section_6.html">← Previous</a>
+    <a class="page-nav-btn" href="index.html">End</a>
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table of Contents — Physics ML Report</title>
+  <link rel="stylesheet" href="./assets/index.css">
+  <style>
+    body {
+      background: var(--gray-50);
+    }
+
+    /* ─── PAGE WRAPPER ───────────────────────────────────────── */
+    .page-wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 150px 40px 140px;
+    }
+
+    /* ─── PAGE HEADER ────────────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .5s ease both;
+    }
+
+    /* Cormorant Garamond for the main TOC heading — elegant & scholarly */
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(40px, 5vw, 60px);
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -1px;
+      line-height: 1.05;
+      margin-top: 6px;
+    }
+
+    .page-header .subtitle {
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ─── TOC SECTIONS ───────────────────────────────────────── */
+    .toc-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeUp .5s ease both;
+    }
+
+    .toc-section:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .toc-section:nth-child(2) {
+      animation-delay: .10s;
+    }
+
+    .toc-section:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .toc-section:nth-child(4) {
+      animation-delay: .20s;
+    }
+
+    .toc-section:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .toc-section:nth-child(6) {
+      animation-delay: .30s;
+    }
+
+    .toc-section:nth-child(7) {
+      animation-delay: .35s;
+    }
+
+    /* Section header row */
+    .toc-section-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px 28px;
+      background: linear-gradient(90deg, #f8faff, var(--white));
+      border-bottom: 1px solid var(--gray-100);
+      text-decoration: none;
+      transition: background .2s;
+    }
+
+    .toc-section-header:hover {
+      background: linear-gradient(90deg, var(--blue-50), #f8faff);
+    }
+
+    .section-number {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 4px 12px;
+      border-radius: 50px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .section-title {
+      font-family: var(--font-sub);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-900);
+      flex: 1;
+    }
+
+    .section-arrow {
+      font-size: 18px;
+      color: var(--blue-400);
+      opacity: .6;
+      transition: opacity .2s, transform .2s;
+    }
+
+    .toc-section-header:hover .section-arrow {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    /* Subsection list */
+    .toc-subsections {
+      padding: 8px 0 12px;
+    }
+
+    .toc-sub-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 28px 10px 42px;
+      text-decoration: none;
+      color: var(--gray-600);
+      font-family: var(--font-body);
+      font-size: 14px;
+      transition: background .15s, color .15s;
+      position: relative;
+    }
+
+    .toc-sub-item::before {
+      content: '';
+      position: absolute;
+      left: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gray-300);
+      transition: background .15s;
+    }
+
+    .toc-sub-item:hover {
+      background: var(--blue-50);
+      color: var(--blue-600);
+    }
+
+    .toc-sub-item:hover::before {
+      background: var(--blue-400);
+    }
+
+    .sub-num {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--gray-400);
+      min-width: 36px;
+      transition: color .15s;
+    }
+
+    .toc-sub-item:hover .sub-num {
+      color: var(--blue-400);
+    }
+
+    .sub-title {
+      flex: 1;
+    }
+
+    .sub-page {
+      font-size: 12px;
+      color: var(--gray-400);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sub-divider {
+      height: 1px;
+      background: var(--gray-100);
+      margin: 4px 28px;
+    }
+
+    /* ─── ACKNOWLEDGEMENT — PROFESSOR CARDS ──────────────────── */
+    .ack-quote {
+      padding: 20px 28px 18px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--gray-500);
+      font-style: italic;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .ack-professors {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 24px 28px;
+    }
+
+    .prof-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      padding: 28px 24px 24px;
+      border-radius: 14px;
+      border: 1px solid var(--gray-200);
+      background: var(--gray-50);
+      transition: box-shadow .22s, border-color .22s, transform .22s;
+    }
+
+    .prof-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(37, 99, 235, 0.10);
+      border-color: rgba(37, 99, 235, 0.22);
+    }
+
+    .prof-avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 3px solid var(--white);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.16);
+      overflow: hidden;
+      /* clips the image to the circle */
+      flex-shrink: 0;
+    }
+
+    .prof-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      /* bias toward the face */
+      display: block;
+    }
+
+    .prof-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .prof-name {
+      font-family: var(--font-sub);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--blue-900);
+    }
+
+    .prof-role {
+      font-family: var(--font-body);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--blue-500);
+    }
+
+    .prof-dept {
+      font-family: var(--font-body);
+      font-size: 11.5px;
+      color: var(--gray-400);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 100px 20px 120px;
+      }
+
+      .ack-professors {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR — injected by index.js from NAV_CONFIG ══════ -->
+  <nav id="navbar"></nav>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="page-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <span class="label-pill label-pill-spacing">CDE4301</span>
+      <h1>Table of Contents</h1>
+      <p class="subtitle">Navigate through the sections of this report using the links below</p>
+      <div class="header-rule"></div>
+    </div>
+
+    <!-- Acknowledgement -->
+    <div class="toc-section">
+      <div class="toc-section-header">
+        <span class="section-title">Acknowledgement</span>
+      </div>
+
+      <!-- Quote paragraph -->
+      <p class="ack-quote">
+        We extend our deepest gratitude to our project supervisors, Dr. Jovan Tan and Dr. Elliot Law for their
+        invaluable support, insightful feedback, and encouragement throughout the project.
+        <br />
+        <br />
+        We also wish to thank Mr Qin Zheng for his steadfast support in providing the essential laboratory resources and
+        space for our experimental data.
+      </p>
+
+      <!-- Professor cards -->
+      <div class="ack-professors">
+
+        <!-- Professor 1 -->
+        <div class="prof-card">
+          <div class="prof-avatar">
+            <img src="./assets/images/Prof_Jovan.jpeg" alt="Prof. Jovan">
+          </div>
+          <div class="prof-info">
+            <div class="prof-name">Prof. Jovan</div>
+            <div class="prof-role">Lecturer</div>
+            <div class="prof-dept">Innovation &amp; Design, NUS</div>
+          </div>
+        </div>
+
+        <!-- Professor 2 -->
+        <div class="prof-card">
+          <div class="prof-avatar">
+            <img src="./assets/images/Prof_Elliot.jpeg" alt="Prof. Elliot">
+          </div>
+          <div class="prof-info">
+            <div class="prof-name">Prof. Elliot</div>
+            <div class="prof-role">Senior Lecturer</div>
+            <div class="prof-dept">Innovation &amp; Design, NUS</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="toc-section">
+      <a class="toc-section-header" href="Section_1.html">
+        <span class="section-number">Section 1</span>
+        <span class="section-title">Introduction</span>
+        <span class="section-arrow">→</span>
+      </a>
+      <div class="toc-subsections">
+        <a class="toc-sub-item" href="Section_1.html#abstract">
+          <span class="sub-num"></span>
+          <span class="sub-title">Abstract</span>
+          <!-- <span class="sub-page">p. 4</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_1.html#1-1">
+          <span class="sub-num">1.1</span>
+          <span class="sub-title">First Principle Modelling (FPM)</span>
+          <!-- <span class="sub-page">p. 6</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_1.html#1-2">
+          <span class="sub-num">1.2</span>
+          <span class="sub-title">Machine Learning (ML)</span>
+          <!-- <span class="sub-page">p. 8</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_1.html#1-3">
+          <span class="sub-num">1.3</span>
+          <span class="sub-title">Physics-Informed Machine Learning (PIML)</span>
+          <!-- <span class="sub-page">p. 8</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_1.html#1-4">
+          <span class="sub-num">1.4</span>
+          <span class="sub-title">Objective &amp; Scope</span>
+          <!-- <span class="sub-page">p. 8</span> -->
+        </a>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="toc-section">
+      <a class="toc-section-header" href="Section_2.html">
+        <span class="section-number">Section 2</span>
+        <span class="section-title">Development of Case Study</span>
+        <span class="section-arrow">→</span>
+      </a>
+      <div class="toc-subsections">
+        <a class="toc-sub-item" href="Section_2.html#2-1">
+          <span class="sub-num">2.1</span>
+          <span class="sub-title">Case Study Selection</span>
+          <!-- <span class="sub-page">p. 13</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_2.html#2-2">
+          <span class="sub-num">2.2</span>
+          <span class="sub-title">Case Study</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+        <a class="toc-subsub-item" href="Section_2.html#2-2-1">
+          <span class="subsub-num">2.2.1</span>
+          <span class="sub-title">Working Principles</span>
+        </a>
+        <a class="toc-subsub-item" href="Section_2.html#2-2-2">
+          <span class="subsub-num">2.2.2</span>
+          <span class="sub-title">Industrial Applications in Control Systems</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="toc-section">
+      <a class="toc-section-header" href="Section_3.html">
+        <span class="section-number">Section 3</span>
+        <span class="section-title">Experimental Data Collection</span>
+        <span class="section-arrow">→</span>
+      </a>
+      <div class="toc-subsections">
+        <a class="toc-sub-item" href="Section_3.html#3-1">
+          <span class="sub-num">3.1</span>
+          <span class="sub-title">Experimental Set-up</span>
+          <!-- <span class="sub-page">p. 13</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_3.html#3-2">
+          <span class="sub-num">3.2</span>
+          <span class="sub-title">Sampling of Data Points</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="toc-section">
+      <a class="toc-section-header" href="Section_4.html">
+        <span class="section-number">Section 4</span>
+        <span class="section-title">Architectural Design for PIML</span>
+        <span class="section-arrow">→</span>
+      </a>
+      <div class="toc-subsections">
+        <a class="toc-sub-item" href="Section_4.html#4-1">
+          <span class="sub-num">4.1</span>
+          <span class="sub-title">Overview</span>
+          <!-- <span class="sub-page">p. 13</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_4.html#4-2">
+          <span class="sub-num">4.2</span>
+          <span class="sub-title">Recurrent Neural Network</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-2-1">
+          <span class="subsub-num">4.2.1</span>
+          <span class="sub-title">Gated Recurrent Units</span>
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-2-2">
+          <span class="subsub-num">4.2.2</span>
+          <span class="sub-title">Long Short Term Memory</span>
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_4.html#4-3">
+          <span class="sub-num">4.3</span>
+          <span class="sub-title">Neural Ordinary Differential Equation (NODE)</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-3-1">
+          <span class="subsub-num">4.3.1</span>
+          <span class="sub-title">NODE-ED</span>
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-3-2">
+          <span class="subsub-num">4.3.2</span>
+          <span class="sub-title">NODE-ED-Uncoupled</span>
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-3-3">
+          <span class="subsub-num">4.3.3</span>
+          <span class="sub-title">NODE-Context</span>
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-3-4">
+          <span class="subsub-num">4.3.4</span>
+          <span class="sub-title">NODE-Context-Uncoupled</span>
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_4.html#4-4">
+          <span class="sub-num">4.4</span>
+          <span class="sub-title">Performance Metric & Statistical Significance</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_4.html#4-5">
+          <span class="sub-num">4.5</span>
+          <span class="sub-title">Training Methodology</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-5-1">
+          <span class="subsub-num">4.5.1</span>
+          <span class="sub-title">Hyperparameter Optimisation</span>
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-5-2">
+          <span class="subsub-num">4.5.2</span>
+          <span class="sub-title">K-fold Cross-validation</span>
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-5-3">
+          <span class="subsub-num">4.5.3</span>
+          <span class="sub-title">100 repeated K-fold</span>
+        </a>
+        <a class="toc-subsub-item" href="Section_4.html#4-5-4">
+          <span class="subsub-num">4.5.4</span>
+          <span class="sub-title">Bagging</span>
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_4.html#4-6">
+          <span class="sub-num">4.6</span>
+          <span class="sub-title">Analysis of results for RNN Variants</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_4.html#4-7">
+          <span class="sub-num">4.7</span>
+          <span class="sub-title">Analysis of results for NODE variants</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_4.html#4-8">
+          <span class="sub-num">4.8</span>
+          <span class="sub-title">Comparison between RNN and NODE</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="toc-section">
+      <a class="toc-section-header" href="Section_5.html">
+        <span class="section-number">Section 5</span>
+        <span class="section-title">Physics Guided Enhancements</span>
+        <span class="section-arrow">→</span>
+      </a>
+      <div class="toc-subsections">
+        <a class="toc-sub-item" href="Section_5.html#5-1">
+          <span class="sub-num">5.1</span>
+          <span class="sub-title">Steady State Constraint with Parameter Discovery (SS-PD)</span>
+          <!-- <span class="sub-page">p. 13</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_5.html#5-2">
+          <span class="sub-num">5.2</span>
+          <span class="sub-title">Steady State Collocation with Parameter Discovery (SS-C-PD)</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+        <div class="sub-divider"></div>
+        <a class="toc-sub-item" href="Section_5.html#5-3">
+          <span class="sub-num">5.3</span>
+          <span class="sub-title">Analysis of results for Physics Guided Enhancements</span>
+          <!-- <span class="sub-page">p. 17</span> -->
+        </a>
+      </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="toc-section">
+      <a class="toc-section-header" href="Section_6.html">
+        <span class="section-number">Section 6</span>
+        <span class="section-title">Future Works</span>
+        <span class="section-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Section 7 -->
+    <div class="toc-section">
+      <a class="toc-section-header" href="Section_7.html">
+        <span class="section-number">Section 7</span>
+        <span class="section-title">Conclusion</span>
+        <span class="section-arrow">→</span>
+      </a>
+    </div>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+  <div class="page-nav">
+    <a class="page-nav-btn" href="Section_1.html">Next →</a>
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+
+</html>

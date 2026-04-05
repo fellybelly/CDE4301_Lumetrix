@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 5: Physics Guided Enhancements</title>
+  <link rel="stylesheet" href="./assets/index.css">
+
+  <style>
+    body {
+      background: var(--gray-50);
+    }
+
+    .page-wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 150px 40px 140px;
+    }
+
+    /* ─── PAGE HEADER ───────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 4.5vw, 52px);
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -.5px;
+      line-height: 1.08;
+      margin-top: 6px;
+    }
+
+    .page-header .subtitle {
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ─── REPORT SECTION CARDS ──────────────────────────── */
+    .report-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeUp .5s ease both;
+    }
+
+    .report-section:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .report-section:nth-child(2) {
+      animation-delay: .10s;
+    }
+
+    .report-section:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .report-section:nth-child(4) {
+      animation-delay: .20s;
+    }
+
+    .report-section:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 28px;
+      background: linear-gradient(90deg, #f8faff, var(--white));
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 4px 11px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-sub);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-900);
+    }
+
+    .section-body {
+      padding: 28px 28px 32px;
+    }
+
+    .section-body p {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+
+    .section-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .subsection-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-700);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin: 28px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subsection-title::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--blue-400);
+      border-radius: 1px;
+    }
+
+    .callout {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-400);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--blue-800);
+    }
+
+    .obj-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .obj-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--gray-600);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .obj-list li:last-child {
+      border-bottom: none;
+    }
+
+    .obj-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 2px 9px;
+      border-radius: 50px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .sub-rule {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      margin: 24px 0;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 90px 16px 120px;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR — injected by index.js from NAV_CONFIG ══════ -->
+  <nav id="navbar"></nav>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="page-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <span class="label-pill label-pill-spacing">CDE4301</span>
+      <h1>Physics Guided Enhancements</h1>
+      <p class="subtitle">Constraints & Collocation Points</p>
+      <div class="header-rule"></div>
+    </div>
+
+    <!-- ── Overview ──────────────────────────────────── -->
+    <div class="report-section" id="5">
+      <div class="section-heading">
+        <span class="section-tag">5</span>
+        <h2>Overview</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          In this section, NODE-ED-Uncoupled, identified in <a href="Section_4.html">Section 4</a> is further refined
+          through the incorporation of
+          physics-guided enhancements for CO<sub>2</sub> prediction, as outlined in Table 5.1. The training procedure
+          follows the
+          methodology described in <a href="Section_4.html#4-5">Section 4.5</a>.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 5.1</span>
+            Physics-guided Enhancements Evaluated
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>NODE-ED-Uncoupled</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Steady State Constraint with Parameter Discovery (SS-PD)</td>
+              </tr>
+              <tr>
+                <td>Steady State Collocation with Parameter Discovery (SS-C-PD)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 5.1 Steady State Constraint with Parameter Discovery (SS-PD) ──────────────────────────────────── -->
+    <div class="report-section" id="5-1">
+      <div class="section-heading">
+        <span class="section-tag">5.1</span>
+        <h2>Steady State Constraint with Parameter Discovery (SS-PD)</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          To address the first hypothesis that NODE-ED-Uncoupled converges to an incorrect final state, SS-PD approach
+          is employed. At final state, the system can be expressed using 3 algebraic equations (3 different zones
+          mentioned in Section 2): h<sub>1</sub> (SRZ), h<sub>2</sub> (IRZ) , h<sub>3</sub> (PAZ) without excessive
+          simplifying assumptions. By
+          incorporating the final-state constraint, the model is guided towards physically consistent end states,
+          thereby potentially putting lesser emphasis on the noises in earlier time steps.
+        </p>
+
+        <p>
+          However, the final state governing equation contains mass transfer empirical parameters:
+          K<sup>0</sup><sub>GA</sub>, k<sup>0</sup><sub>LA</sub>, k<sub>gA</sub> that are not directly measurable. To
+          address this, a parameter discovery framework is adopted, wherein these
+          parameters are treated as learnable variables and optimised during training.
+        </p>
+
+        <p>To implement this, an additional loss term, referred to as the SS-PD loss,
+          <i>L</i><sub><i>SS</i>-<i>PD</i></sub> is incorporated alongside the existing MSE loss,
+          <i>L</i><sub><i>MSE</i></sub> , at time = 16 mins as defined below. The governing equations are described in
+          Figure 5.1 and Table 5.2.
+        </p>
+
+        <p>
+          At time = 16 mins,
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_5-1.svg" alt="Heights of Zones in Chemisorption Column diagram">
+          <figcaption>
+            <span class="fig-label">Figure 5.1</span>
+            Heights of Zones in Chemisorption Column
+          </figcaption>
+        </figure>
+
+        <figure class="report-figure full-bleed">
+          <figcaption>
+            <span class="fig-label">Table 5.2</span>
+            Definition of Governing Equations
+          </figcaption>
+          <img src="./assets/images/Table_5-2.png" alt="Definition of Governing Equations Table">
+
+        </figure>
+
+        <p>
+          Given that heights of all zones = height of entire column = 42.5cm,
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Working_5-1.png" alt="Equation Working" style="max-height: 500px;">
+        </figure>
+
+      </div>
+    </div>
+
+    <!-- ── 5.2 Steady State Collocation with Parameter Discovery (SS-C-PD) ──────────────────────────────────── -->
+    <div class="report-section" id="5-2">
+      <div class="section-heading">
+        <span class="section-tag">5.2</span>
+        <h2>Steady State Collocation with Parameter Discovery (SS-C-PD)</h2>
+      </div>
+      <div class="section-body">
+        <p>To address the second hypothesis that NODE-ED-Uncoupled has limited experimental data to learn the full range
+          of interactions of the zones, SS-C-PD approach is employed. Figure 5.2 showcases the training procedure of
+          SS-C-PD.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_5-2.svg" alt="Flowchart of SS-C-PD Training Procedure Diagram">
+          <figcaption>
+            <span class="fig-label">Figure 5.2</span>
+            Flowchart of SS-C-PD Training Procedure
+          </figcaption>
+        </figure>
+
+        <p>
+          In this approach, collocation points are generated across the same input space. Specifically, 2.500 points
+          (arranged as a 50 x 50 grid) are sampled within the defined sample range to provide a dense representation of
+          the zones at fine resolution. These generated inputs are then evaluated using the governing equation with
+          parameter discovery described in <a href="Section_5.html#5-1">Section 5.1</a> for SS-PD. During training, at
+          every epoch, the model is
+          evaluated on a randomly sampled mini-batch of 100 collocation points from the bulk 2,500 points to reduce
+          computational costs. This stochastic sampling strategy progressively improves domain coverage, where certain
+          zones are under-represented while preventing overfitting to a fixed set of collocation locations as shown in
+          Figure 5.3.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_5-3.png" alt="Experimental VS Collocation Sampling Diagram">
+          <figcaption>
+            <span class="fig-label">Figure 5.3</span>
+            Experimental VS Collocation Sampling
+          </figcaption>
+        </figure>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Working_5-2.png" alt="Equation Working Diagram" style="max-height: 500px;">
+        </figure>
+
+      </div>
+    </div>
+
+    <!-- ── 5.3 Analysis of results for Physics Guided Enhancements ──────────────────────────────────── -->
+    <div class="report-section" id="5-3">
+      <div class="section-heading">
+        <span class="section-tag">5.3</span>
+        <h2>Analysis of results for Physics Guided Enhancements</h2>
+      </div>
+      <div class="section-body">
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 5.3</span>
+            Performance of Physics Guided Enhancement with 100 K-fold
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Physics Guided Enhancement</th>
+                <th rowspan="2">NODE-ED-Uncoupled (Basecase)</th>
+              </tr>
+              <tr>
+                <th>SS-PD</th>
+                <th>SS-C-PD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R²</td>
+                <td>0.694 ± 0.101</td>
+                <td>0.697 ± 0.100</td>
+                <td>0.689 ± 0.101</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>0.239 ± 0.035</td>
+                <td>0.233 ± 0.0314</td>
+                <td>0.245 ± 0.034</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 5.4</span>
+            Statistical Test of Physics Guided Enhancement with 100 K-fold
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Model Pair</th>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Significance Test</th>
+              </tr>
+              <tr>
+                <th>Paired t-test</th>
+                <th>Cohen's d *</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2">NODE-ED-Uncoupled Vs SS-PD</td>
+                <td>R²</td>
+                <td>1.32 x 10<sup>-1</sup></td>
+                <td>-0.152</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>5.14 x 10<sup>-3</sup></td>
+                <td>0.286</td>
+              </tr>
+              <tr>
+                <td rowspan="2">NODE-ED-Uncoupled Vs SS-C-PD</td>
+                <td>R²</td>
+                <td>6.45 x 10<sup>-3</sup></td>
+                <td>-0.278</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>3.96 x 10<sup>-8</sup></td>
+                <td>0.596</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <p><em>Note:</em> The sign of Cohen's d is defined with respect to the first model listed in each pair.
+            Positive value
+            indicates higher metric value for 1st model, negative value indicates a higher value for 2nd model</p>
+        </div>
+
+        <p>As shown in Table 5.3, SS-PD only achieved a marginal improvement over NODE-ED-Uncoupled, with a mean
+          R<sup>2</sup> of
+          0.694 against 0.689 with comparable standard deviations of 0.101 across both models and a slightly lower MSE
+          of 0.239 ± 0.035 against 0.245 ± 0.034. The statistical tests conducted afterwards in Table 5.4 highlight,
+          however, inconclusive results. The paired t-test for R<sup>2</sup> yields a p-value above 0.05, indicating
+          that the
+          difference in explained variance is not distinguishable from random model initialisations. Notably, the MSE
+          comparison between the model does have a significant difference at a p-value of 5.14 x 10<sup>-3</sup>, though
+          the
+          Cohen's d of 0.286 suggests only a small practical improvement. The difference in these two results can be
+          attributed to each of the metrics' intrinsic method of calculation. R<sup>2</sup> is a normalised measure of
+          variance
+          that is inherently less sensitive to small absolute improvements while MSE captures the absolute error
+          incurred between the model's prediction and the test samples. Hence, the statistically significant MSE
+          reduction suggests a true, albeit minor, reduction in absolute prediction error that R<sup>2</sup> is not
+          sensitive
+          enough to detect.
+        </p>
+
+        <p>Despite the minor reduction in MSE, the performance of SS-PD is practically still comparable to
+          NODE-ED-Uncoupled. The issue arises from the fact that the NODE-ED-Uncoupled is already able to learn a decent
+          approximation of the final steady-state CO<sub>2</sub> outlet from the data alone, thereby diminishing the
+          additional
+          value that the physics constraint at t=16 would have otherwise provided.
+        </p>
+
+        <p>Meanwhile, the benefit of broader coverage from collocation points is reflected in the SS-C-PD results. The
+          model achieved an R<sup>2</sup> of 0.697 ± 0.100, with a paired t-test confirming the small improvement over
+          NODE-ED-Uncoupled is statistically significant at a p-value of 6.45 x 10<sup>-3</sup> with a Cohen's d of
+          0.278. The
+          reduction in MSE is more pronounced, with SS-C-PD achieving 0.233 ± 0.031, a reduction in both the absolute
+          error and variability. The MSE reduction is also supported via statistically significant p-value of 3.96 x
+          10<sup>-8</sup> and a moderate Cohen's d of 0.596. The stronger effect size on MSE relative to R<sup>2</sup>
+          suggests
+          that SS-C-PD
+          is able to better generalise on more difficult test samples. This progression from SS-PD to SS-C-PD therefore
+          demonstrates that it is not the physics constraint itself that is limiting, but rather the narrow operating
+          range over which the physics is applied to and that extending physics enhancement across the entirety of the
+          operating space is able to produce meaningful generalisation improvement.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 5.5</span>
+            Bagging Ensemble Performance with & without SS-C-PD for NODE-ED-Uncoupled
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Model</th>
+              </tr>
+              <tr>
+                <th>Without SS-C-PD</th>
+                <th>With SS-C-PD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R²</td>
+                <td>0.765 ± 0.0800</td>
+                <td>0.773 ± 0.0882</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>0.241 ± 0.106</td>
+                <td>0.239 ± 0.070</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 5.6</span>
+            Statistical Tests comparing with & without SS-C-PD for NODE-ED-Uncoupled with 100 Bagging Models
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Model Pair</th>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Significance Test</th>
+                <th rowspan="2">Model Selection</th>
+              </tr>
+              <tr>
+                <th>Paired t-test</th>
+                <th>Cohen's d *</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2">With VS without SS-C-PD for NODE-ED-Uncoupled</td>
+                <td>R²</td>
+                <td>6.41 x 10<sup>-5</sup></td>
+                <td>0.588</td>
+                <td rowspan="2">NODE-ED-Uncoupled with SS-C-PD</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>5.59 x 10<sup>-3</sup></td>
+                <td>-0.564</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <p><em>Note:</em> The sign of Cohen's d is defined with respect to the first model listed in each pair.
+            Positive value indicates higher metric value for 1st model, negative value indicates a higher value for 2nd
+            model
+          </p>
+        </div>
+
+        <p>
+          Finally, the bagging results in Table 5.5 and 5.6 indicate that SS-C-PD improves performance over
+          NODE-ED-Uncoupled, achieving R<sup>2</sup> = 0.773 and MSE = 0.239, compared to without SS-C-PD of 0.765 and
+          0.241,
+          respectively. Statistical testing confirms that this improvement is not due to chance, with a moderate Cohen's
+          d indicating a meaningful effect size
+        </p>
+
+      </div>
+    </div>
+
+  </div> <!-- /page-wrapper -->
+
+  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+  <div class="page-nav">
+    <a class="page-nav-btn" href="Section_4.html">← Previous</a>
+    <a class="page-nav-btn" href="Section_6.html">Next →</a>
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+
+</html>

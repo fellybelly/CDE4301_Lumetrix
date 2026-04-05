@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 4: Architectural Design for PIML</title>
+  <link rel="stylesheet" href="./assets/index.css">
+
+  <style>
+    body {
+      background: var(--gray-50);
+    }
+
+    .page-wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 150px 40px 140px;
+    }
+
+    /* ─── PAGE HEADER ───────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 4.5vw, 52px);
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -.5px;
+      line-height: 1.08;
+      margin-top: 6px;
+    }
+
+    .page-header .subtitle {
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ─── REPORT SECTION CARDS ──────────────────────────── */
+    .report-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeUp .5s ease both;
+    }
+
+    .report-section:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .report-section:nth-child(2) {
+      animation-delay: .10s;
+    }
+
+    .report-section:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .report-section:nth-child(4) {
+      animation-delay: .20s;
+    }
+
+    .report-section:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 28px;
+      background: linear-gradient(90deg, #f8faff, var(--white));
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 4px 11px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-sub);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-900);
+    }
+
+    .section-body {
+      padding: 28px 28px 32px;
+    }
+
+    .section-body p {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+
+    .section-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .subsection-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-700);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin: 28px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subsection-title::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--blue-400);
+      border-radius: 1px;
+    }
+
+    .callout {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-400);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--blue-800);
+    }
+
+    .obj-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .obj-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--gray-600);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .obj-list li:last-child {
+      border-bottom: none;
+    }
+
+    .obj-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 2px 9px;
+      border-radius: 50px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .sub-rule {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      margin: 24px 0;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 90px 16px 120px;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR — injected by index.js from NAV_CONFIG ══════ -->
+  <nav id="navbar"></nav>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="page-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <span class="label-pill label-pill-spacing">CDE4301</span>
+      <h1>Architectural Design for PIML</h1>
+      <p class="subtitle">Recurrent Neural Network & Neural Ordinary Differential Equations</p>
+      <div class="header-rule"></div>
+    </div>
+
+    <!-- ── 4.1 Overview ──────────────────────────────────── -->
+    <div class="report-section" id="4-1">
+      <div class="section-heading">
+        <span class="section-tag">4.1</span>
+        <h2>Overview</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          This section presents an overview of the Recurrent Neural Networks (RNN) and Neural Ordinary Differential
+          Equations (NODE) variants examined at the architectural level. The rationale for the selection of each variant
+          is subsequently discussed, followed by a comparative evaluation of their performance. The most suitable
+          architectures for RNN and NODE are then identified and adopted for further development in <a
+            href="Section_5.html">Section 5</a>,
+          “Physics-Guided Enhancements”. The architectural variants are considered in Table 4.1.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.1</span>
+            Variants of Physics-informed of RNN and NODE Architecture Evaluated
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>RNN - Variant</th>
+                <th>NODE - Variant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>RNN <strong>(Basecase)</strong></td>
+                <td>NODE-ED <strong>(Basecase)</strong></td>
+              </tr>
+              <tr>
+                <td>GRU</td>
+                <td>NODE-ED-Uncoupled</td>
+              </tr>
+              <tr>
+                <td rowspan="2" style="text-align: left; font-weight: normal;">LSTM</td>
+                <td>NODE-Context</td>
+              </tr>
+              <tr>
+                <td>NODE-Context-Uncoupled</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          RNN is selected as a basecase due to its well-established capability as a purely-data driven model in
+          predicting temporal dependencies in sequential data. In contrast, NODE is selected as another basecase because
+          it offers a continuous-time formulation of system dynamics that aligns naturally with the governing
+          differential equations of the underlying physical processes, making it particularly suitable for physical
+          incorporation.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ── 4.2 Recurrent Neural Network ──────────────────────────────────── -->
+    <div class="report-section" id="4-2">
+      <div class="section-heading">
+        <span class="section-tag">4.2</span>
+        <h2>Recurrent Neural Network</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          The studies that have explored physics-informed RNN applications in chemical engineering applications within
+          PIML to date are summarised in Table 4.2, with no reported applications in chemisorption systems.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.2</span>
+            Physics-informed RNN Applications in Chemical Engineering
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Author(s)</th>
+                <th>Contribution</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="white-space: nowrap;">Nai et al.<br>(2026)<sup class="fn-ref"><a href="#fn-30"
+                      id="fn-ref-30">30</a></sup></td>
+                <td>
+                  A crystallisation process in a batch reactor was modelled, demonstrating that the integration of
+                  mechanistic population balance models with an RNN enables accurate recovery of kinetic parameters,
+                  even under noisy and limited experimental data.
+                </td>
+              </tr>
+              <tr>
+                <td style="white-space: nowrap;">Asrav and Aydin<br> (2023)<sup class="fn-ref"><a href="#fn-31"
+                      id="fn-ref-31">31</a></sup></td>
+                <td>
+                  A waste treatment process in a semi-batch reactor was modelled, demonstrating that an RNN
+                  incorporating governing equations as part of the loss function outperforms feedforward ANN, linear
+                  regression, and support vector regression models.
+                </td>
+              </tr>
+              <tr>
+                <td style="white-space: nowrap;">Wu et al.<br> (2023)<sup class="fn-ref"><a href="#fn-32"
+                      id="fn-ref-32">32</a></sup></td>
+                <td>
+                  A crystallisation process in a batch reactor was modelled, demonstrating that the integration of
+                  mechanistic population balance models with an RNN enables the design of a model predictive controller
+                  for process operation.
+                </td>
+              </tr>
+              <tr>
+                <td style="white-space: nowrap;">Zheng et al.<br> (2023)<sup class="fn-ref"><a href="#fn-33"
+                      id="fn-ref-33">33</a></sup></td>
+                <td>
+                  A control system for nonlinear dynamic behaviour in a batch crystallisation reactor was modelled
+                  using an RNN coupled with mechanistic models.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_4-1.png" alt="RNN Internal Memory State, h diagram">
+          <figcaption>
+            <span class="fig-label">Figure 4.1</span>
+            RNN Internal Memory State, h
+          </figcaption>
+        </figure>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_4-2.svg" alt="RNN Architecture diagram">
+          <figcaption>
+            <span class="fig-label">Figure 4.2</span>
+            RNN Architecture
+          </figcaption>
+        </figure>
+
+        <p>
+          RNN are designed to process sequential data by maintaining a hidden state that captures information about
+          previous inputs<sup class="fn-ref"><a href="#fn-34" id="fn-ref-34">34</a></sup>. In contrast to a standard
+          feedforward neural network, RNN has an additional recurrent
+          connection as displayed in Figure 4.2, which enables the previous time step information to pass through the
+          current time-step throughout the network until the last hidden layer. At every time step, <em>t</em> , the RNN
+          takes an
+          input vector, <em>x<sub>t</sub></em> , and updates its hidden state, <em>h<sub>t</sub></em> , to predict an
+          output in the
+          following manner
+          with the
+          variables defined in Table 4.3:
+        </p>
+
+        <div class="formula-block">
+          <div class="formula-display">
+            <span class="f-var">h<sub>t</sub></span>
+            <span class="f-eq">=</span>
+            <span class="f-var">σ<sub>h</sub> (W<sub>h </sub>h<sub>t-1</sub></span>
+            <span class="f-op">+</span>
+            <span class="f-var">W<sub>i </sub>x<sub>t</sub></span>
+            <span class="f-op">+</span>
+            <span class="f-var"><span style="font-size:1.4em">2</span>b)</span>
+          </div>
+        </div>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.3</span>
+            Description of Variables Used in RNN Formulation
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Description</th>
+                <th>Variable</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><em>h<sub>t</sub></em></td>
+                <td>Hidden state at time <em>t</em></td>
+                <td><em>σ<sub>y</sub></em></td>
+                <td>Activation function for the output layer</td>
+              </tr>
+              <tr>
+                <td><em>h<sub>t-1</sub></em></td>
+                <td>Hidden state at time <em>t-1</em></td>
+                <td><em>W<sub>i</sub></em></td>
+                <td>Recurrent weight matrix between hidden and input layers</td>
+              </tr>
+              <tr>
+                <td><em>x<sub>t</sub></em></td>
+                <td>Input at time <em>t</em></td>
+                <td><em>W<sub>hy</sub></em></td>
+                <td>Recurrent weight matrix between hidden and output layers</td>
+              </tr>
+              <tr>
+                <td><em>y<sub>t</sub></em></td>
+                <td>Output at time <em>t</em></td>
+                <td><em>W<sub>h</sub></em></td>
+                <td>Recurrent weight matrix between <em>t</em> and <em>t-1</em></td>
+              </tr>
+              <tr>
+                <td><em>σ<sub>h</sub></em></td>
+                <td>Activation function for the hidden layer</td>
+                <td><em>b<sub>h</sub></em></td>
+                <td>Bias vector for hidden layer</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          In our implementation, the inputs for the RNN models can be found in Table 4.4 below.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.4</span>
+            List of Inputs Used for Models
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Input</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CO<sub>2</sub> (i)</td>
+                <td>Initial concentration of CO<sub>2</sub> at the inlet of the column, after step change was introduced
+                </td>
+              </tr>
+              <tr>
+                <td>NaOH (i)</td>
+                <td>Initial concentration of NaOH at the inlet of the column, after step change was introduced</td>
+              </tr>
+              <tr>
+                <td>CO<sub>2</sub> (t=0)</td>
+                <td>Concentration of CO<sub>2</sub> at the outlet of the column, prior to step change</td>
+              </tr>
+              <tr>
+                <td>NaOH (t=0)</td>
+                <td>Concentration of NaOH at the outlet of the column, prior to step change</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          The following inputs were chosen to allow the RNN to model the trajectory of CO<sub>2</sub> and NaOH at the
+          discrete
+          measured timestamps, namely: t = 4 , 8 , 12 , 16 min. The initial concentration of both CO<sub>2</sub> and
+          NaOH at the
+          inlet of the column reflects each reactant's concentration after the step change was introduced, while the
+          concentration of CO<sub>2</sub> and NaOH at the outlet of the column refers to the outlet concentration of the
+          column
+          prior to the step change.
+        </p>
+
+        <p>
+          RNN was considered due to the relatively short sequence length, t = 4, 8, 12, 16 mins. The exploding and
+          vanishing gradient problem, typically associated with long time-horizon sequences, arises when weights
+          propagated through recurrent steps either grow exponentially or decay towards zero, leading to training
+          instability and impaired model convergence. Given the limited number of temporal steps in the present dataset,
+          the impact of such gradient-related issues is unlikely to propagate within the model. As such, it is
+          hypothesised that a simple RNN architecture is sufficient to capture the underlying temporal dynamics of the
+          system without significant instability.
+        </p>
+
+        <p>
+          However, despite the limited sequence length, transient unsteady-state behaviour in chemical processes, where
+          later states such as t = 16 min are highly dependent on earlier states such as 4, 8, 12 mins. As such, it is
+          hypothesised that minor inaccuracies in the gradient propagation may adversely affect the model's ability to
+          capture the system dynamics. Therefore more advanced architectures such as GRU and LSTM were also explored to
+          handle the temporal dependencies.
+        </p>
+
+        <!-- ── 4.2.1 Gated Recurrent Units ─────────────────── -->
+        <div class="subsub-section" id="4-2-1">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.2.1</span>
+            <h3>Gated Recurrent Units</h3>
+          </div>
+          <div class="subsub-body">
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-3.png" alt="GRU Internal Memory State">
+              <figcaption>
+                <span class="fig-label">Figure 4.3</span>
+                GRU Internal Memory State
+              </figcaption>
+            </figure>
+
+            <p>
+              Similar to RNNs, Gated Recurrent Units (GRU) have also been applied successfully for applications
+              involving sequential or temporal data <sup class="fn-ref"><a href="#fn-35" id="fn-ref-35">35</a></sup>.
+              For example, Avula et al. (2024)<sup class="fn-ref"><a href="#fn-36" id="fn-ref-36">36</a></sup> developed
+              a GRU model to
+              predict the production of oil from oil wells. However, the way that GRU achieves sequential or temporal
+              modelling is slightly different from RNNs as it contains two additional parameters: an update gate,
+              z<sub>t</sub> ,
+              and a reset gate, r<sub>t</sub> . In contrast to RNNs, these gates enable GRU to selectively control how
+              the present
+              input and previous state is used to update the current activation function and thus to produce the current
+              state. These gates have their own sets of weights and are adaptively updated during the training phase.
+              The GRU model is then formulated as follows and the variables are defined in Table 4.5:
+            </p>
+
+            <!-- Formula Block 1 — GRU Hidden State -->
+            <div class="formula-block">
+              <div class="formula-display" style="flex-direction: column; align-items: flex-start; gap: 14px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var">h<sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">(1 -</span>
+                  <span class="f-var">z<sub>t</sub>)</span>
+                  <span class="f-op">⊙</span>
+                  <span class="f-var">h<sub>t-1</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">z<sub>t</sub></span>
+                  <span class="f-op">⊙</span>
+                  <span class="f-var">h̄<sub>t</sub></span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var">h̄<sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">g(W<sub>h </sub>x<sub>t</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">U<sub>h </sub>(r<sub>t</sub></span>
+                  <span class="f-op">⊙</span>
+                  <span class="f-var">h<sub>t-1</sub>)</span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">b<sub>h</sub>)</span>
+                </div>
+              </div>
+            </div>
+
+            <p>With the two gates formulated as:</p>
+
+            <!-- Formula Block 2 — GRU Gates -->
+            <div class="formula-block">
+              <div class="formula-display" style="flex-direction: column; align-items: flex-start; gap: 14px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var">z<sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">σ(W<sub>z </sub>x<sub>t</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">U<sub>z </sub>h<sub>t-1</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">b<sub>z</sub> )</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var">r<sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">σ(W<sub>r </sub>x<sub>t</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">U<sub>r </sub>h<sub>t-1</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">b<sub>r</sub> )</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="report-table-wrap">
+              <figcaption>
+                <span class="fig-label">Table 4.5</span>
+                Description of Variables Used in GRU Formulation
+              </figcaption>
+              <table class="report-table">
+                <thead>
+                  <tr>
+                    <th>Variable</th>
+                    <th>Description</th>
+                    <th>Variable</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><em>h<sub>t</sub></em></td>
+                    <td>Hidden state at time <em>t</em></td>
+                    <td><em>W<sub>r</sub></em></td>
+                    <td>Input weight matrix between reset gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>h<sub>t-1</sub></em></td>
+                    <td>Hidden state at time <em>t-1</em></td>
+                    <td><em>U<sub>h</sub></em></td>
+                    <td>Recurrent weight matrix between <em>t</em> and <em>t-1</em></td>
+                  </tr>
+                  <tr>
+                    <td><em><span style="text-decoration:overline;">h</span><sub>t</sub></em></td>
+                    <td>Candidate hidden state</td>
+                    <td><em>U<sub>z</sub></em></td>
+                    <td>Recurrent weight matrix between update gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>x<sub>t</sub></em></td>
+                    <td>Input at time <em>t</em></td>
+                    <td><em>U<sub>r</sub></em></td>
+                    <td>Recurrent weight matrix between reset gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>z<sub>t</sub></em></td>
+                    <td>Update gate vector</td>
+                    <td><em>b<sub>h</sub></em></td>
+                    <td>Bias vector for hidden layer</td>
+                  </tr>
+                  <tr>
+                    <td><em>r<sub>t</sub></em></td>
+                    <td>Reset gate vector</td>
+                    <td><em>b<sub>z</sub></em></td>
+                    <td>Bias vector for update gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>W<sub>h</sub></em></td>
+                    <td>Input weight matrix between <em>t</em> and <em>t-1</em></td>
+                    <td><em>b<sub>r</sub></em></td>
+                    <td>Bias vector for reset gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>W<sub>z</sub></em></td>
+                    <td>Input weight matrix between update gates</td>
+                    <td><em>σ</em></td>
+                    <td>Sigmoid activation function</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td><em>g</em></td>
+                    <td>Hyperbolic activation function</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p>
+              In this implementation, the GRU model was provided with the same four inputs as the RNN and tasked with
+              modelling the outlet concentrations of CO<sub>2</sub> and NaOH at t = 4, 8, 12 and 16 min.
+            </p>
+
+            <p>
+              While the inclusion of the update and reset gates enables the GRU to minimise the propagation of minor
+              inaccuracies as suffered in RNN, it comes at the cost of increased parametrisation. Given the number of
+              data points collected was only 30, these additional parameterisation may hinder the GRU's performance
+              rather than improve it due to overfitting.
+            </p>
+
+          </div>
+        </div>
+
+        <!-- ── 4.2.2 Long Short Term Memory ─────────────────── -->
+        <div class="subsub-section" id="4-2-2">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.2.2</span>
+            <h3>Long Short Term Memory</h3>
+          </div>
+          <div class="subsub-body">
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-4.png" alt="LSTM Internal Memory State">
+              <figcaption>
+                <span class="fig-label">Figure 4.4</span>
+                LSTM Internal Memory State
+              </figcaption>
+            </figure>
+
+            <p>
+              Instead of just two gates to control how present and previous state are used to
+              predict the hidden state, Long Short-Term Memory (LSTM) models also utilise an
+              internal memory cell known as the state,
+              <em><span style="text-decoration: overline;">c</span><sub>t</sub></em> ,
+              and add it in an element-wise weighted-sum to the previous value of the internal
+              memory state, <em>c<sub>t-1</sub></em> , to finally produce the current memory
+              state, <em>c<sub>t</sub></em> . The current memory state is then used to compute
+              the hidden state at time <em>t</em> with the help of the following gates: input,
+              output and forget. The LSTM model is then formulated as follows and the variables
+              are defined in Table 4.6.
+            </p>
+
+            <!-- Formula Block 1 — LSTM Memory and Hidden State -->
+            <div class="formula-block">
+              <div class="formula-display" style="flex-direction: column; align-items: center; gap: 14px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var">c<sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">f<sub>t</sub></span>
+                  <span class="f-op">⊙</span>
+                  <span class="f-var">c<sub>t-1</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">i<sub>t</sub></span>
+                  <span class="f-op">⊙</span>
+                  <span class="f-var"><span style="text-decoration:overline;">c</span><sub>t</sub></span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var"><span style="text-decoration:overline;">c</span><sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">g(W<sub>c</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">U<sub>c</sub> h<sub>t-1</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">b<sub>c</sub> )</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var">h<sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">o<sub>t</sub></span>
+                  <span class="f-op">⊙</span>
+                  <span class="f-var">g(c<sub>t</sub>)</span>
+                </div>
+              </div>
+            </div>
+
+            <p>With the three gates formulated as:</p>
+
+            <!-- Formula Block 2 — LSTM Gates -->
+            <div class="formula-block">
+              <div class="formula-display" style="flex-direction: column; align-items: center; gap: 14px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var">i<sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">σ(W<sub>i</sub> x<sub>t</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">U<sub>i</sub> h<sub>t-1</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">b<sub>i</sub>)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var">f<sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">σ(W<sub>f</sub> x<sub>t</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">U<sub>f</sub> h<sub>t-1</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">b<sub>f</sub>)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span class="f-var">o<sub>t</sub></span>
+                  <span class="f-eq">=</span>
+                  <span class="f-var">σ(W<sub>o</sub> x<sub>t</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">U<sub>o</sub>h<sub>t-1</sub></span>
+                  <span class="f-op">+</span>
+                  <span class="f-var">b<sub>o</sub>)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="report-table-wrap">
+              <figcaption>
+                <span class="fig-label">Table 4.6</span>
+                Description of Variables Used in LSTM Formulation
+              </figcaption>
+              <table class="report-table">
+                <thead>
+                  <tr>
+                    <th>Variable</th>
+                    <th>Description</th>
+                    <th>Variable</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><em>h<sub>t</sub></em></td>
+                    <td>Hidden state at time <em>t</em></td>
+                    <td><em>U<sub>f</sub></em></td>
+                    <td>Recurrent weight matrix between forget gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>h<sub>t-1</sub></em></td>
+                    <td>Hidden state at time <em>t-1</em></td>
+                    <td><em>U<sub>o</sub></em></td>
+                    <td>Recurrent weight matrix between output gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>x<sub>t</sub></em></td>
+                    <td>Input at time <em>t</em></td>
+                    <td><em>c<sub>t</sub></em></td>
+                    <td>Current memory state at time <em>t</em></td>
+                  </tr>
+                  <tr>
+                    <td><em>i<sub>t</sub></em></td>
+                    <td>Input gate vector</td>
+                    <td><em>c<sub>t-1</sub></em></td>
+                    <td>Memory state at time <em>t-1</em></td>
+                  </tr>
+                  <tr>
+                    <td><em>o<sub>t</sub></em></td>
+                    <td>Output gate vector</td>
+                    <td><em><span style="text-decoration:overline;">c</span><sub>t</sub></em></td>
+                    <td>Internal memory state</td>
+                  </tr>
+                  <tr>
+                    <td><em>f<sub>t</sub></em></td>
+                    <td>Forget gate vector</td>
+                    <td><em>b<sub>c</sub></em></td>
+                    <td>Bias between <em>t</em> and <em>t-1</em></td>
+                  </tr>
+                  <tr>
+                    <td><em>W<sub>c</sub></em></td>
+                    <td>Input weight matrix between <em>t</em> and <em>t-1</em></td>
+                    <td><em>b<sub>i</sub></em></td>
+                    <td>Bias vector for input gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>W<sub>i</sub></em></td>
+                    <td>Input weight matrix between input gates</td>
+                    <td><em>b<sub>f</sub></em></td>
+                    <td>Bias vector for forget gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>W<sub>f</sub></em></td>
+                    <td>Input weight matrix between forget gates</td>
+                    <td><em>b<sub>o</sub></em></td>
+                    <td>Bias vector for output gates</td>
+                  </tr>
+                  <tr>
+                    <td><em>W<sub>o</sub></em></td>
+                    <td>Input weight matrix between output gates</td>
+                    <td><em>σ</em></td>
+                    <td>Sigmoid activation function</td>
+                  </tr>
+                  <tr>
+                    <td><em>U<sub>c</sub></em></td>
+                    <td>Recurrent weight matrix between <em>t</em> and <em>t-1</em></td>
+                    <td><em>g</em></td>
+                    <td>Hyperbolic activation function</td>
+                  </tr>
+                  <tr>
+                    <td><em>U<sub>i</sub></em></td>
+                    <td>Recurrent weight matrix between input gates</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p>
+              Similar to GRU and RNN, the same 4 inputs were fed to the LSTM model to predict the concentrations of
+              both CO<sub>2</sub> and NaOH at the outlet at t= 4, 8, 12, 16 mins.
+            </p>
+
+            <p>
+              While LSTM employs more extensive gating mechanisms than GRU, enabling more effective attenuation of
+              error propagation, it has the equivalent of 4-folds from the simple RNN model. Therefore, like GRU, the
+              increased parameterisation may have detrimental effects on the predictive performance<sup
+                class="fn-ref"><a href="#fn-37" id="fn-ref-37">37</a></sup>.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 4.3 Neural Ordinary Differential Equation (NODE) ──────────────────────────────────── -->
+    <div class="report-section" id="4-3">
+      <div class="section-heading">
+        <span class="section-tag">4.3</span>
+        <h2>Neural Ordinary Differential Equation (NODE)</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          The studies that have explored NODE applications in chemical engineering applications within PIML to date
+          are summarised in Table 4.7, with no reported applications in chemisorption systems.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.7</span>
+            Physics-informed NODE Applications in Chemical Engineering
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Author(s)</th>
+                <th>Contribution</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="white-space: nowrap;">Ta et al.<br>(2026)<sup class="fn-ref"><a href="#fn-38"
+                      id="fn-ref-38">38</a></sup></td>
+                <td>Modelled kinetics of hydrocracking systems, processes that converts heavy
+                  hydrocarbons into lighter, high-value products using different NODE variants</td>
+              </tr>
+              <tr>
+                <td style="white-space: nowrap;">Thoni et al.<br>(2025)<sup class="fn-ref"><a href="#fn-39"
+                      id="fn-ref-39">39</a></sup></td>
+                <td>Modelled the temporal change of chemical species concentration using NODE
+                  that is typically modelling by empirical correlations that may be incomplete</td>
+              </tr>
+              <tr>
+                <td style="white-space: nowrap;">Sorouifar et al.<br>(2023)<sup class="fn-ref"><a href="#fn-40"
+                      id="fn-ref-40">40</a></sup></td>
+                <td>Developed NODE frameworks for kinetic modelling by using stoichiometric
+                  and reaction rate information to improve the learning and extrapolation
+                  capabilities of the model in chemical reaction systems</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_4-5.svg" alt="NODE Architecture diagram">
+          <figcaption>
+            <span class="fig-label">Figure 4.5</span>
+            NODE Architecture
+          </figcaption>
+        </figure>
+
+        <p>
+          Instead of a discrete sequence of hidden layers, a Neural Ordinary Differential Equation (NODE) model
+          parameterises the derivative of the hidden state using a neural network as shown in the equation below
+          <sup class="fn-ref"><a href="#fn-41" id="fn-ref-41">41</a></sup>. The output of the neural network is then
+          passed to a numerical ordinary differential equation
+          solver, such as the Runge-Kutta method. This allows the model to represent complex, time-dependent
+          dynamics whilst constraining to physical laws through the differential equation. Compared with standard
+          feed-forward sequence models, NODEs are natural for sparse time measurements because they learn a
+          continuous trajectory and can be evaluated at arbitrary time points, while preserving a process-dynamics
+          interpretation and the variables are defined in Table 4.8.
+        </p>
+
+        <div class="formula-block">
+          <div class="formula-display">
+            <span class="f-frac">
+              <span class="f-num">d<span class="f-var">h</span>(<span class="f-var">t</span>)</span>
+              <span class="f-den">d<span class="f-var">t</span></span>
+            </span>
+            <span class="f-eq">=</span>
+            <span class="f-var">f(h<sub>t</sub> ,</span>
+            <span class="f-var">t,</span>
+            <span class="f-var">θ)</span>
+          </div>
+        </div>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.8</span>
+            Description of Variables Used in NODE Formulation
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><em>h<sub>t</sub></em></td>
+                <td>Hidden state at time <em>t</em></td>
+              </tr>
+              <tr>
+                <td><em>f</em></td>
+                <td>Neural network parameterising the derivative of the hidden state</td>
+              </tr>
+              <tr>
+                <td><em>θ</em></td>
+                <td>Weights and biases</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          Similar to the inputs used for the RNN models, the NODE framework models the absorption of
+          CO<sub>2</sub> with NaOH in the packed-bed column, where the state vector comprises the
+          concentration of CO<sub>2</sub> and NaOH after a step change was introduced and the initial
+          CO<sub>2</sub> and NaOH outlet concentrations at t = 0 as previously listed in Table 4.4.
+          Thus, the neural network, <em>f<sub>θ</sub></em>(CO<sub>2</sub>(t=0), NaOH(t=0),
+          CO<sub>2</sub>(i), NaOH(i)), replaces the mass transfer and reaction rate equations, and
+          instead learns the entire absorption process dynamics directly from data. All NODE variants
+          discussed below utilise the same inputs discussed in Table 4.4 and are also tasked with
+          modelling the concentration trajectories of both CO<sub>2</sub> and NaOH at t = 4, 8, 12
+          and 16 min.
+        </p>
+
+        <p>
+          The learned dynamic equation captured by the neural network, <em>f<sub>θ</sub></em> , is
+          integrated numerically to predict the concentration trajectories of each reactant,
+          CO<sub>2</sub> and NaOH outlet in the latent space. As illustrated in Figure 4.6,
+          the latent space represents the compressed, lower-dimensional internal representation
+          that the encoder learns to capture the essential features of the input data
+          <sup class="fn-ref"><a href="#fn-42" id="fn-ref-42">42</a></sup>. While it carries no
+          direct physical meaning, the model uses it to approximate the underlying dynamics governing
+          the concentration trajectories of CO<sub>2</sub> and NaOH. The predicted outlet
+          concentrations are then passed through a decoder that maps the latent space representation
+          back into physically interpretable concentration values.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_4-6.png" alt="Illustration of Encoder-Decoder Framework diagram">
+          <figcaption>
+            <span class="fig-label">Figure 4.6</span>
+            Illustration of Encoder-Decoder Framework
+          </figcaption>
+        </figure>
+
+        <p>In this study, four distinct NODE architectures are evaluated:</p>
+        <ol class="obj-list">
+          <li><span class="obj-num">1</span><strong>NODE-ED</strong></li>
+          <li><span class="obj-num">2</span><strong>NODE-ED-Uncoupled</strong></li>
+          <li><span class="obj-num">3</span><strong>NODE-Context</strong></li>
+          <li><span class="obj-num">4</span><strong>NODE-Context-Uncoupled</strong></li>
+        </ol>
+        <p>The formulation of each specific variant is discussed extensively in their respective sections below.</p>
+
+        <!-- ── 4.3.1 NODE-ED ─────────────────── -->
+        <div class="subsub-section" id="4-3-1">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.3.1</span>
+            <h3>NODE-ED</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              NODE-ED was selected as the base-case architecture as it represents the most direct implementation of
+              the latent-space NODE framework introduced by Chen et al. (2018)<sup class="fn-ref"><a href="#fn-41"
+                  id="fn-ref-41">41</a></sup> and formalised for time-series
+              prediction by Rubanova et al. (2019)<sup class="fn-ref"><a href="#fn-43" id="fn-ref-43">43</a></sup>. All
+              four inputs are passed through a single shared encoder
+              that constructs a latent initial condition, <em>h<sub>o</sub></em> from which a coupled ODE evolves the
+              shared
+              latent
+              state, and a decoder maps the resulting trajectory back to physical outlet concentrations. This
+              formulation makes no structural assumptions about how the two species should relate to one another,
+              allowing the model to discover whichever joint dynamics best fit the data, and serves as the natural
+              reference point against which the three variants are compared.
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-7.png" alt="Illustration of NODE-ED Architecture diagram">
+              <figcaption>
+                <span class="fig-label">Figure 4.7</span>
+                Illustration of NODE-ED Architecture
+              </figcaption>
+            </figure>
+
+            <p>
+              However, NODE-ED carries two limitations. First, as the latent trajectory has no direct physical
+              meaning, the model cannot guarantee that the learned dynamics respect conservation laws or physically
+              plausible concentration behaviour, a risk amplified by the sparse, noisy 30-sample dataset (Massaroli
+              et al., 2020)<sup class="fn-ref"><a href="#fn-44" id="fn-ref-44">44</a></sup>. Second, jointly optimising
+              both species through a single shared ODE is analogous
+              to multi-task learning, where conflicting gradients, particularly when one task gradient is much
+              larger in magnitude than another, can cause the dominant gradient to dictate the overall update
+              direction and significantly degrade performance for the other task. CO<sub>2</sub> outlet measurements
+              carry
+              considerably more noise than NaOH measurements in this dataset, and unbalanced backpropagated
+              gradients arising from outputs with different signal-to-noise characteristics represent a fundamental
+              mode of failure in scientific machine learning models trained on noisy data.
+            </p>
+          </div>
+        </div>
+
+        <!-- ── 4.3.2 NODE-ED-Uncoupled ─────────────────── -->
+        <div class="subsub-section" id="4-3-2">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.3.2</span>
+            <h3>NODE-ED-Uncoupled</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              As a consequence of noisy CO<sub>2</sub> dominating the loss function, the NODE-ED-Uncoupled was
+              investigated as
+              a directed test of whether isolating the gradient pathways between species, while still preserving the
+              shared information channel through the common encoder input, can yield more stable and accurate
+              learning than the NODE-ED.
+            </p>
+
+            <p>
+              NODE-ED-Uncoupled retains the full encoder-decoder structure of NODE-ED but replaces
+              the shared ODE solver with two fully independent ODE solvers, one for each species:
+            </p>
+
+            <div class="formula-block">
+              <div class="formula-display">
+                <span class="f-frac">
+                  <span class="f-num">d<span class="f-var">h</span><sub>NaOH</sub>(<span class="f-var">t</span>)</span>
+                  <span class="f-den">d<span class="f-var">t</span></span>
+                </span>
+                <span class="f-eq">=</span>
+                <span class="f-var">f<sub>θ1</sub>(h<sub>NaOH</sub>, t),</span>
+                <span class="f-frac">
+                  <span class="f-num">d<span class="f-var">h</span><sub>CO₂</sub>(<span class="f-var">t</span>)</span>
+                  <span class="f-den">d<span class="f-var">t</span></span>
+                </span>
+                <span class="f-eq">=</span>
+                <span class="f-var">f<sub>θ2</sub>(h<sub>CO₂</sub>, t)</span>
+              </div>
+            </div>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-8.png" alt="Illustration of NODE-ED-Uncoupled Architecture diagram">
+              <figcaption>
+                <span class="fig-label">Figure 4.8</span>
+                Illustration of NODE-ED-Uncoupled Architecture
+              </figcaption>
+            </figure>
+
+            <p>
+              Both pipelines receive the identical four-input vector as input to their respective encoders, ensuring
+              that each species has access to the full system state. However, since each species evolves through a
+              separate latent space with independent parameters θ<sub>1</sub> and θ<sub>2</sub>, gradients from the CO₂
+              loss do not flow
+              into the NaOH ODE parameters and vice versa. Massaroli et al. (2020)<sup class="fn-ref"><a href="#fn-44"
+                  id="fn-ref-44">44</a></sup> established a general
+              system-theoretic NODE formulation and demonstrated that design choices about how state dimensions
+              interact fundamentally shape the quality of the learned dynamics. The physical coupling between NaOH
+              consumption and CO<sub>2</sub> absorption is therefore encoded implicitly through the shared inputs rather
+              than
+              explicitly through a shared ODE state. It is therefore hypothesised that the benefit of gradient
+              isolation outweighs the cost of removing direct state coupling under these data conditions.
+            </p>
+          </div>
+        </div>
+
+        <!-- ── 4.3.3 NODE-Context ─────────────────── -->
+        <div class="subsub-section" id="4-3-3">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.3.3</span>
+            <h3>NODE-Context</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              While NODE-ED and NODE-ED-Uncoupled both operate in the latent space, the latent space has no direct
+              physical interpretation and there is no guarantee that the dynamics learned in latent space
+              corresponds to physically possible concentration trajectories. Consequently, the architecture
+              NODE-Context-Coupled was developed to investigate a more physically grounded alternative.
+            </p>
+
+            <p>
+              Rather than operating in an abstract latent space, the model integrates directly in physical
+              concentration space, using the measured outlet concentrations at t=0 as the true starting point of the
+              ODE. The new inlet conditions are separately compressed into a conditioning signal that informs how
+              the dynamics should evolve under the new operating conditions.
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-9.png" alt="Illustration of NODE-Context Architecture diagram">
+              <figcaption>
+                <span class="fig-label">Figure 4.9</span>
+                Illustration of NODE-Context Architecture
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- ── 4.3.4 NODE-Context-Uncoupled ─────────────────── -->
+        <div class="subsub-section" id="4-3-4">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.3.4</span>
+            <h3>NODE-Context-Uncoupled</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              While NODE-Context restores physical interpretability, it reintroduces the coupled-gradient issue
+              identified in NODE-ED, now in physical concentration space rather than latent space. As both
+              CO<sub>2</sub> and
+              NaOH outlet concentrations are evolved through a shared two-dimensional ODE, the same cross-species
+              gradient interference is expected to persist. NODE-Context-Uncoupled was therefore investigated as the
+              final variant, combining physical-space integration with species-level gradient isolation to test
+              whether this pairing produces the most favourable inductive bias across both design considerations.
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-10.png"
+                alt="Illustration of NODE-Context-Uncoupled Architecture diagram">
+              <figcaption>
+                <span class="fig-label">Figure 4.10</span>
+                Illustration of NODE-Context-Uncoupled Architecture
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 4.4 Performance Metric & Statistical Significance ──────────────────────────────────── -->
+    <div class="report-section" id="4-4">
+      <div class="section-heading">
+        <span class="section-tag">4.4</span>
+        <h2>Performance Metric & Statistical Significance</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          For the purpose of this study, two performance metrics are employed: the coefficient of determination,
+          R<sup>2</sup>
+          and mean squared error, MSE. The use of both metrics provides complementary insights into model
+          performance. R<sup>2</sup> evaluates the model's ability to explain the variance in the data, while MSE
+          quantifies
+          the magnitude of prediction errors in absolute terms. Together, they enable a more comprehensive
+          assessment by capturing both goodness-of-fit and prediction accuracy. The following metrics are defined
+          below:
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Working_4-1.png" alt="Working diagram">
+        </figure>
+
+        <p>
+          Statistical significance testing was then conducted to ascertain whether the observed performance
+          differences among the models are statistically meaningful, thereby distinguishing true performance from
+          stochastic variability. Given that the models were trained across 100 fixed (Section <a
+            href="Section_4.html#4-5-3">4.5.3</a> & <a href="Section_4.html#4-5.4">4.5.4</a>),
+          randomly generated seeds, in accordance with the Central Limit Theorem (CLT)<sup class="fn-ref"><a
+              href="#fn-45" id="fn-ref-45">45</a></sup>, as the number of
+          independent experimental runs increases beyond 30 samples, the sampling distribution of the sample mean
+          asymptotically approaches normality, irrespective of the underlying population distribution. This property
+          hence permits the assumption of approximate normality for aggregated performance estimates, thereby
+          justifying the use of parametric inference procedures such as the t-test for model comparison. The t-test
+          assesses whether the sample means of the two models of interest differ significantly under the assumption
+          of normality <sup class="fn-ref"><a href="#fn-46" id="fn-ref-46">46</a></sup>.
+        </p>
+
+        <div class="formula-block">
+          <div class="formula-display">
+            <span class="f-var">t - test,</span>
+            <span class="f-var">t</span>
+            <span class="f-eq">=</span>
+            <span class="f-frac">
+              <span class="f-num">
+                <span class="f-var">x<sup>'</sup><sub>d</sub></span>
+                <span class="f-op">−</span>
+                <span class="f-var">μ<sub>d</sub></span>
+              </span>
+              <span class="f-den">
+                (
+                <span class="f-frac" style="font-size: 0.75em;">
+                  <span class="f-num"><span class="f-var">s<sub>d</sub></span></span>
+                  <span class="f-den">√<span class="f-var">n</span></span>
+                </span>
+                )
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <p>
+          where,
+          <br />
+          <em>x<sup>'</sup><sub>d</sub></em> : Mean of the sample
+          <br />
+          <em>μ<sub>d</sub></em> : Expected mean
+          <br />
+          <em>s<sub>d</sub></em> : Standard deviation
+          <br />
+          n : Number of observations
+        </p>
+
+        <p>
+          The null and alternative hypotheses are defined as follows:
+        </p>
+
+        <p>
+          <strong>Null hypothesis, H0:</strong> There is no statistically significant difference between the
+          performance metric Q of
+          the two models.
+        </p>
+
+        <p>
+          <strong>Alternative hypothesis, H1:</strong> There is a statistically significant difference between the
+          performance metric
+          Q of the two models.
+        </p>
+
+        <p>
+          where ,
+          <br />
+          Q represents the chosen performance metric, R2 or MSE
+        </p>
+
+        <p>
+          The hypotheses were evaluated at a 95% confidence level (α = 0.05), whereby results with p &lt; 0.05
+          indicate
+          statistically significant difference and hence rejecting the null hypothesis.
+        </p>
+
+        <p>However, statistical significance alone is insufficient to fully characterise model performance
+          differences, particularly in large sample settings where even marginal effects may yield statistically
+          significant <em>p</em>-values. To address this limitation, Cohen's d was additionally computed as a
+          standardised effect size measure to quantify the magnitude of performance differences independently of
+          sample size. It is defined as follows with the associated performance listed in Table 4.11:
+        </p>
+
+        <div class="formula-block">
+          <div class="formula-display">
+            <span class="f-var">Cohen's d</span>
+            <span class="f-eq">=</span>
+            <span class="f-frac">
+              <span class="f-num">
+                <span class="f-var">μ<sub>1</sub></span>
+                <span class="f-op">-</span>
+                <span class="f-var">μ<sub>2</sub></span>
+              </span>
+              <span class="f-den">
+                <span class="f-op">√</span>
+                <span class="f-frac" style="font-size: 0.75em;">
+                  <span class="f-num">
+                    <span class="f-var">s</span><sup>3</sup><sub>1</sub>
+                    <span class="f-op">+</span>
+                    <span class="f-var">s</span><sup>3</sup><sub>2</sub>
+                  </span>
+                  <span class="f-den">2</span>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <p>
+          where,
+          <br />
+          <em>μ<sub>1</sub></em> : mean of first model
+          <br />
+          <em>μ<sub>2</sub></em> : mean of second model
+          <br />
+          <em>s<sub>1</sub></em> : standard deviation of first model
+          <br />
+          <em>s<sub>2</sub></em> : standard deviation of second model
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.9</span>
+            Effect Size for Cohen's d
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Cohen's d Value</th>
+                <th>Effect Size</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><em>d</em> &lt; 0.5</td>
+                <td>Small</td>
+              </tr>
+              <tr>
+                <td>0.5 ≤ <em>d</em> &lt; 0.8</td>
+                <td>Medium</td>
+              </tr>
+              <tr>
+                <td><em>d</em> ≥ 0.8</td>
+                <td>Large</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 4.5 Training Methodology ──────────────────────────────────── -->
+    <div class="report-section" id="4-5">
+      <div class="section-heading">
+        <span class="section-tag">4.5</span>
+        <h2>Training Methodology</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          To train the models defined in the previous section, a fixed training pipeline was adopted, as outlined in
+          Figure 4.11. Each segment of the training procedure will be discussed extensively in their respective
+          sections: Hyperparameter Optimisation <a href="Section_4.html#4-5-1">(Section 4.5.1)</a>, 100 K-Fold Cross
+          Validation <a href="Section_4.html#4-5-3">(Section 4.5.3)</a> and
+          Bagging <a href="Section_4.html#4-5-4">(Section 4.5.4)</a>.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_4-11.svg" alt="Overarching Training Pipeline diagram">
+          <figcaption>
+            <span class="fig-label">Figure 4.11</span>
+            Overarching Training Pipeline
+          </figcaption>
+        </figure>
+
+        <!-- ── 4.5.1 Hyperparameter Optimisation ─────────────────── -->
+        <div class="subsub-section" id="4-5-1">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.5.1</span>
+            <h3>Hyperparameter Optimisation</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              Prior to training each model, the optimal set of the following hyperparameters was obtained via
+              Optuna<sup class="fn-ref"><a href="#fn-47" id="fn-ref-47">47</a></sup>, a Python-based optimisation
+              library:
+            </p>
+
+            <ol class="obj-list">
+              <li><span class="obj-num">1</span>Number of neurons</li>
+              <li><span class="obj-num">2</span>Number of layers</li>
+              <li><span class="obj-num">3</span>Dropout</li>
+              <li><span class="obj-num">4</span>Learning rate</li>
+              <li><span class="obj-num">5</span>Weight decay </li>
+              <li><span class="obj-num">6</span>Maximum number of epochs</li>
+            </ol>
+
+            <p>
+              Optuna enables the exploration of complex search spaces through adaptive and probabilistic sampling
+              strategies, whereby subsequent hyperparameter selections are informed by the outcomes of previous
+              trials rather than being restricted to a predefined set of values. It primarily employs Bayesian
+              optimisation to guide the search toward promising regions of the parameter space. Additionally, Optuna
+              includes pruning mechanisms, which terminate poorly performing trials early to reduce unnecessary
+              computational cost.
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-12.svg" alt="Hyperparameter Pipeline diagram"
+                style="max-height: 500px;">
+              <figcaption>
+                <span class="fig-label">Figure 4.12</span>
+                Hyperparameter Pipeline
+              </figcaption>
+            </figure>
+
+            <p>
+              Based on Figure 4.13, the model training procedure was conducted under a fixed random seed to ensure
+              consistency across 50 Optuna trials<sup class="fn-ref"><a href="#fn-^3" id="fn-ref-^3">^3</a></sup>. For
+              each trial, a distinct set of hyperparameters proposed by
+              Optuna was evaluated using K-fold cross-validation (K = 5). R<sup>2</sup> was computed on the validation
+              fold and
+              averaged across all five folds to obtain the performance metric for each trial. The set of
+              hyperparameters corresponding to the trial with the highest average R<sup>2</sup> was then selected as the
+              optimal configuration for subsequent training.
+            </p>
+
+          </div>
+        </div>
+
+        <!-- ── 4.5.2 K-fold Cross-validation ─────────────────── -->
+        <div class="subsub-section" id="4-5-2">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.5.2</span>
+            <h3>K-fold Cross-validation</h3>
+          </div>
+          <div class="subsub-body">
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-13.svg" alt="K-fold Schematic diagram">
+              <figcaption>
+                <span class="fig-label">Figure 4.13</span>
+                K-fold Schematic
+              </figcaption>
+            </figure>
+
+            <p>
+              In K-fold cross-validation, a dataset of N samples is partitioned into K roughly equal,
+              non-overlapping subsets (folds). For each iteration k = 1, … , K, fold k is held out as the test set
+              while the remaining K-1 folds are used for training. The model is trained from scratch on the training
+              partition and evaluated on the held-out fold, yielding the test metrics, R<sup>2</sup> and MSE. After all
+              K
+              iterations every sample has been used for testing exactly once (Kohavi, 1995)<sup class="fn-ref"><a
+                  href="#fn-48" id="fn-ref-48">48</a></sup>. Compared to a
+              single hold-out split, K-fold provides a less biased and lower-variance estimate of generalisation
+              error because every observation contributes to both training and evaluation (Hastie et al., 2009, Ch.
+              7)<sup class="fn-ref"><a href="#fn-49" id="fn-ref-49">49</a></sup>.
+            </p>
+
+            <p>
+              The overall performance estimate is then:
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Working_4-2.png" alt="Working diagram">
+            </figure>
+
+          </div>
+        </div>
+
+        <!-- ── 4.5.3 100 repeated K-fold  ─────────────────── -->
+        <div class="subsub-section" id="4-5-3">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.5.3</span>
+            <h3>100 repeated K-fold</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              Following hyperparameter optimization, the K-fold cross-validation procedure was repeated across 100
+              trials on different random seeds using the previously obtained best hyperparameters. Compared to a single
+              K-fold pass, repeated K-fold provides a more reliable and less variable estimate of model's generalisation
+              performance, particularly when the number of the data points available is limited<sup class="fn-ref"><a
+                  href="#fn-50" id="fn-ref-50">50</a></sup>. By varying the
+              random seed across the repeated K-fold, the model is exposed to a wider range of possible training-testing
+              data splits and thus reduces the sensitivity of the performance estimate to any particular split
+              composition. The R<sup>2</sup> and MSE obtained from each repeated K-fold were then averaged to obtain the
+              overall
+              performance across 100 trials. The choice of 100 trials is rooted in the Central Limit Theorem (CLT),
+              which was discussed earlier in <a href="Section_4.html#4-4">Section 4.4</a>. Subsequently, the averaged
+              performance metric of each model
+              undergoing the 100 repeated K-fold was compared to determine the best performing model.
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-14.svg" alt="Flowchart of 100 Repeated K-fold Procedure diagram">
+              <figcaption>
+                <span class="fig-label">Figure 4.14</span>
+                Flowchart of 100 Repeated K-fold Procedure
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- ── 4.5.4 Bagging  ─────────────────── -->
+        <div class="subsub-section" id="4-5-4">
+          <div class="subsub-heading">
+            <span class="subsub-tag">4.5.4</span>
+            <h3>Bagging</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              After the selection of a model via the 100 repeated K-fold, 100 bagging trials were also applied to
+              enhance the predictive performance. Bagging, short for Bootstrap Aggregating, is an ensemble learning
+              technique introduced by Breiman (1996)<sup class="fn-ref"><a href="#fn-51" id="fn-ref-51">51</a></sup>
+              that reduces model variance and improves prediction stability
+              by training multiple models on different samples generated from the 80% training split using sampling with
+              replacement and the remaining 20% of the data was used for testing. Predictions from the individual models
+              were then averaged to obtain the final mean R<sup>2</sup> and MSE.
+            </p>
+
+            <p>While repeated K-fold is used for model evaluation, bagging solely is employed to improve the performance
+              of the model's prediction by averaging out the variability that any single model carries due to the noisy,
+              limited dataset available. Similar to 100 repeated K-fold, the selection of 100 bagging trials is
+              motivated by the CLT <a href="Section_4.html#4-4">(Section 4.4)</a>.
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_4-15.svg" alt="Flowchart of 100 Bagging Procedure diagram">
+              <figcaption>
+                <span class="fig-label">Figure 4.15</span>
+                Flowchart of 100 Bagging Procedure
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── 4.6 Analysis of results for RNN Variants ──────────────────────────────────── -->
+    <div class="report-section" id="4-6">
+      <div class="section-heading">
+        <span class="section-tag">4.6</span>
+        <h2>Analysis of results for RNN Variants</h2>
+      </div>
+      <div class="section-body">
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.10</span>
+            Performance of RNN Variants with 100 K-fold
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Metric</th>
+                <th colspan="3">RNN Variants</th>
+              </tr>
+              <tr>
+                <th>RNN</th>
+                <th>GRU</th>
+                <th>LSTM</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R²</td>
+                <td>0.657 ± 0.130</td>
+                <td>0.687 ± 0.107</td>
+                <td>0.683 ± 0.108</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>0.258 ± 0.030</td>
+                <td>0.237 ± 0.026</td>
+                <td>0.244 ± 0.030</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <figcaption>
+              <span class="fig-label">Table 4.11</span>
+              Statistical Test of RNN Variants with 100 K-fold
+            </figcaption>
+            <thead>
+              <tr>
+                <th rowspan="2">RNN Pair</th>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Significance Test</th>
+                <th rowspan="2">Model Selection</th>
+              </tr>
+              <tr>
+                <th>Paired t-test</th>
+                <th>Cohen's d *</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2">RNN VS GRU</td>
+                <td>R²</td>
+                <td>2.831 x 10<sup>-14</sup></td>
+                <td>0.889</td>
+                <td rowspan="2">GRU</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>1.082 x 10<sup>-38</sup></td>
+                <td>2.13</td>
+              </tr>
+              <tr>
+                <td rowspan="2">RNN VS LSTM</td>
+                <td>R²</td>
+                <td>3.813 x 10<sup>-10</sup></td>
+                <td>0.696</td>
+                <td rowspan="2">LSTM</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>1.207 x 10<sup>-20</sup></td>
+                <td>1.18</td>
+              </tr>
+              <tr>
+                <td rowspan="2">GRU VS LSTM</td>
+                <td>R²</td>
+                <td>0.012</td>
+                <td>0.257</td>
+                <td rowspan="2">Neither</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>4.595 x 10<sup>-14</sup></td>
+                <td>0.880</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <p><em>Note:</em> The sign of Cohen's d is defined with respect to the first model listed in each pair.
+            Positive value indicates higher metric value for 1st model, negative value indicates a higher value for 2nd
+            model</p>
+        </div>
+
+        <p>
+          As shown in Table 4.10, both GRU and LSTM outperform RNN in terms of both R<sup>2</sup> and MSE for 100
+          repeated K-fold
+          evaluations at 0.687 ± 0.107 and 0.237 ± 0.026 respectively. Furthermore, statistical tests presented in Table
+          4.11 confirm the differences in model performance are not attributed to chance. The p values for R<sup>2</sup>
+          and MSE
+          was observed at 2.831 x 10<sup>-14</sup> and 1.082 x 10 <sup>-38</sup> with large effect size of Cohen's d
+          value of 0.889
+          and 2.13
+          respectively when comparing GRU and RNN. Meanwhile, the <em>p</em> values for R<sup>2</sup> and MSE were
+          observed at 3.813 x 10<sup>-10</sup>
+          and 1.207 x 10<sup>-20</sup> with a large effect size of Cohen's d value of 0.696 and 1.18 respectively when
+          comparing
+          LSTM and RNN. This suggests that sensitivity to temporal perturbations is a dominant factor such that the
+          ability of gated architecture to regulate the sensitivity of information flow outweighs the increased
+          parameterisation disadvantages.
+        </p>
+
+        <p>
+          To contextualise this sensitivity, Figure 4.16 presents the temporal trajectories of a representative dataset.
+          As observed, both NaOH and CO<sub>2</sub> exhibit a sharp increase in concentration following a step change in
+          inlet
+          conditions. This behaviour is consistent with the mass transfer-reaction dynamics of chemisorption columns,
+          where such perturbations generate a propagating adsorption front, giving rise to characteristic sigmoidal
+          breakthrough profiles. This is more pronounced under conditions where reaction rates dominate over mass
+          transfer. In these regimes, such rapid outlet transients are commonly observed as reported in literature as
+          well<sup class="fn-ref"><a href="#fn-52" id="fn-ref-52">52</a></sup>, <sup class="fn-ref"><a href="#fn-53"
+              id="fn-ref-53">53</a></sup>.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="./assets/images/Figure_4-16.png" alt="Plot of Concentration against Time diagram">
+          <figcaption>
+            <span class="fig-label">Figure 4.16</span>
+            Plot of Concentration against Time
+          </figcaption>
+        </figure>
+
+        <p>
+          The presence of such steep gradients hence implies that the system response is highly sensitive to temporal
+          misalignment. Small deviations in predicted dynamics such as slightly earlier or later, corresponds to a shift
+          and hence disproportionately large overprediction or underprediction at subsequent time steps. As such, models
+          that accumulate errors over time such as RNN are more susceptible to such amplification.
+        </p>
+
+        <p>
+          Another point of interest is the presence of higher measurement noise in the CO<sub>2</sub> data compared to
+          NaOH. This
+          is consistent with chemical engineering systems, where gas-phase concentration measurements are often subject
+          to sensor noise particularly in dynamic operating conditions<sup class="fn-ref"><a href="#fn-54"
+              id="fn-ref-54">54</a></sup>. In contrast to RNN, GRU and LSTM gated
+          mechanisms likewise regulate information flow, which allows the model to selectively attenuate spurious
+          variations<sup class="fn-ref"><a href="#fn-55" id="fn-ref-55">55</a></sup>. This is further validated in Table
+          12, where the improvement in CO<sub>2</sub> prediction based on noisy
+          data relative to RNN is more pronounced for GRU and LSTM at 7.2% and 5.4% respectively as compared to the
+          improvement for NaOH on more stable data at around 2-3%.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.12</span>
+            Separated Performance for CO<sub>2</sub> and NaOH
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Metric</th>
+                <th colspan="5">RNN Variants</th>
+              </tr>
+              <tr>
+                <th>RNN</th>
+                <th>GRU</th>
+                <th>% improvement<br>relative to RNN</th>
+                <th>LSTM</th>
+                <th>% improvement<br>relative to RNN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>R² (CO<sub>2</sub>)</strong></td>
+                <td>0.5797</td>
+                <td>0.6212</td>
+                <td>7.2</td>
+                <td>0.6109</td>
+                <td>5.4</td>
+              </tr>
+              <tr>
+                <td><strong>R² (NaOH)</strong></td>
+                <td>0.7341</td>
+                <td>0.7515</td>
+                <td>2.4</td>
+                <td>0.7549</td>
+                <td>2.8</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          Comparing GRU and LSTM, no statistically significant difference is observed in the R<sup>2</sup> values as
+          indicated in
+          Table 4.12, suggesting that GRU, despite its reduced parameterisation achieves comparable performance to LSTM.
+          As such, the simpler GRU model is selected as the best RNN variant moving forward.
+        </p>
+
+        <p>
+          Subsequently, a bagging ensemble of 100 models was trained on bootstrap resamples of the training fold and
+          evaluated on a fixed held-out test set to characterise the stability of the GRU model. As shown in Table 4.13,
+          the bagging ensemble achieved a higher mean R<sup>2</sup> of 0.735 ± 0.090 and a mean MSE of 0.268 ± 0.119.
+          The reduction
+          in variance is intrinsic to bagging, wherein averaging predictions across multiple independently trained
+          models suppresses the sensitivity of any single model to the specific samples on which it was trained.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.13</span>
+            Bagging Ensemble Performance of GRU
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>GRU - Bagging</th>
+                <th>GRU - Without Bagging</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R²</td>
+                <td>0.735 ± 0.090</td>
+                <td>0.687 ± 0.107</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>0.268 ± 0.119</td>
+                <td>0.237 ± 0.026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 4.7 Analysis of results for NODE variants ──────────────────────────────────── -->
+    <div class="report-section" id="4-7">
+      <div class="section-heading">
+        <span class="section-tag">4.7</span>
+        <h2>Analysis of results for NODE variants</h2>
+      </div>
+      <div class="section-body">
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.14</span>
+            Performance of NODE Variants with 100 K-fold
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Metric</th>
+                <th colspan="4">NODE Variants</th>
+              </tr>
+              <tr>
+                <th>NODE-ED</th>
+                <th>NODE-ED-<br>Uncoupled</th>
+                <th>NODE-Context-<br>Coupled</th>
+                <th>NODE-Context-<br>Uncoupled</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R²</td>
+                <td>0.664 ± 0.107</td>
+                <td>0.689 ± 0.101</td>
+                <td>0.561 ± 0.142</td>
+                <td>0.626 ± 0.120</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>0.265 ± 0.037</td>
+                <td>0.245 ± 0.034</td>
+                <td>0.333 ± 0.026</td>
+                <td>0.289 ± 0.030</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.15</span>
+            Statistical Test of NODE Variants with 100 K-fold
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th rowspan="2">NODE Pair</th>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Significance Test</th>
+                <th rowspan="2">Model Selection</th>
+              </tr>
+              <tr>
+                <th>Paired t-test</th>
+                <th>Cohen's d *</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2">NODE-ED <strong>(A)</strong> VS NODE-ED-Uncoupled <strong>(B)</strong></td>
+                <td>R²</td>
+                <td>6.73 x 10<sup>-10</sup></td>
+                <td>-0.684</td>
+                <td rowspan="2"><strong>(B)</strong></td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>1.51 x 10<sup>-14</sup></td>
+                <td>0.902</td>
+              </tr>
+              <tr>
+                <td rowspan="2">NODE-ED <strong>(A)</strong> VS NODE-Context-Coupled <strong>(C)</strong></td>
+                <td>R²</td>
+                <td>2.72 x 10<sup>-23</sup></td>
+                <td>1.308</td>
+                <td rowspan="2"><strong>(A)</strong></td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>8.72 x 10<sup>-44</sup></td>
+                <td>-2.448</td>
+              </tr>
+              <tr>
+                <td rowspan="2">NODE-ED <strong>(A)</strong> VS NODE-Context-Uncoupled <strong>(D)</strong></td>
+                <td>R²</td>
+                <td>8.77 x 10<sup>-7</sup></td>
+                <td>0.526</td>
+                <td rowspan="2"><strong>(A)</strong></td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>6.70 x 10<sup>-13</sup></td>
+                <td>-0.826</td>
+              </tr>
+              <tr>
+                <td rowspan="2">NODE-ED-Uncoupled <strong>(B)</strong> VS NODE-Context-Coupled <strong>(C)</strong></td>
+                <td>R²</td>
+                <td>6.56 x 10<sup>-32</sup></td>
+                <td>1.742</td>
+                <td rowspan="2"><strong>(B)</strong></td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>2.49 x 10<sup>-61</sup></td>
+                <td>-3.85</td>
+              </tr>
+              <tr>
+                <td rowspan="2">NODE-ED-Uncoupled <strong>(B)</strong> VS NODE-Context-Uncoupled <strong>(D)</strong>
+                </td>
+                <td>R²</td>
+                <td>2.01 x 10<sup>-17</sup></td>
+                <td>1.034</td>
+                <td rowspan="2"><strong>(B)</strong></td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>1.73 x 10<sup>-33</sup></td>
+                <td>-1.827</td>
+              </tr>
+              <tr>
+                <td rowspan="2">NODE-Context-Coupled <strong>(C)</strong> VS NODE-Context-Uncoupled <strong>(D)</strong>
+                </td>
+                <td>R²</td>
+                <td>5.43 x 10<sup>-18</sup></td>
+                <td>-1.060</td>
+                <td rowspan="2"><strong>(D)</strong></td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>3.62 x 10<sup>-39</sup></td>
+                <td>2.155</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <p><em>Note:</em> The sign of Cohen's d is defined with respect to the first model listed in each pair.
+            Positive value indicates higher metric value for 1st model, negative value indicates a higher value for 2nd
+            model</p>
+        </div>
+
+        <p>
+          As shown in Table 4.14, the best performing NODE variant in terms of both R<sup>2</sup> and MSE for 100
+          repeated k-fold
+          evaluations is NODE-ED-Uncoupled with 0.689 ± 0.101 and 0.245 respectively. NODE-ED followed closely with a
+          R<sup>2</sup>
+          OF 0.664 ± 0.107 and a MSE of 0.265. On the other hand, variants developed in the physical-space consistently
+          underperformed, with NODE-Context having the lowest R<sup>2</sup> of 0.561 ± 0.142 and the highest MSE of
+          0.333, while
+          NODE-Context-Uncoupled achieved a substantially higher R<sup>2</sup> of 0.626 ± 0.120 and a MSE of 0.289.
+        </p>
+
+        <p>
+          Furthermore, statistical tests conducted in Table 4.15 confirm the difference in model performance is not
+          attributed to chance. All pairwise comparisons have yielded <em>p</em>-values well below the threshold of
+          0.05,
+          suggesting strong evidence of the claim of a model's performance over another. For example, the p-value of
+          R<sup>2</sup>
+          performance between NODE-ED-Uncoupled and NODE-Context-Coupled is the lowest of all R<sup>2</sup> pairwise
+          comparison at
+          6.56 x 10<sup>-32</sup>.
+        </p>
+
+        <p>
+          Additionally, Cohen's d was evaluated to meaningfully quantify the difference in model's performance. Between
+          NODE-ED and NODE-ED-Uncoupled, the improvement gained via the uncoupled structured has only yielded a moderate
+          Cohen's d of 0.684 for R<sup>2</sup>, highlighting that the improvement from decoupling within the latent
+          space is a
+          modest improvement, albeit statistically significant. However, between NODE-ED and NODE-Context-Coupled,
+          Cohen's d is extremely large at 1.308 for R<sup>2</sup>. Similarly, between NODE-ED-Uncoupled and
+          NODE-Context-Uncoupled,
+          Cohen's d has a large effect of 1.034. These results confirm that the latent-space formulation variants,
+          NODE-ED and NODE-ED-Uncoupled, substantially outperforms direct physical-space integration.
+        </p>
+
+        <p>
+          Overall, the results for the comparison of NODE variants highlight two key findings.
+        </p>
+
+        <p>
+          Firstly, across both coupled and uncoupled configurations, the latent-space variants consistently outperforms
+          their physical-space counterparts, which provides strong support for the encoder-decoder structure. As
+          mentioned in the methodology, the latent ODE encoder is an inference model that is able to provide a more
+          comprehensive initial condition from the input data than the direct physical measurements could. The outlet
+          concentration at t = 0 is a boundary measurement that does not fully characterise the internal concentration
+          profile along the column height at the moment of the step change. As such, the physical-space variants are
+          forced to integrate directly from this incomplete initial condition, producing a systematically biased
+          starting point that propagates error throughout the trajectory. On the other hand, the encoder in the
+          latent-space variants constructs a learnt initial condition that absorbs this incompleteness, providing a more
+          representative starting point for the ODE integration<sup class="fn-ref"><a href="#fn-56"
+              id="fn-ref-56">56</a></sup>.
+        </p>
+
+        <p>
+          Secondly, similar to the performance of GRU over RNN, the uncoupled variants outperform their coupled variants
+          due to the issue of gradient conflict arising from the noisy data CO<sub>2</sub>. When NaOH and CO<sub>2</sub>
+          are predicted through
+          a shared ODE, the training is equivalent to a multi-task learning problem with two outputs of unequal noise
+          levels. When task gradients differ significantly in magnitude, the larger gradient, in our case
+          CO<sub>2</sub>, dominates
+          the training performance of the models and hence degrades the performance of NaOH<sup class="fn-ref"><a
+              href="#fn-57" id="fn-ref-57">57</a></sup>. The uncoupled variants
+          resolve this issue by assigning independent ODE solvers to each species, such that the training of CO2 and
+          NaOH does not adversely affect one another. Additionally, since both ODE solvers receive the same encoder
+          output, there is no information loss through the decoupling architecture.
+        </p>
+
+        <p>
+          The best overall performance of NODE-ED-Uncoupled is therefore the natural consequence of combining both
+          advantages simultaneously and hence is chosen as the best NODE variant.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.16</span>
+            Bagging Ensemble Performance of NODE-ED-Uncoupled
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>NODE-ED-Uncoupled -<br>Bagging</th>
+                <th>NODE-ED-Uncoupled -<br>Without Bagging</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R²</td>
+                <td>0.765 ± 0.0800</td>
+                <td>0.689 ± 0.101</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>0.241 ± 0.106</td>
+                <td>0.245 ± 0.034</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          Subsequently, to further characterise the stability and uncertainty of NODE-ED-Uncoupled, a bagging ensemble
+          of 100 models was trained on bootstrap resamples of the training fold and evaluated on a fixed held-out test
+          set. As shown in Table 4.16, the bagging ensemble achieved a mean R<sup>2</sup> of 0.765 ± 0.0800 and a mean
+          MSE of
+          0.241 ± 0.106. The ensemble prediction represents a substantial improvement over the repeated K-fold mean of
+          0.689, which is to be expected as ensemble averaging reduces only the prediction variance, thereby yielding a
+          more accurate and stable mean prediction.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ── 4.8 Comparison between RNN and NODE  ──────────────────────────────────── -->
+    <div class="report-section" id="4-8">
+      <div class="section-heading">
+        <span class="section-tag">4.8</span>
+        <h2>Comparison between RNN and NODE</h2>
+      </div>
+      <div class="section-body">
+
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <figcaption>
+              <span class="fig-label">Table 4.17</span>
+              Performance of NODE-ED-Uncoupled against GRU with 100 K-fold
+            </figcaption>
+            <thead>
+              <tr>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Model</th>
+              </tr>
+              <tr>
+                <th>GRU</th>
+                <th>NODE-ED-Uncoupled</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R²</td>
+                <td>0.687 ± 0.107</td>
+                <td>0.689 ± 0.101</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>0.237 ± 0.026</td>
+                <td>0.245 ± 0.036</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <figcaption>
+              <span class="fig-label">Table 4.18</span>
+              Statistical Tests comparing NODE-ED-Uncoupled against GRU with 100 K-fold
+            </figcaption>
+            <thead>
+              <tr>
+                <th rowspan="2">Model Pair</th>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Significance Test</th>
+                <th rowspan="2">Model Selection</th>
+              </tr>
+              <tr>
+                <th>Paired t-test</th>
+                <th>Cohen's d *</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2">NODE-ED-Uncoupled VS GRU</td>
+                <td>R²</td>
+                <td>0.612</td>
+                <td>0.051</td>
+                <td rowspan="2">-</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>1.19 x 10<sup>-5</sup></td>
+                <td>-0.461</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <figcaption>
+              <span class="fig-label">Table 4.19</span>
+              Bagging Ensemble Performance of NODE-ED-Uncoupled and GRU (n = 100 models)
+            </figcaption>
+            <thead>
+              <tr>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Model</th>
+              </tr>
+              <tr>
+                <th>GRU</th>
+                <th>NODE-ED-Uncoupled</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R²</td>
+                <td>0.735 ± 0.090</td>
+                <td>0.765 ± 0.0800</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>0.268 ± 0.119</td>
+                <td>0.241 ± 0.106</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <figcaption>
+              <span class="fig-label">Table 4.20</span>
+              Statistical Tests comparing NODE-ED-Uncoupled against GRU with 100 Bagging Models
+            </figcaption>
+            <thead>
+              <tr>
+                <th rowspan="2">Model Pair</th>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Significance Test</th>
+                <th rowspan="2">Model Selection</th>
+              </tr>
+              <tr>
+                <th>Paired t-test</th>
+                <th>Cohen's d *</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="2">NODE-ED-Uncoupled VS GRU</td>
+                <td>R²</td>
+                <td>4.06 x 10<sup>-5</sup></td>
+                <td>0.430</td>
+                <td rowspan="2">NODE-ED-Uncoupled</td>
+              </tr>
+              <tr>
+                <td>MSE</td>
+                <td>3.95 x 10<sup>-4</sup></td>
+                <td>-0.367</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <p><em>Note:</em> The sign of Cohen's d is defined with respect to the first model listed in each pair.
+            Positive value indicates higher metric value for 1st model, negative value indicates a higher value for 2nd
+            model</p>
+        </div>
+
+        <p>The repeated K-fold evaluation revealed that GRU and NODE-ED-Uncoupled achieved comparable performance across
+          both R<sup>2</sup> and MSE. GRU recorded a mean R<sup>2</sup> of 0.687 ± 0.107 and a MSE of 0.237 ± 0.026,
+          while
+          NODE-ED-Uncoupled
+          achieved a mean R<sup>2</sup> of 0.689 ± 0.101 and a MSE of 0.245 ± 0.036. The paired t-test confirms their
+          statistical
+          similarity as the R<sup>2</sup> comparison resulted in a not significant p-value of 0.612. Notably, the MSE
+          comparison
+          had resulted in a statistically significant difference with a <em>p</em>-value of 1.19 x 10<sup>-5</sup>,
+          favouring
+          GRU. However,
+          Cohen's d yielded a small effect of 0.461, suggesting the practical magnitude of the MSE gap is limited.
+          Collectively, the near identical performance metric between the models is insufficient to discriminate between
+          the better performing model.
+        </p>
+
+        <p>
+          Consequently, a bagging ensemble of 100 bootstrap models was constructed for each model and evaluated on a
+          fixed held-out test set. Under bagging, NODE-ED-Uncoupled achieved a greater mean R<sup>2</sup> of 0.765 ±
+          0.080 against
+          GRU's 0.735 ± 0.090, and a lower MSE of 0.241 ± 0.106 against GRU's 0.268 ± 0.119. Furthermore, the
+          statistical tests confirm both differences are significant, with a <em>p</em>-value of 4.06 x 10<sup>-5</sup>
+          for R<sup>2</sup> and p = 3.95
+          x 10<sup>-4</sup> for MSE, and Cohen's d values of 0.430 and -0.367 respectively, indicating small to moderate
+          effect
+          sizes in favour of NODE-ED-Uncoupled.
+        </p>
+
+        <p>
+          The difference in results between repeated K-fold and bagging can be attributed to how each model handles
+          variability within the training data. GRU, with its gating mechanism and simpler architecture, allows for
+          greater flexibility during training<sup class="fn-ref"><a href="#fn-58" id="fn-ref-58">58</a></sup>. However,
+          this flexibility may incur higher learning variance,
+          causing favorable training splits to work well with GRU but also unfavorable splits to degrade its
+          performance. On the other hand, NODE-ED-Uncoupled's latent encoder and decoupled ODE pathways act as an
+          implicit regulariser that stabilises learning across different data compositions<sup class="fn-ref"><a
+              href="#fn-59" id="fn-ref-59">59</a></sup>. Therefore, when the
+          train-test partition is fixed under bagging and only the bootstrap resampling changes, NODE-ED-Uncoupled does
+          not require a lucky data split to perform well and hence outperforms GRU.
+        </p>
+
+        <p>
+          Overall, albeit a moderate improvement in performance, NODE-ED-Uncoupled is the superior model of the two
+          based on the performance metric obtained through bagging 100 models due to its reliability in performance over
+          different training samples for a fixed test set. Consequently, NODE-ED-Uncoupled is chosen as the base model
+          in which different variations of physics integration shall be implemented in the next section.
+        </p>
+
+        <p>
+          To examine the current limitations of the NODE-ED-Uncoupled model, the corresponding R<sup>2</sup> for both
+          training and
+          testing of CO<sub>2</sub> and NaOH, as presented in Table 4.21, were analysed.
+        </p>
+
+        <div class="report-table-wrap">
+          <figcaption>
+            <span class="fig-label">Table 4.21</span>
+            Performance of CO<sub>2</sub> and NaOH for NODE-ED-Uncoupled with 100 K-fold
+          </figcaption>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th rowspan="2">Metric</th>
+                <th colspan="2">Output</th>
+              </tr>
+              <tr>
+                <th>CO<sub>2</sub></th>
+                <th>NaOH</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Train R²</td>
+                <td>0.897 ± 0.005</td>
+                <td>0.828 ± 0.007</td>
+              </tr>
+              <tr>
+                <td>Test R²</td>
+                <td>0.608 ± 0.159</td>
+                <td>0.770 ± 0.086</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          The results showed that CO<sub>2</sub> test performance remains inferior to that of NaOH, with an approximate
+          21%
+          reduction in predictive capability, despite comparable training R<sup>2</sup> values. The discrepancy is
+          likely
+          attributed due to the higher noise associated with CO<sub>2</sub> measurements, suggesting that
+          NODE-ED-Uncoupled still
+          has limitations in distinguishing noise from the underlying physical dynamics.
+        </p>
+
+        <p>
+          Two plausible explanations are proposed. First, NODE-ED-Uncoupled may fail to accurately capture the correct
+          final state. In the presence of noisy measurements, sudden fluctuations during earlier timestamps may be
+          misinterpreted as meaningful signals, causing the model to converge towards an incorrect final state and hence
+          learning the wrong trajectory as a whole.
+        </p>
+
+        <p>
+          Second, the limited availability of experimental data may restrict the model's ability to learn the full range
+          of interactions between the different reaction zones described in <a href="Section_2.html#2-2-1">Section
+            2.2.1</a>. Although LHC was employed to
+          improve coverage of the operating space, certain regimes such as SRZ still remain overrepresented while others
+          such as PAZ are underrepresented due to their rare occurrence only under boundary conditions. This imbalance
+          may therefore hinder the model's ability to generalise across all operating regimes. As such, <a
+            href="Section_5.html#5">Section 5</a>
+          explores physics-guided enhancements aimed to address these hypotheses.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         REFERENCES & NOTES
+    ══════════════════════════════════════════════════════ -->
+    <div class="report-section" id="references">
+      <div class="section-heading">
+        <h2>References &amp; Notes</h2>
+      </div>
+      <div class="section-body">
+        <ol class="footnotes-list">
+          <li id="fn-30">
+            <span class="fn-num">30</span>
+            <span>
+              Nai, D.; Li, H.; Grover, M.; J.Medford, A. Modeling Batch Crystallization under Uncertainty Using
+              Physics-informed Machine Learning. <em>Arxiv.org</em>.
+              https://arxiv.org/html/2602.07184v1 (accessed 2026-04-05).
+              <a href="#fn-ref-30" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-31">
+            <span class="fn-num">31</span>
+            <span>
+              Asrav, T.; Aydin, E. Physics-Informed Recurrent Neural Networks and Hyper-Parameter Optimization for
+              Dynamic Process Systems. <em>Computers &amp; Chemical Engineering</em> 2023, <em>173</em>, 108195.
+              https://doi.org/10.1016/j.compchemeng.2023.108195.
+              <a href="#fn-ref-31" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-32">
+            <span class="fn-num">32</span>
+            <span>
+              Wu, G.; Tan, W.; Yion, G.; Nguyen, K. L.; Dang, Q.; Wu, Z. Physics-informed machine learning for MPC:
+              Application to a batch crystallization process.
+              https://www.sciencedirect.com/science/article/pii/S0263876223001442?via%3Dihub (accessed 2026-03-01).
+              <a href="#fn-ref-32" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-33">
+            <span class="fn-num">33</span>
+            <span>
+              Zheng, Y.; Hu, C.; Wang, X.; Wu, Z. Physics-informed recurrent neural network modeling for predictive
+              control of nonlinear processes.
+              https://www.sciencedirect.com/science/article/pii/S0959152423000847 (accessed 2026-03-03).
+              <a href="#fn-ref-33" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-34">
+            <span class="fn-num">34</span>
+            <span>
+              Tsantekidis, A.; Passalis, N.; Tefas, A. Diversity-Driven Knowledge Distillation for Financial Trading
+              Using Deep Reinforcement Learning. <em>Neural Networks</em> 2021, <em>140</em>, 193–202.
+              https://doi.org/10.1016/j.neunet.2021.02.026.
+              <a href="#fn-ref-34" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-35">
+            <span class="fn-num">35</span>
+            <span>
+              Chung, J.; Gulcehre, C.; Cho, K.; Bengio, Y. Empirical evaluation of gated recurrent neural networks on
+              sequence modeling.
+              https://arxiv.org/abs/1412.3555 (accessed 2026-03-25).
+              <a href="#fn-ref-35" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-36">
+            <span class="fn-num">36</span>
+            <span>
+              Avula, V. R.; Kapavarapu, B. B.; K, M. M.; M V, A. C.; Balagopalan, A.; Naik, M. S. Prediction of Oil
+              Production Using Optimized Gated Recurrent Unit (GRU). <em>2024 International Conference on Recent
+                Advances in Electrical, Electronics, Ubiquitous Communication, and Computational Intelligence
+                (RAEEUCCI)</em> 2024, 1–6.
+              https://doi.org/10.1109/raeeucci61380.2024.10547901.
+              <a href="#fn-ref-36" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-37">
+            <span class="fn-num">37</span>
+            <span>
+              Dey, R.; Salem, F. M. Gate-Variants of Gated Recurrent Unit (GRU) Neural Networks. 2017.
+              https://doi.org/10.48550/arxiv.1701.05923.
+              <a href="#fn-ref-37" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-38">
+            <span class="fn-num">38</span>
+            <span>
+              Ta, S.; Samavedham, L.; Ray, A.; Liu, T. Physics-Informed neural ordinary differential equations for
+              hydrocracking kinetics modeling and system identification.
+              https://www.sciencedirect.com/science/article/pii/S0952197626000898 (accessed 2026-03-25).
+              <a href="#fn-ref-38" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-39">
+            <span class="fn-num">39</span>
+            <span>
+              Thöni, A. C. M.; Robinson, W. E.; Bachrach, Y.; Huck, W. T. S.; Kachman, T. Modeling Chemical Reaction
+              Networks Using Neural Ordinary Differential Equations. <em>Journal of Chemical Information and
+                Modeling</em> 2025, <em>65</em> (9), 4346–4352.
+              https://doi.org/10.1021/acs.jcim.5c00296.
+              <a href="#fn-ref-39" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-40">
+            <span class="fn-num">40</span>
+            <span>
+              Farshud Sorourifar; Peng, Y.; Castillo, I.; Bui, L.; Venegas, J. M.; Paulson, J. A. Physics-Enhanced
+              Neural Ordinary Differential Equations: Application to Industrial Chemical Reaction Systems.
+              <em>Industrial &amp; Engineering Chemistry Research</em> 2023.
+              https://doi.org/10.1021/acs.iecr.3c01471.
+              <a href="#fn-ref-40" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-41">
+            <span class="fn-num">41</span>
+            <span>
+              T. Q. Chen, R.; Rubanova, Y.; Bettencourt, J.; Duvenaud, D. Neural Ordinary Differential Equations.
+              https://arxiv.org/pdf/1806.07366 (accessed 2023-03-01).
+              <a href="#fn-ref-41" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-42">
+            <span class="fn-num">42</span>
+            <span>
+              Kingma, D. P.; Welling, M. Auto-Encoding Variational Bayes. <em>arXiv.org</em>.
+              https://arxiv.org/abs/1312.6114.
+              <a href="#fn-ref-42" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-43">
+            <span class="fn-num">43</span>
+            <span>
+              Rubanova, Y.; Chen, R. T. Q.; Duvenaud, D. Latent ODEs for Irregularly-Sampled Time Series.
+              <em>arXiv:1907.03907 [cs, stat]</em> 2019.
+              <a href="#fn-ref-43" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-44">
+            <span class="fn-num">44</span>
+            <span>
+              Massaroli, S.; Poli, M.; Park, J.; Yamashita, A.; Asama, H. Dissecting Neural ODEs. <em>arXiv.org</em>.
+              https://arxiv.org/abs/2002.08071 (accessed 2026-04-05).
+              <a href="#fn-ref-44" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-45">
+            <span class="fn-num">45</span>
+            <span>
+              Casella, G.; Berger, R. L. <em>Statistical Inference</em>. Belmont, CA: Brooks/Cole Cengage Learning.
+              2017.
+              <a href="#fn-ref-45" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-46">
+            <span class="fn-num">46</span>
+            <span>
+              Montgomery, D. C.; Runger, G. C. <em>Applied Statistics and Probability for Engineers</em> (6th Ed.). John
+              Wiley &amp; Sons. 2014.
+              <a href="#fn-ref-46" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-47">
+            <span class="fn-num">47</span>
+            <span>
+              Akiba, T.; Sano, S.; Yanase, T.; Ohta, T.; Koyama, M. Optuna: A Next-Generation Hyperparameter
+              Optimization Framework. <em>Proceedings of the 25th ACM SIGKDD International Conference on Knowledge
+                Discovery &amp; Data Mining</em> 2019.
+              https://doi.org/10.1145/3292500.3330701.
+              <a href="#fn-ref-47" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-^3">
+            <span class="fn-num">^3</span>
+            <span>
+              A preliminary test was conducted with different number of Optuna trails and beyond 50 it was observed that
+              there were not much changes, as such 50 was utilised as the number of Optuna trials
+              <a href="#fn-ref-^3" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-48">
+            <span class="fn-num">48</span>
+            <span>
+              Kohavi, R. A Study of Cross-Validation and Bootstrap for Accuracy Estimation and Model Selection.
+              <em>IJCAI</em>, 1137-1143. 1995.
+              <a href="#fn-ref-48" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-49">
+            <span class="fn-num">49</span>
+            <span>
+              Hastie, T.; Tibshirani, R.; Friedman, J. <em>The Elements of Statistical Learning</em> (2nd Ed.).
+              Springer. 2009.
+              <a href="#fn-ref-49" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-50">
+            <span class="fn-num">50</span>
+            <span>
+              Vanwinckelen, G.; Blockeel, H. On Estimating Model Accuracy with Repeated Cross-Validation.
+              <em>Proceedings of the 21st Belgian-Dutch Conference on Machine Learning</em>, 39-44.
+              <a href="#fn-ref-50" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-51">
+            <span class="fn-num">51</span>
+            <span>
+              Breiman, L. Bagging Predictors. <em>Machine Learning</em> 1996, <em>24</em> (2), 123-140.
+              <a href="#fn-ref-51" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-52">
+            <span class="fn-num">52</span>
+            <span>
+              Elfving, J.; Sainio, T. Kinetic approach to modelling CO2 adsorption from humid air using
+              amine-functionalized resin: Equilibrium isotherms and column dynamics.
+              https://www.sciencedirect.com/science/article/pii/S0009250921004504.
+              <a href="#fn-ref-52" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-53">
+            <span class="fn-num">53</span>
+            <span>
+              Ansari, A.; Shahhosseini, S. Investigations and optimization of CO2 capture using a new composite of
+              montmorillonite and choline-chloride-urea in a continuous fixed bed; breakthrough and RSM modeling.
+              https://www.sciencedirect.com/science/article/pii/S2666016424002895 (accessed 2026-03-27).
+              <a href="#fn-ref-53" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-54">
+            <span class="fn-num">54</span>
+            <span>
+              <em>Instrument Engineers' Handbook: Process Measurement and Analysis</em>. <em>Choice Reviews Online</em>
+              1995, <em>33</em> (02), 33-0953a–33-0953a.
+              https://doi.org/10.5860/choice.33-0953a.
+              <a href="#fn-ref-54" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-55">
+            <span class="fn-num">55</span>
+            <span>
+              Alsulami, A. A.; Qasem Abu Al-Haija; Badraddin Alturki; Alqahtani, A.; Faisal Binzagr; Alghamdi, B.;
+              Alsemmeari, R. A. Exploring the Efficacy of GRU Model in Classifying the Signal to Noise Ratio of
+              Microgrid Model. <em>Scientific Reports</em> 2024, <em>14</em> (1).
+              https://doi.org/10.1038/s41598-024-66387-1.
+              <a href="#fn-ref-55" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-56">
+            <span class="fn-num">56</span>
+            <span>
+              Huang, Z.; Sun, Y.; Wang, W. Learning Continuous System Dynamics from Irregularly-Sampled Partial
+              Observations.
+              <a href="#fn-ref-56" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-57">
+            <span class="fn-num">57</span>
+            <span>
+              Javaloy, A.; Valera, I. ROTOGRAD: Gradient Homogenization in Multitask Learning.
+              https://openreview.net/pdf?id=T8wHz4rnuGL.
+              <a href="#fn-ref-57" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-58">
+            <span class="fn-num">58</span>
+            <span>
+              Cho, K.; van Merrienboer, B.; Gulcehre, C.; Bahdanau, D.; Bougares, F.; Schwenk, H.; Bengio, Y. Learning
+              Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation. <em>EMNLP 2014</em>.
+              arXiv:1406.1078.
+              <a href="#fn-ref-58" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-59">
+            <span class="fn-num">59</span>
+            <span>
+              Chen, R. T. Q.; Rubanova, Y.; Bettencourt, J.; Duvenaud, D. Neural Ordinary Differential Equations.
+              <em>NeurIPS 2018</em>. arXiv:1806.07366.
+              <a href="#fn-ref-59" class="fn-back">↩</a>
+            </span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div> <!-- /page-wrapper -->
+
+  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+  <div class="page-nav">
+    <a class="page-nav-btn" href="Section_3.html">← Previous</a>
+    <a class="page-nav-btn" href="Section_5.html">Next →</a>
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+
+</html>

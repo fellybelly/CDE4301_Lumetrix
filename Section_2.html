@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 2: Development of Case Study</title>
+  <link rel="stylesheet" href="./assets/index.css">
+
+
+  <style>
+    body {
+      background: var(--gray-50);
+    }
+
+    .page-wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 150px 40px 140px;
+    }
+
+    /* ─── PAGE HEADER ───────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 4.5vw, 52px);
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -.5px;
+      line-height: 1.08;
+      margin-top: 6px;
+    }
+
+    .page-header .subtitle {
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ─── REPORT SECTION CARDS ──────────────────────────── */
+    .report-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeUp .5s ease both;
+    }
+
+    .report-section:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .report-section:nth-child(2) {
+      animation-delay: .10s;
+    }
+
+    .report-section:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .report-section:nth-child(4) {
+      animation-delay: .20s;
+    }
+
+    .report-section:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 28px;
+      background: linear-gradient(90deg, #f8faff, var(--white));
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 4px 11px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-sub);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-900);
+    }
+
+    .section-body {
+      padding: 28px 28px 32px;
+    }
+
+    .section-body p {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+
+    .section-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .subsection-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-700);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin: 28px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subsection-title::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--blue-400);
+      border-radius: 1px;
+    }
+
+    .callout {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-400);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--blue-800);
+    }
+
+    .obj-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .obj-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--gray-600);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .obj-list li:last-child {
+      border-bottom: none;
+    }
+
+    .obj-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 2px 9px;
+      border-radius: 50px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .sub-rule {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      margin: 24px 0;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 90px 16px 120px;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR — injected by index.js from NAV_CONFIG ══════ -->
+  <nav id="navbar"></nav>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="page-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <span class="label-pill label-pill-spacing">CDE4301</span>
+      <h1>Development of Case Study</h1>
+      <p class="subtitle">Selection of Case Study & Working Principles</p>
+      <div class="header-rule"></div>
+    </div>
+
+    <!-- ── 2.1 Case Study Selection ──────────────────────────────────── -->
+    <div class="report-section" id="2-1">
+      <div class="section-heading">
+        <span class="section-tag">2.1</span>
+        <h2>Case Study Selection</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          To select a suitable case study for the application of PIML, candidate applications that are of high practical
+          value within chemical engineering were identified. Accordingly, four key pillars were shortlisted: carbon
+          neutrality, clean energy, AI-driven manufacturing processes, and circular economy. The case studies were
+          ranked on a scale of 1 to 5 across industrial relevance, need for advanced predictive modelling, and system
+          complexity, with 5 representing the highest score.
+        </p>
+        <p>
+          A comprehensive review across these pillars is presented in Figure 2.1.
+        </p>
+
+        <p class="embed-label">Miro Board</p>
+        <div class="miro-wrap">
+          <iframe
+            src="https://miro.com/app/live-embed/uXjVGufvPGY=/?embedMode=view_only_without_ui&moveToViewport=-1250,-800,4520,2460"
+            allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen loading="lazy"
+            title="Figure 2.1: Case Study Review (Miro Board)">
+          </iframe>
+          <figcaption>
+            <span class="fig-label">Figure 2.1</span>
+            Comprehensive Review and Scoring of Candidate Case Study
+          </figcaption>
+        </div>
+
+        <br />
+        <p>
+          Based on these considerations, this study focuses on the carbon neutrality pillar as the primary application
+          domain due to its highest ranking among the shortlisted alternatives. Atmospheric carbon dioxide
+          (CO<sub>2</sub>)
+          concentrations have risen from approximately 280 ppm in the pre-industrial era to over 420 ppm<sup
+            class="fn-ref"><a href="#fn-24" id="fn-ref-24">24</a></sup>, primarily
+          driven by fossil fuel combustion and industrial activities. In response, international initiatives such as the
+          Paris Agreement have established targets to reduce global greenhouse gas emissions by 40-45% by 2030 relative
+          to 2010 levels<sup class="fn-ref"><a href="#fn-25" id="fn-ref-25">25</a></sup>.
+        </p>
+        <p>
+          In parallel, national governments are advancing commitments to accelerate industrial decarbonisation. As a
+          major hub for oil refining and petrochemical manufacturing, Jurong Island represents a significant source of
+          CO<sub>2</sub> emissions, necessitating the deployment of carbon removal technologies<sup class="fn-ref"><a
+              href="#fn-26" id="fn-ref-26">26</a></sup>. To support this transition,
+          the government has allocated SGD 5 billion through the Future Energy Fund in 2024, alongside SGD 800 million
+          to accelerate sustainable industrial solutions.
+        </p>
+        <p>
+          As such, various CO<sub>2</sub> absorption technologies have been developed, including chemical absorption,
+          membrane
+          separation, solid sorbent adsorption and biological solutions<sup class="fn-ref"><a href="#fn-27"
+              id="fn-ref-27">27</a></sup>, presented in Figure 2.2. Among these,
+          chemical absorption of CO<sub>2</sub> particularly via reactive solvents, also known as chemisorption, remains
+          one of the
+          most mature and widely implemented technologies in industrial gas treatment, accounting for one-third and the
+          majority of all CO<sub>2</sub> removal technologies<sup class="fn-ref"><a href="#fn-28"
+              id="fn-ref-28">28</a></sup>.
+        </p>
+
+        <figure class="report-figure">
+          <img src="./assets/images/Figure_2-2.png" alt="Carbon Removal Technologies">
+          <figcaption>
+            <span class="fig-label">Figure 2.2</span>
+            Carbon Removal Technologies
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- ── 2.2 Case Study ─────────────────────────── -->
+    <div class="report-section" id="2-2">
+      <div class="section-heading">
+        <span class="section-tag">2.2</span>
+        <h2>Case Study</h2>
+      </div>
+      <div class="section-body">
+
+        <!-- ── 2.2.1 Working Principles ─────────────────── -->
+        <div class="subsub-section" id="2-2-1">
+          <div class="subsub-heading">
+            <span class="subsub-tag">2.2.1</span>
+            <h3>Working Principles</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              A representative example is notably the packed-bed NaOH-CO<sub>2</sub> chemisorption technology displayed
+              in Figure 2.3. In this process, a gas waste stream containing high levels of CO<sub>2</sub> enters the
+              column from
+              the bottom,
+              while a liquid NaOH absorbent agent flows downwards from the top. As the two streams move in opposite
+              directions, they come into contact within the column, allowing CO<sub>2</sub> to be absorbed into the NaOH
+              liquid and react.
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_2-3.png" alt="Schematic of NaOH-CO2 Chemisorption Column">
+              <figcaption>
+                <span class="fig-label">Figure 2.3</span>
+                Schematic of NaOH-CO<sub>2</sub> Chemisorption Column
+              </figcaption>
+            </figure>
+
+            <p>
+              The chemisorption of CO<sub>2</sub> in aqueous NaOH is governed by a sequence of acid base reactions. The
+              overall reaction can be expressed as:
+            </p>
+
+            <div class="formula-block">
+              <div class="formula-display chem-eq">
+                <span class="chem-term"><span class="chem-coef">2</span>NaOH</span>
+                <span class="chem-op">+</span>
+                <span class="chem-term">CO<sub>2</sub></span>
+                <span class="chem-arrow">⟶</span>
+                <span class="chem-term">Na<sub>2</sub>CO<sub>3</sub></span>
+                <span class="chem-op">+</span>
+                <span class="chem-term">H<sub>2</sub>O</span>
+              </div>
+            </div>
+
+            <p>As observed, NaOH reacts and removes CO<sub>2</sub> to form sodium carbonate
+              (Na<sub>2</sub>CO<sub>3</sub>). In which, Na<sub>2</sub>CO<sub>3</sub> further reacts and
+              removes CO<sub>2</sub> as shown:
+            </p>
+
+            <div class="formula-block">
+              <div class="formula-display chem-eq">
+                <span class="chem-term">Na<sub>2</sub>CO<sub>3</sub></span>
+                <span class="chem-op">+</span>
+                <span class="chem-term">CO<sub>2</sub></span>
+                <span class="chem-op">+</span>
+                <span class="chem-term">H<sub>2</sub>O</span>
+                <span class="chem-arrow">⟶</span>
+                <span class="chem-term"><span class="chem-coef">2</span>NaHCO<sub>3</sub></span>
+              </div>
+            </div>
+
+            <p>
+              In addition to reaction kinetics, the system behaviour is strongly influenced by mass transfer of
+              CO<sub>2</sub> from
+              the gas phase into the NaOH liquid phase, which acts as a prerequisite to the aforementioned chemical
+              reactions. As such the coupled effects of reaction kinetics and mass transfer allow the system to be
+              conceptually divided into three distinct zones within the column: Surface Reaction Zone (SRZ), Interior
+              Reaction Zone (IRZ) and Physical Absorption Zone (PAZ). Depending on the operating conditions, the system
+              may exhibit one, two, or all of these zones as shown in Table 2.1. The complete explanation of the
+              respective zones can be found in Appendix A.
+            </p>
+
+            <div class="report-table-wrap">
+              <figcaption>
+                <span class="fig-label">Table 2.1</span>
+                Summary of Differences Between Zones
+              </figcaption>
+              <table class="report-table">
+                <thead>
+                  <tr>
+                    <th>Zone</th>
+                    <th>Operating Conditions (Concentrations)</th>
+                    <th>CO<sub>2</sub> Removal Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Surface Reaction</td>
+                    <td>
+                      <div class="formula-display chem-eq">
+                        <span class="chem-term">C<sub>NaOH</sub></span>
+                        <span class="chem-arrow">&gt;&gt;</span>
+                        <span class="chem-term">C<sub>CO2</sub></span>
+                      </div>
+                    </td>
+                    <td>Fastest</td>
+                  </tr>
+                  <tr>
+                    <td>Interior Reaction</td>
+                    <td>
+                      <div class="formula-display chem-eq">
+                        <span class="chem-term">C<sub>NaOH</sub></span>
+                        <span class="chem-op">≈</span>
+                        <span class="chem-term">C<sub>CO2</sub></span>
+                      </div>
+                    </td>
+                    <td>Moderate</td>
+                  </tr>
+                  <tr>
+                    <td>Physical Absorption</td>
+                    <td>
+                      <div class="formula-display chem-eq">
+                        <span class="chem-term">C<sub>NaOH</sub></span>
+                        <span class="chem-op">≪</span>
+                        <span class="chem-term">C<sub>CO2</sub></span>
+                      </div>
+                    </td>
+                    <td>Slowest</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ── 2.2.2 Industrial Applications in Control Systems ─────────────────── -->
+        <div class="subsub-section" id="2-2-2">
+          <div class="subsub-heading">
+            <span class="subsub-tag">2.2.2</span>
+            <h3>Industrial Applications in Control Systems</h3>
+          </div>
+          <div class="subsub-body">
+            <p>
+              When subjected to disturbances, the previously defined reaction zones evolve over both time and space,
+              resulting in inherently dynamic system behaviour. Such systems are characterised by strong temporal
+              dependencies and coupled interactions, which remain challenging to capture using conventional FPM due to
+              incomplete physical understanding.
+            </p>
+            <p>
+              Accurate dynamic modelling is critical for Model Predictive Control (MPC) to stabilise the plant in case
+              of a disturbance. MPC are industrial control systems that rely on predictive models to forecast the future
+              dynamics of key process variables, such as outlet CO<sub>2</sub> and NaOH concentration. As such the
+              quality of
+              control action suggested by MPC is highly dependent on the accuracy of the underlying dynamic model. In
+              NaOH-CO<sub>2</sub> chemisorption systems, reliable dynamic modelling is essential to prevent exceedance
+              of emission
+              limits and minimise excessive NaOH consumption, thereby ensuring both regulatory compliance and
+              operational performance. A schematic of the working principles of MPC is displayed in Figure 2.4.
+            </p>
+
+            <figure class="report-figure full-bleed">
+              <img src="./assets/images/Figure_2-4.svg" alt="Model Predictive Control Schematic diagram">
+              <figcaption>
+                <span class="fig-label">Figure 2.4</span>
+                Model Predictive Control Schematic
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         REFERENCES & NOTES
+    ══════════════════════════════════════════════════════ -->
+    <div class="report-section" id="references">
+      <div class="section-heading">
+        <h2>References &amp; Notes</h2>
+      </div>
+      <div class="section-body">
+        <ol class="footnotes-list">
+          <li id="fn-24">
+            <span class="fn-num">24</span>
+            <span>
+              Victoria, A. J.; Astbury, M. J.; McCormick, A. J. Engineering Highly Productive Cyanobacteria towards
+              Carbon Negative Emissions Technologies. <em>Current Opinion in Biotechnology</em> 2024, <em>87</em>,
+              103141–103141.
+              https://doi.org/10.1016/j.copbio.2024.103141.
+              <a href="#fn-ref-24" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-25">
+            <span class="fn-num">25</span>
+            <span>
+              UNFCCC. The Paris agreement. <em>United Nations Climate Change</em>.
+              https://unfccc.int/process-and-meetings/the-paris-agreement.
+              <a href="#fn-ref-25" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-26">
+            <span class="fn-num">26</span>
+            <span>
+              Discover the Powerhouse Behind Singapore's Industrial Success: Jurong Island. <em>Jtc.gov.sg</em>.
+              https://www.jtc.gov.sg/jurongisland/ji-25-anni?utm_source=Google&amp;utm_medium=JIBrandNB&amp;utm_campaign=JIRebrand&amp;utm_term=NonBranded.
+              <a href="#fn-ref-26" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-27">
+            <span class="fn-num">27</span>
+            <span>
+              Borhani, T. N.; Oko, E.; Wang, M. Process Modelling, Validation and Analysis of Rotating Packed Bed
+              Stripper in the Context of Intensified CO2 Capture with MEA. <em>Journal of Industrial and Engineering
+                Chemistry</em> 2019, <em>75</em>, 285–295.
+              https://doi.org/10.1016/j.jiec.2019.03.040.
+              <a href="#fn-ref-27" class="fn-back">↩</a>
+            </span>
+          </li>
+
+          <li id="fn-28">
+            <span class="fn-num">28</span>
+            <span>
+              Air Scrubbing Chemicals for Industrial Emissions Market | Global Market Analysis Report - 2036.
+              <em>Factmr.com</em>.
+              https://www.factmr.com/report/air-scrubbing-chemicals-for-industrial-emissions-market (accessed
+              2026-04-05).
+              <a href="#fn-ref-28" class="fn-back">↩</a>
+            </span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+  <div class="page-nav">
+    <a class="page-nav-btn" href="Section_1.html">← Previous</a>
+    <a class="page-nav-btn" href="Section_3.html">Next →</a>
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+
+</html>
