@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appendix A: Details of different zones</title>
+  <link rel="stylesheet" href="./assets/index.css">
+
+  <style>
+    body {
+      background: var(--gray-50);
+    }
+
+    .page-wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 150px 40px 140px;
+    }
+
+    /* ─── PAGE HEADER ───────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp .5s ease both;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 4.5vw, 52px);
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -.5px;
+      line-height: 1.08;
+      margin-top: 6px;
+    }
+
+    .page-header .subtitle {
+      margin-top: 14px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ─── REPORT SECTION CARDS ──────────────────────────── */
+    .report-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      animation: fadeUp .5s ease both;
+    }
+
+    .report-section:nth-child(1) {
+      animation-delay: .05s;
+    }
+
+    .report-section:nth-child(2) {
+      animation-delay: .10s;
+    }
+
+    .report-section:nth-child(3) {
+      animation-delay: .15s;
+    }
+
+    .report-section:nth-child(4) {
+      animation-delay: .20s;
+    }
+
+    .report-section:nth-child(5) {
+      animation-delay: .25s;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 28px;
+      background: linear-gradient(90deg, #f8faff, var(--white));
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 4px 11px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .section-heading h2 {
+      font-family: var(--font-sub);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-900);
+    }
+
+    .section-body {
+      padding: 28px 28px 32px;
+    }
+
+    .section-body p {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.85;
+      color: var(--gray-600);
+      margin-bottom: 16px;
+    }
+
+    .section-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .subsection-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-700);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin: 28px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subsection-title::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--blue-400);
+      border-radius: 1px;
+    }
+
+    .callout {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue-400);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--blue-800);
+    }
+
+    .obj-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .obj-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--gray-600);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .obj-list li:last-child {
+      border-bottom: none;
+    }
+
+    .obj-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-500);
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      padding: 2px 9px;
+      border-radius: 50px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .sub-rule {
+      border: none;
+      border-top: 1px solid var(--gray-100);
+      margin: 24px 0;
+    }
+
+    .step-section-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--blue-50);
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--blue-700);
+    }
+
+    .step-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .step-list li {
+      margin-bottom: 6px;
+    }
+
+    .step-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gray-500);
+    }
+
+    .zone-eq-table {
+      margin-bottom: 18px;
+      min-width: 0;
+    }
+
+    .zone-eq-table thead th {
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: .9px;
+    }
+
+    .zone-eq-table tbody td {
+      padding: 16px 18px;
+      background: var(--white);
+    }
+
+    .zone-eq-table .math-row {
+      margin: 0;
+      padding: 0;
+      line-height: 1.9;
+      color: var(--gray-700);
+    }
+
+    .zone-eq-table .math-row+.math-row {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--gray-200);
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .page-wrapper {
+        padding: 90px 16px 120px;
+      }
+
+      .section-body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAVBAR — injected by index.js from NAV_CONFIG ══════ -->
+  <nav id="navbar"></nav>
+
+  <!-- ══ MAIN CONTENT ══════════════════════════════════════════ -->
+  <div class="page-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <span class="label-pill label-pill-spacing">CDE4301</span>
+      <h1>Appendix</h1>
+      <p class="subtitle">Supplementary Information</p>
+      <div class="header-rule"></div>
+    </div>
+
+    <div class="report-section" id="appendix-a">
+      <div class="section-heading">
+        <h2>Appendix A: Details of Different Zones</h2>
+      </div>
+      <div class="section-body">
+        <p>
+          The following illustrations are a microscale representation of the gas and liquid in contact.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="assets/images/Figure_A.1.png" alt="Different zones in the gas-liquid contactor">
+          <figcaption>
+            <span class="fig-label">Figure 1</span>
+            Display of an Instance where all the Zones are Present
+          </figcaption>
+        </figure>
+
+        <figure class="report-figure full-bleed">
+          <img src="assets/images/Figure_A.2.png" alt="Schematic of Surface Reaction Zone (SRZ)">
+          <figcaption>
+            <span class="fig-label">Figure 2</span>
+            Schematic of Surface Reaction Zone (SRZ)
+          </figcaption>
+        </figure>
+
+        <p>
+          SRZ occurs at the top of the tower nearest to the liquid inlet where the concentration of NaOH absorbent
+          is highest. During this phase, the reaction between CO<sub>2</sub> and NaOH occurs extremely fast, often
+          occurring as soon as CO<sub>2</sub> overcomes mass transfer resistance and dissolves into the liquid film due
+          to the high concentration gradient offered by NaOH. As such, SRZ is formed because the rate of reaction is
+          significantly faster than the mass transfer of CO<sub>2</sub> away from the interface, leading to immediate
+          consumption near the surface as illustrated in Figure 2.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="assets/images/Figure_A.3.png" alt="Schematic of Interior Reaction Zone (IRZ)">
+          <figcaption>
+            <span class="fig-label">Figure 3</span>
+            Schematic of Interior Reaction Zone (IRZ)
+          </figcaption>
+        </figure>
+
+        <p>
+          IRZ typically occurs in the middle of the tower below the SRZ section, where reaction moves away from the interface into the bulk liquid as well. This is because the concentration of NaOH absorbent decreases due to prior consumption, hence the reaction is slightly slower than in PAZ due to the lower NaOH concentration gradient. As such, the rate of reaction is only slightly faster or even comparable to the rate of CO2 mass transfer, allowing the CO2 to penetrate slightly deeper into the liquid bulk before being fully consumed as illustrated in Figure 3.
+        </p>
+
+        <figure class="report-figure full-bleed">
+          <img src="assets/images/Figure_A.4.png" alt="Schematic of Physical Absorption Zone (PAZ)">
+          <figcaption>
+            <span class="fig-label">Figure 4</span>
+            Schematic of Physical Absorption Zone (PAZ)
+          </figcaption>
+        </figure>
+
+        <p>
+          Lastly, at the bottom of the column where the PAZ resides, the concentration of NaOH absorbent is fully depleted due to significant prior consumption. In this region, mass transfer of CO2 outpaces negligible reaction locally, resulting in the regime to be dominated by physical absorption without any chemical reaction interference as illustrated in Figure 4.
+        </p>
+
+        <p>
+          These interactions between the different zones introduces significant complexity in predicting system behaviour as limited physical understanding of the system exists to date, especially under transient unsteady-state operating conditions. Consequently, there is a strong need for modelling approaches capable of reliably capturing such complex dynamic behaviour.
+        </p>
+
+
+      </div>
+    </div>
+
+    <div class="report-section" id="appendix-b">
+      <div class="section-heading">
+        <h2>Appendix B: Experimental procedure</h2>
+      </div>
+      <div class="section-body">
+
+        <div class="step-section-title">Prepare NaOH Stock Solution</div>
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Step</th>
+                <th>Procedure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Prepare 25L of 0.25 mol/L NaOH solution in a 25L measuring jug.</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Mix thoroughly with a hand-held stirrer for 1 minute.</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Pour the prepared NaOH solution into the feed tank labelled as NaOH Feed Tank.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="step-section-title">Main Experiment</div>
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Step</th>
+                <th>Procedure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>
+                  Set deionised water flowrate to 0.7 L/min and the air flow rate to inlet to be 2.20 L/min. Allow for
+                  the system to run until steady state which takes 20 minutes.
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>
+                  <ol class="step-list">
+                    <li>Conduct the following and repeat this step thrice: use a gas syringe to collect 1 cm<sup>3</sup> of the CO<sub>2</sub> gas mixture at the gas outlet and test the sample using Gas Chromatography (GC). Calculate the average CO<sub>2</sub> gas mixture concentration.</li>
+                    <li>Using a micropipette, extract 10 ml of the liquid outlet stream mixture into a clean and dried conical flask. Add 5 ml of 0.1M NaOH solution and send the sample for titration. Repeat this step thrice.</li>
+                  </ol>
+                  <div class="step-note">(This serves as the time = 0)</div>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Switch the CO2 gas pump on and set the CO<sub>2</sub> gas flow rate to inlet to be 0.18L/min and the air flow rate to inlet to be 2.02 L/min to form a CO<sub>2</sub> gas mixture.</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Set the deionised water flowrate to be 0.60 L/min and the NaOH Feed Tank flowrate to be 0.10 L/min.</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Start the stopwatch immediately after step 3 and 4.</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>
+                  <ol class="step-list">
+                    <li>Immediately conduct the following and repeat the steps every 4 minutes till 16 minutes: use a gas syringe to collect 1 cm<sup>3</sup> of the CO<sub>2</sub> gas mixture at the gas outlet and test the sample using Gas Chromatography (GC). Repeat this step thrice. Calculate the average CO<sub>2</sub> gas mixture concentration.</li>
+                    <li>Using a micropipette, extract 10ml of the liquid outlet stream mixture into a clean and dried conical flask. Add 5ml of 0.1M NaOH solution and send the sample for titration. Repeat this step thrice.</li>
+                  </ol>
+                  <div class="step-note">(This serves as time = 4, 8, 12 and 16)</div>
+                </td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>
+                  At the end of 16 minutes, there will be a total of 5 average data points (with triplicates) for the
+                  gas outlet and liquid outlet, CO<sub>2</sub> and NaOH concentrations respectively.
+                </td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>
+                  Afterwards, collect 1 cm<sup>3</sup> of the CO<sub>2</sub> gas mixture at the gas inlet using a gas syringe
+                  and test the sample using Gas Chromatography (GC). Repeat this step twice. Calculate the average
+                  CO<sub>2</sub> gas mixture concentration using the 2 repeated values in step 7 and this will be the
+                  CO<sub>2</sub> inlet concentration, YA1 for the particular run.
+                </td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Repeat step 1 with the previous operating parameters and step 3 and 4 with the subsequent operating parameters.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="report-section" id="appendix-c">
+      <div class="section-heading">
+        <h2>Appendix C: Full derivation of governing equation</h2>
+      </div>
+      <div class="section-body">
+        <div class="report-table-wrap zone-eq-table">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Surface Reaction Zone</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="math-row">In this segment \(X_{Bi}\) or \(C_{Bi} > 0\), and \(p_{Ai}\) or \(Y_{Ai} = 0\).</div>
+                  <div class="math-row">Mass transfer rate:</div>
+                  <div class="math-row">\[-r_A = k_{gA}(p_A - p_{Ai}) = k_{gA}p_{\mathrm{inert}}(Y_A - Y_{Ai}) = k_{gA}p_A = k_{gA}p_{\mathrm{inert}}Y_A = \frac{k_{gA}p_TY_A}{1 + Y_A}\]</div>
+                  <div class="math-row">Using the plug flow design equation:</div>
+                  <div class="math-row">\[h = \frac{G}{a}\int_{Y_{A0}}^{Y_A} \frac{(1+Y_A)\,dY_A}{Y_A} = \frac{G}{k_{gA}ap_T}\left[\ln\left(\frac{Y_{A3}}{Y_{A4}}\right) + (Y_{A3} - Y_{A4})\right]\]</div>
+                  <div class="math-row">For a dilute solution where \(Y_A \ll 1\), hence</div>
+                  <div class="math-row">\[h_3 = \frac{G}{k_{gA}ap_T}\ln\left(\frac{Y_{A3}}{Y_{A4}}\right)\]</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-table-wrap zone-eq-table">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Interior Reaction Zone</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="math-row">The end of the surface reaction zone and the beginning of the interior reaction zone occur when the concentration of both reactants are zero at the interface, where</div>
+                  <div class="math-row">\[p_{Ai} = C_{Ai} = Y_{Ai} = C_{Bi} = X_{Bi} = 0\]</div>
+
+                  <div class="math-row">To calculate \(X_{B3}\),</div>
+                  <div class="math-row">\[k_{gA}(p_A-p_{Ai}) = k_{gA}p_TY_{A3} = \frac{k_{LB}(C_{B3}-C_{Bi})}{b} = \frac{k_{LB}C_TX_{B3}}{b}\]</div>
+                  <div class="math-row">\[\text{From } k^{0}_{LA}=\frac{D_A}{\delta} \text{ and } k_{LB}=\frac{D_B}{\delta}\]</div>
+                  <div class="math-row">\[k_{gA}p_TY_{A3} = \frac{C_TD_BX_{B3}}{\delta b} = \frac{k^{0}_{LA}C_TD_BX_{B3}}{D_A b}\]</div>
+                  <div class="math-row">\[X_{B3} = \frac{k_{gA}D_Ap_Tb\,Y_{A3}}{k^{0}_{LA}C_TD_B}\]</div>
+
+                  <div class="math-row">Material balance over entire surface reaction zone</div>
+                  <div class="math-row">\[G(Y_{A3}-Y_{A4}) = \frac{L(X_{B4}-X_{B3})}{b}\]</div>
+                  <div class="math-row">\[Y_{A3} = Y_{A4} + \frac{L}{bG}(X_{B4}-X_{B3})\]</div>
+                  <div class="math-row">\[X_{B3} = \frac{k_{gA}D_Ap_Tb}{k^{0}_{LA}C_TD_B}\left[Y_{A4}+\frac{L}{bG}(X_{B4}-X_{B3})\right]\]</div>
+                  <div class="math-row">\[\text{Let }\beta_1=\frac{Lk_{gA}D_Ap_T}{GC_TD_Bk^{0}_{LA}}\text{ and }\beta_2=\frac{LbD_Ap_T}{C_TD_Bk^{0}_{LA}}\]</div>
+                  <div class="math-row">\[X_{B3}=\frac{\beta_1X_{B4}+\beta_2Y_{A4}}{1+\beta_1}\]</div>
+
+                  <div class="math-row">Mass transfer of CO\(_2\) from gas bulk to interface: \(-r_A = k_{gA}(P_A-P_{Ai})\)</div>
+                  <div class="math-row">Mass transfer of CO\(_2\) from interface to reaction plane: \(-r_A = \frac{D_A(C_{Ai}-0)}{x_1}\)</div>
+                  <div class="math-row">Mass transfer of NaOH from liquid bulk to reaction plane: \(-r_B = \frac{D_B(C_B-0)}{x_2}\)</div>
+                  <div class="math-row">At steady state,</div>
+                  <div class="math-row">\[-r_A = \frac{-r_B}{b} = k_{gA}(P_A-P_{Ai}) = \frac{D_AC_{Ai}}{x_1} = \frac{D_BC_B}{bx_2}\]</div>
+                  <div class="math-row">\[-r_Ax_1 = D_AC_{Ai} \quad \text{and} \quad -r_Ax_2 = \frac{D_BC_B}{b}\]</div>
+                  <div class="math-row">\[-r_A(x_1+x_2) = -r_A\delta = D_AC_{Ai}+\frac{D_BC_B}{b}\]</div>
+                  <div class="math-row">For dilute solution, Henry's law is applied \(p_{Ai}=H_AC_{Ai}\),</div>
+                  <div class="math-row">\[-r_A\delta = \frac{D_Ap_{Ai}}{H_A}+\frac{D_BC_B}{b}\]</div>
+                  <div class="math-row">since \(p_A = \frac{-r_A}{k_{gA}}\)</div>
+                  <div class="math-row">\[-r_A\left[1+\frac{D_A}{H_Ak_{gA}\delta}\right]=\frac{D_Ap_A}{H_A\delta}+\frac{D_BC_B}{b\delta}\]</div>
+                  <div class="math-row">\[-r_A=\left[\frac{H_Ak_{gA}\delta}{D_A+H_Ak_{gA}\delta}\right]\left[\frac{D_Ap_A}{H_A\delta}+\frac{D_BC_B}{b\delta}\right]\]</div>
+                  <div class="math-row">By dividing numerator and denominator by \(\frac{1}{D_AH_Ak_{gA}}\), we have</div>
+                  <div class="math-row">\[-r_A=\frac{p_T\left(\frac{Y_A}{1+Y_A}\right)+\frac{D_BH_AC_T}{D_Ab}\left(\frac{X_B}{1+X_A}\right)}{\frac{H_A}{k^{0}_{LA}}+\frac{1}{k_{gA}}}\]</div>
+                  <div class="math-row">Given that for a dilute solution, \(p_A=p_TY_A\) and \(C_B=C_TX_B\)</div>
+                  <div class="math-row">\[-r_A=\frac{p_TY_A+\frac{D_BH_AC_TX_B}{D_Ab}}{\frac{H_A}{k^{0}_{LA}}+\frac{1}{k_{gA}}}=K^{0}_{GA}\left[p_TY_A+\frac{D_BH_AC_TX_B}{D_Ab}\right]\]</div>
+                  <div class="math-row">\[\text{where }\frac{1}{K^{0}_{GA}}=\frac{1}{k_{gA}}+\frac{H_A}{k^{0}_{LA}}=\frac{1}{k_{gA}}+\frac{mp_T}{k^{0}_{LA}C_T}\]</div>
+
+                  <div class="math-row">Using Henry's law,</div>
+                  <div class="math-row">\[p_{Ai}=H_AC_{Ai} \quad \text{or} \quad Y_{Ai}p_T=H_AC_TX_{Ai}\]</div>
+                  <div class="math-row">\[Y_{Ai}=\frac{H_AC_TX_{Ai}}{p_T}=mX_{Ai}\]</div>
+                  <div class="math-row">Using the plug flow design equation</div>
+                  <div class="math-row">\[h_2=\frac{G}{a}\int_{Y_{A3}}^{Y_{A2}}\frac{dY_A}{-r_{As}}=\frac{G}{K^{0}_{GA}ap_T}\int_{Y_{A3}}^{Y_{A2}}\frac{dY_A}{\left[Y_A+\frac{D_BmX_B}{D_Ab}\right]}\]</div>
+                  <div class="math-row">\(X_B\) is determined by material balance,</div>
+                  <div class="math-row">\[X_B=X_{B3}-\frac{bG}{L}(Y_A-Y_{A3})\]</div>
+                  <div class="math-row">Substituting \(X_B\) into the equation above,</div>
+                  <div class="math-row">\[h_2=\frac{G}{K^{0}_{GA}ap_T}\int_{Y_{A3}}^{Y_{A2}}\frac{dY_A}{\alpha Y_A+\beta}=\frac{G}{K^{0}_{GA}ap_T\alpha}\ln\left[\frac{\alpha Y_{A2}+\beta}{\alpha Y_{A3}+\beta}\right]\]</div>
+                  <div class="math-row">\[\text{where }\alpha=1-\frac{D_BmG}{D_AL}\text{ and }\beta=\frac{D_BmX_{B3}}{D_Ab}+\frac{D_BmGY_{A3}}{D_AL}\]</div>
+                  <div class="math-row">\(Y_{A2}\) is obtained similarly by material balance</div>
+                  <div class="math-row">\[Y_{A2}=Y_{A4}+\frac{L}{bG}X_{B4}\]</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-table-wrap zone-eq-table">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Physical-Reaction Zone</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="math-row">For dilute solution,</div>
+                  <div class="math-row">\[h_1 = \frac{G}{K^{0}_{GA}\,a\,p_T\left(1-\frac{mG}{L}\right)}\ln\left[\left(1-\frac{mG}{L}\right)\left(\frac{Y_{A1}}{Y_{A2}}\right)+\frac{mG}{L}\right]\]</div>
+                  <div class="math-row">\[\text{where }\frac{1}{K^{0}_{GA}a}=\frac{1}{k_{gA}a}+\frac{mp_T}{k^{0}_{LA}aC_T}\quad\text{and}\quad m=\frac{y_A}{x_A}=\frac{H_AC_T}{p_T}\]</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+    </div>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+  <div class="page-nav">
+    <a class="page-nav-btn" href="Section_7.html">← Previous</a>
+    <a class="page-nav-btn" href="index.html">End</a>
+  </div>
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="./assets/index.js"></script>
+</body>
+
+</html>
