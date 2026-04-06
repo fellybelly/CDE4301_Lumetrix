@@ -211,6 +211,7 @@ nav#navbar.scrolled {
   white-space: nowrap;
   flex-shrink: 0;
   text-decoration: none;
+  margin-left: 16px;
 }
 
 .nav-cta:hover {
@@ -414,7 +415,7 @@ nav#navbar.menu-open .nav-hamburger span:nth-child(3) {
   left: 0;
   width: 100%;
   z-index: 999;
-  padding-top: 62px;
+  padding-top: 84px;
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -754,6 +755,9 @@ nav#navbar.menu-open .nav-hamburger span:nth-child(3) {
 @media (max-width: 768px) {
   nav#navbar {
     padding: 14px 20px;
+    /* Keep single-column grid — hamburger is absolutely positioned */
+    grid-template-columns: 1fr;
+    position: fixed; /* already set globally, reinforcing context */
   }
   .nav-links {
     display: none;
@@ -761,8 +765,18 @@ nav#navbar.menu-open .nav-hamburger span:nth-child(3) {
   .nav-cta {
     display: none;
   }
+  .nav-scroll-btn {
+    display: none !important; /* hide < > on mobile */
+  }
+  /* Hamburger always top-right, immune to grid child count */
   .nav-hamburger {
     display: flex;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    margin: 0;
+    grid-column: unset;
   }
   .page-nav {
     bottom: 16px;
@@ -1499,4 +1513,127 @@ figcaption {
 .subsub-body .miro-wrap,
 .subsub-body .obj-list {
   margin-top: 0;
+}
+
+/* ─── NAV SCROLL BUTTONS < > ─────────────────────────────── */
+.nav-links {
+  overflow-x: hidden;
+  overflow-y: clip;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.nav-links.is-overflowing {
+  justify-content: flex-start;
+}
+
+.nav-links.fade-left {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 28px);
+  mask-image: linear-gradient(to right, transparent 0, black 28px);
+}
+.nav-links.fade-right {
+  -webkit-mask-image: linear-gradient(to left, transparent 0, black 28px);
+  mask-image: linear-gradient(to left, transparent 0, black 28px);
+}
+.nav-links.fade-left.fade-right {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 28px,
+    black calc(100% - 28px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 28px,
+    black calc(100% - 28px),
+    transparent 100%
+  );
+}
+
+.nav-scroll-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(37, 99, 235, 0.18);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--blue-500);
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 0 1px 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+}
+
+.nav-scroll-btn.visible {
+  display: flex;
+}
+.nav-scroll-btn:first-of-type {
+  margin-left: 10px;
+}
+.nav-scroll-btn:last-of-type {
+  margin-right: 10px;
+}
+
+.nav-scroll-btn:hover {
+  background: var(--blue-500);
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+}
+
+.nav-scroll-btn.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ─── DROPDOWN — body-appended, positioned by JS ─────────── */
+.nav-dropdown {
+  position: fixed;
+  width: max-content;
+  min-width: 200px;
+  max-width: 260px;
+  background: rgba(255, 255, 255, 0.99);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  border-radius: 18px;
+  box-shadow:
+    0 20px 60px rgba(37, 99, 235, 0.13),
+    0 4px 16px rgba(0, 0, 0, 0.05);
+  padding: 8px;
+  z-index: 9999;
+  max-height: 72vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s linear 0.2s;
+}
+
+.nav-dropdown.open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s;
 }

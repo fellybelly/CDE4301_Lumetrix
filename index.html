@@ -447,6 +447,27 @@
       animation: fadeUp .6s .65s ease both;
     }
 
+    a.team-card {
+      text-decoration: none;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    a.team-card * {
+      text-decoration: none;
+    }
+
+    a.team-card:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 18px 48px rgba(37, 99, 235, 0.26);
+    }
+
+    a.team-card:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
+      transition: transform .1s, box-shadow .1s;
+    }
+
     .team-photo {
       width: 100px;
       height: 100px;
@@ -605,7 +626,9 @@
       <h3 class="hero-subheading">Physics Informed Machine Learning</h3>
 
       <p class="hero-desc">
-        “To what extent can Physics-Informed Machine Learning (PIML) models trained on limited experimental data, with varying degrees of physics incorporation, inherently improve the accuracy and precision of modelling chemical engineering systems with limited physical knowledge?”
+        “To what extent can Physics-Informed Machine Learning (PIML) models trained on limited experimental data, with
+        varying degrees of physics incorporation, inherently improve the accuracy and precision of modelling chemical
+        engineering systems with limited physical knowledge?”
       </p>
 
       <div class="hero-actions">
@@ -631,30 +654,27 @@
 
       <!-- Enlarged team cards with Course Name -->
       <div class="team-badge">
-        <div class="team-card team-card-1">
-          <a href="https://www.linkedin.com/in/tanmeilingfelicia" target="_blank" rel="noopener noreferrer" aria-label="Open Felicia Tan LinkedIn profile">
-            <img class="team-photo" src="./assets/images/Felicia.jpg" alt="Felicia Tan"
-              style="object-position: center 25%;">
-          </a>
+        <a class="team-card team-card-1" href="https://www.linkedin.com/in/tanmeilingfelicia" target="_blank"
+          rel="noopener noreferrer" aria-label="Open Felicia Tan LinkedIn profile">
+          <img class="team-photo" src="./assets/images/Felicia.jpg" alt="Felicia Tan"
+            style="object-position: center 25%;">
           <div class="team-info">
             <div class="team-name">Tan Mei Ling, Felicia</div>
             <div class="team-course">Chemical Engineering, Y4</div>
             <div class="team-id">A0258676J</div>
           </div>
-        </div>
+        </a>
 
-        <div class="team-card team-card-2">
-          <a href="https://www.linkedin.com/in/hbazhar/" target="_blank" rel="noopener noreferrer" aria-label="Open Hassan Bin Azhar LinkedIn profile">
-            <img class="team-photo" src="./assets/images/Hassan.jpg" alt="Hassan">
-          </a>
+        <a class="team-card team-card-2" href="https://www.linkedin.com/in/hbazhar/" target="_blank"
+          rel="noopener noreferrer" aria-label="Open Hassan Bin Azhar LinkedIn profile">
+          <img class="team-photo" src="./assets/images/Hassan.jpg" alt="Hassan">
           <div class="team-info">
             <div class="team-name">Hassan Bin Azhar</div>
             <div class="team-course">Chemical Engineering, Y4</div>
             <div class="team-id">A0265149X</div>
           </div>
-        </div>
+        </a>
       </div>
-    </div>
 
   </section>
 
