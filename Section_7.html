@@ -204,7 +204,7 @@
     /* ─── RESPONSIVE ────────────────────────────────────── */
     @media (max-width: 768px) {
       .page-wrapper {
-        padding: 90px 16px 120px;
+        padding: 150px 16px 120px;
       }
 
       .section-body {
@@ -257,9 +257,33 @@
         </figure>
 
         <p>
-          While the results in this work showed only a moderate improvement in modelling accuracy, even a small gain can lead to substantial savings. In a sensitivity analysis of chemisorption CO<sub>2</sub> capture cost, Nuchitprasittichai and Cremaschi (2013)<sup class="fn-ref"><a href="#fn-61" id="fn-ref-61">61</a></sup> reported that a ± 50% change in CO<sub>2</sub> concentration at the tower inlet had a strong effect on cost. Specifically, a 50% decrease in CO<sub>2</sub> concentration increased capture cost by 85.8%, and this increase is estimated to be about $128,000/day in an industrial setting<sup class="fn-ref"><a href="#fn-62" id="fn-ref-62">62</a></sup>. Additionally, Vinjarapu et al. (2024)<sup class="fn-ref"><a href="#fn-63" id="fn-ref-63">63</a></sup> reported that in Saga City, Japan, a typical flow rate of captured CO<sub>2</sub> waste gas is 10,000 kg/day. A 1% prediction error in CO<sub>2</sub> therefore corresponds to an additional release of 100 kg/day of CO<sub>2</sub> to the environment. As such, even though this work showed a moderate improvement, it should be acknowledged that in chemical engineering settings these improvements are substantial both economically and environmentally.
+          All physics-informed models outperform the baseline RNN and NODE-ED in both R<sup>2</sup> and MSE. The best
+          performance
+          is achieved by NODE-ED-Uncoupled (SS-C-PD), with improvements of 6.15% and 9.87% over RNN, and 5.03% and
+          12.15% over NODE-ED in R<sup>2</sup> and MSE respectively. Additionally, the highest reported R<sup>2</sup>
+          and MSE
+          values for
+          NODE-ED-Uncoupled Bagging are at 0.773 ± 0.0882 and 0.239 ± 0.070 respectively. Notably, architectural
+          modifications alone also yield improvements, with NODE-ED-Uncoupled outperforming NODE-ED by 3.75% in
+          R<sup>2</sup> and
+          7.54% in MSE.
         </p>
-          
+
+        <p>
+          While the results in this work showed only a moderate improvement in modelling accuracy, even a small gain can
+          lead to substantial savings. In a sensitivity analysis of chemisorption CO<sub>2</sub> capture cost,
+          Nuchitprasittichai and Cremaschi (2013)<sup class="fn-ref"><a href="#fn-61" id="fn-ref-61">61</a></sup>
+          reported that a ± 50% change in CO<sub>2</sub> concentration at the tower inlet had a strong effect on cost.
+          Specifically, a 50% decrease in CO<sub>2</sub> concentration increased capture cost by 85.8%, and this
+          increase is estimated to be about $128,000/day in an industrial setting<sup class="fn-ref"><a href="#fn-62"
+              id="fn-ref-62">62</a></sup>. Additionally, Vinjarapu et al. (2024)<sup class="fn-ref"><a href="#fn-63"
+              id="fn-ref-63">63</a></sup> reported that in Saga City, Japan, a typical flow rate of captured
+          CO<sub>2</sub> waste gas is 10,000 kg/day. A 1% prediction error in CO<sub>2</sub> therefore corresponds to an
+          additional release of 100 kg/day of CO<sub>2</sub> to the environment. As such, even though this work showed a
+          moderate improvement, it should be acknowledged that in chemical engineering settings these improvements are
+          substantial both economically and environmentally.
+        </p>
+
 
         <p>Importantly, the value of the developed PIML models extends beyond immediate performance gains, they improve
           generalisability and ensure that predictions remain consistent with governing principles under unseen
@@ -304,7 +328,8 @@
             <span class="fn-num">63</span>
             <span>
               Vinjarapu, S. H. B.; Neerup, R.; Hellerup Larsen, A.; Nis Bay Villadsen, S.; von Solms, N.; Jensen, S.;
-              Lindkvist Karlsson, J.; Kappel, J.; Lassen, H.; Blinksbjerg, P.; Loldrup Fosbol, P. Pilot-Scale CO<sub>2</sub>
+              Lindkvist Karlsson, J.; Kappel, J.; Lassen, H.; Blinksbjerg, P.; Loldrup Fosbol, P. Pilot-Scale
+              CO<sub>2</sub>
               Capture Demonstration of Heat Integration through Split Flow Configuration Using 30 wt% MEA at a
               Waste-to-Energy Facility. https://www.sciencedirect.com/science/article/pii/S1383586624010505#b6
               (accessed 2026-04-01).
@@ -312,152 +337,152 @@
             </span>
           </li>
 
-          
+
         </ol>
       </div>
 
-  </div><!-- /page-wrapper -->
+    </div><!-- /page-wrapper -->
 
-  <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
-  <div class="page-nav">
-    <a class="page-nav-btn" href="Section_6.html">← Previous</a>
-    <a class="page-nav-btn" href="Appendix.html">Next →</a>
-  </div>
+    <!-- ══ PREV / NEXT NAVIGATION ════════════════════════════════ -->
+    <div class="page-nav">
+      <a class="page-nav-btn" href="Section_6.html">← Previous</a>
+      <a class="page-nav-btn" href="Appendix.html">Next →</a>
+    </div>
 
-   
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    (function () {
-      if (typeof Chart === "undefined") return;
 
-      function renderBarChart(canvasId, labels, values, yTitle, yMin, yMax, tooltipPrefix) {
-        const canvas = document.getElementById(canvasId);
-        if (!canvas) return;
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      (function () {
+        if (typeof Chart === "undefined") return;
 
-        new Chart(canvas, {
-          type: "bar",
-          data: {
-            labels,
-          datasets: [{
-            label: yTitle,
-            data: values,
-            backgroundColor: [
-              "rgba(148, 163, 184, 0.35)",
-              "rgba(59, 130, 246, 0.35)",
-              "rgba(14, 165, 233, 0.35)",
-              "rgba(22, 163, 74, 0.35)",
-              "rgba(16, 185, 129, 0.35)"
-            ],
-            borderColor: [
-              "rgba(100, 116, 139, 1)",
-              "rgba(37, 99, 235, 1)",
-              "rgba(2, 132, 199, 1)",
-              "rgba(21, 128, 61, 1)",
-              "rgba(5, 150, 105, 1)"
-            ],
-            borderWidth: 1.5,
-            borderRadius: 4,
-            barPercentage: 0.7,
-            categoryPercentage: 0.75
-          }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false
+        function renderBarChart(canvasId, labels, values, yTitle, yMin, yMax, tooltipPrefix) {
+          const canvas = document.getElementById(canvasId);
+          if (!canvas) return;
+
+          new Chart(canvas, {
+            type: "bar",
+            data: {
+              labels,
+              datasets: [{
+                label: yTitle,
+                data: values,
+                backgroundColor: [
+                  "rgba(148, 163, 184, 0.35)",
+                  "rgba(59, 130, 246, 0.35)",
+                  "rgba(14, 165, 233, 0.35)",
+                  "rgba(22, 163, 74, 0.35)",
+                  "rgba(16, 185, 129, 0.35)"
+                ],
+                borderColor: [
+                  "rgba(100, 116, 139, 1)",
+                  "rgba(37, 99, 235, 1)",
+                  "rgba(2, 132, 199, 1)",
+                  "rgba(21, 128, 61, 1)",
+                  "rgba(5, 150, 105, 1)"
+                ],
+                borderWidth: 1.5,
+                borderRadius: 4,
+                barPercentage: 0.7,
+                categoryPercentage: 0.75
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      return tooltipPrefix + context.raw.toFixed(4);
+                    }
+                  }
+                }
               },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    return tooltipPrefix + context.raw.toFixed(4);
+              scales: {
+                y: {
+                  min: yMin,
+                  max: yMax,
+                  title: {
+                    display: true,
+                    text: yTitle
+                  },
+                  ticks: {
+                    stepSize: (yMax - yMin) / 8,
+                    callback: function (value) {
+                      return Number(value).toFixed(3);
+                    }
+                  },
+                  grid: {
+                    color: "rgba(148, 163, 184, 0.25)"
+                  }
+                },
+                x: {
+                  ticks: {
+                    maxRotation: 45,
+                    minRotation: 45
+                  },
+                  grid: {
+                    display: false
                   }
                 }
               }
             },
-            scales: {
-              y: {
-                min: yMin,
-                max: yMax,
-                title: {
-                  display: true,
-                  text: yTitle
-                },
-                ticks: {
-                  stepSize: (yMax - yMin) / 8,
-                  callback: function (value) {
-                    return Number(value).toFixed(3);
-                  }
-                },
-                grid: {
-                  color: "rgba(148, 163, 184, 0.25)"
-                }
-              },
-              x: {
-                ticks: {
-                  maxRotation: 45,
-                  minRotation: 45
-                },
-                grid: {
-                  display: false
-                }
+            plugins: [{
+              id: "valueLabels",
+              afterDatasetsDraw: function (chart) {
+                const { ctx } = chart;
+                const meta = chart.getDatasetMeta(0);
+                ctx.save();
+                ctx.fillStyle = "#334155";
+                ctx.font = "600 12px var(--font-body), sans-serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "bottom";
+
+                meta.data.forEach(function (bar, index) {
+                  const value = values[index].toFixed(4);
+                  ctx.fillText(value, bar.x, bar.y - 6);
+                });
+
+                ctx.restore();
               }
-            }
-          },
-          plugins: [{
-            id: "valueLabels",
-            afterDatasetsDraw: function (chart) {
-              const { ctx } = chart;
-              const meta = chart.getDatasetMeta(0);
-              ctx.save();
-              ctx.fillStyle = "#334155";
-              ctx.font = "600 12px var(--font-body), sans-serif";
-              ctx.textAlign = "center";
-              ctx.textBaseline = "bottom";
+            }]
+          });
+        }
 
-              meta.data.forEach(function (bar, index) {
-                const value = values[index].toFixed(4);
-                ctx.fillText(value, bar.x, bar.y - 6);
-              });
+        const labels = [
+          "RNN",
+          "NODE-ED",
+          "NODE-ED-Uncoupled",
+          "NODE-ED-Uncoupled-SS-PD",
+          "NODE-ED-Uncoupled-SS-C-PD"
+        ];
 
-              ctx.restore();
-            }
-          }]
-        });
-      }
+        renderBarChart(
+          "figure7_1_chart",
+          labels,
+          [0.6569, 0.6639, 0.6888, 0.6936, 0.6973],
+          "Test R²",
+          0.6,
+          0.8,
+          "Test R²: "
+        );
 
-      const labels = [
-        "RNN",
-        "NODE-ED",
-        "NODE-ED-Uncoupled",
-        "NODE-ED-Uncoupled-SS-PD",
-        "NODE-ED-Uncoupled-SS-C-PD"
-      ];
-
-      renderBarChart(
-        "figure7_1_chart",
-        labels,
-        [0.6569, 0.6639, 0.6888, 0.6936, 0.6973],
-        "Test R²",
-        0.6,
-        0.8,
-        "Test R²: "
-      );
-
-      renderBarChart(
-        "figure7_2_chart",
-        labels,
-        [0.2564, 0.2651, 0.2451, 0.2387, 0.2329],
-        "Test MSE",
-        0.2,
-        0.32,
-        "Test MSE: "
-      );
-    })();
-  </script>
-  <script src="./assets/index.js"></script>
+        renderBarChart(
+          "figure7_2_chart",
+          labels,
+          [0.2564, 0.2651, 0.2451, 0.2387, 0.2329],
+          "Test MSE",
+          0.2,
+          0.32,
+          "Test MSE: "
+        );
+      })();
+    </script>
+    <script src="./assets/index.js"></script>
 </body>
 
 </html>

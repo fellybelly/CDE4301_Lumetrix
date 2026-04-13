@@ -8,6 +8,11 @@ const NAV_CONFIG = {
 
   items: [
     {
+      label: "Home",
+      href: "index.html",
+      matchPages: ["index"],
+    },
+    {
       label: "Contents",
       href: "Table_of_Contents.html",
       matchPages: ["Table_of_Contents"],
@@ -268,11 +273,6 @@ const NAV_CONFIG = {
           label: "Overview",
           href: "Section_6.html#future-works",
         },
-        {
-          num: "—",
-          label: "References &amp; Notes",
-          href: "Section_6.html#references",
-        },
       ],
     },
     {
@@ -284,11 +284,6 @@ const NAV_CONFIG = {
           num: "7.1",
           label: "Overview",
           href: "Section_7.html#conclusion",
-        },
-        {
-          num: "—",
-          label: "References &amp; Notes",
-          href: "Section_7.html#references",
         },
       ],
     },
@@ -386,7 +381,54 @@ const NAV_CONFIG = {
         }
       });
 
-      wrap.appendChild(dd);
+      /*
+       * Append dropdown to <body> so it escapes any overflow:hidden parent.
+       * Position it via getBoundingClientRect each time it opens.
+       */
+      document.body.appendChild(dd);
+
+      function positionDropdown() {
+        const rect = wrap.getBoundingClientRect();
+        const ddW = dd.offsetWidth || 240;
+        let left = rect.left + rect.width / 2 - ddW / 2;
+
+        /* Keep within viewport */
+        if (left < 8) left = 8;
+        if (left + ddW > window.innerWidth - 8)
+          left = window.innerWidth - ddW - 8;
+
+        dd.style.position = "fixed";
+        dd.style.top = rect.bottom + 10 + "px";
+        dd.style.left = left + "px";
+        dd.style.width = ddW + "px";
+        dd.style.zIndex = "9999";
+      }
+
+      /* Show on hover */
+      let hideTimer = null;
+
+      function showDd() {
+        clearTimeout(hideTimer);
+        positionDropdown();
+        dd.classList.add("open");
+      }
+
+      function hideDd() {
+        hideTimer = setTimeout(() => dd.classList.remove("open"), 120);
+      }
+
+      wrap.addEventListener("mouseenter", showDd);
+      dd.addEventListener("mouseenter", () => {
+        clearTimeout(hideTimer);
+      });
+      wrap.addEventListener("mouseleave", hideDd);
+      dd.addEventListener("mouseleave", hideDd);
+
+      /* Reposition on scroll/resize */
+      window.addEventListener("scroll", positionDropdown, { passive: true });
+      window.addEventListener("resize", positionDropdown, { passive: true });
+
+      wrap.appendChild(link);
       linksWrap.appendChild(wrap);
     } else {
       const link = document.createElement("a");
@@ -414,57 +456,71 @@ const NAV_CONFIG = {
   nav.appendChild(cta);
   nav.appendChild(ham);
 
-  function setupDesktopNavHoverScroll(container) {
-    let enabled = false;
-    let target = 0;
-    let current = 0;
-    let rafId = null;
+  /* ── < > scroll arrows for overflowing desktop nav ─────── */
+  function setupNavScrollArrows(linksContainer, navbar) {
+    if (window.innerWidth <= 768) return;
 
-    function animate() {
-      current += (target - current) * 0.12;
-      if (Math.abs(target - current) < 0.2) {
-        current = target;
-      }
-      container.scrollLeft = current;
-      if (Math.abs(target - current) >= 0.2) {
-        rafId = requestAnimationFrame(animate);
-      } else {
-        rafId = null;
-      }
+    const STEP = 200;
+
+    const btnPrev = document.createElement("button");
+    btnPrev.className = "nav-scroll-btn";
+    btnPrev.setAttribute("aria-label", "Scroll navigation left");
+    btnPrev.innerHTML = "&#8249;";
+
+    const btnNext = document.createElement("button");
+    btnNext.className = "nav-scroll-btn";
+    btnNext.setAttribute("aria-label", "Scroll navigation right");
+    btnNext.innerHTML = "&#8250;";
+
+    /* Insert as grid siblings: logo | btnPrev | linksWrap | btnNext | cta | ham */
+    navbar.insertBefore(btnPrev, linksContainer);
+    linksContainer.insertAdjacentElement("afterend", btnNext);
+
+    /* Expand grid to accommodate the two extra columns */
+    navbar.style.gridTemplateColumns = "auto auto minmax(0,1fr) auto auto auto";
+
+    function updateButtons() {
+      if (window.innerWidth <= 768) return;
+
+      const sl = Math.round(linksContainer.scrollLeft);
+      const maxScroll = linksContainer.scrollWidth - linksContainer.clientWidth;
+      const overflows = maxScroll > 4;
+
+      btnPrev.classList.toggle("visible", overflows);
+      btnNext.classList.toggle("visible", overflows);
+      linksContainer.classList.toggle("is-overflowing", overflows);
+
+      btnPrev.classList.toggle("hidden", overflows && sl <= 0);
+      btnNext.classList.toggle("hidden", overflows && sl >= maxScroll - 1);
+
+      btnPrev.disabled = sl <= 0;
+      btnNext.disabled = sl >= maxScroll - 1;
+
+      linksContainer.classList.toggle("fade-left", overflows && sl > 2);
+      linksContainer.classList.toggle(
+        "fade-right",
+        overflows && sl < maxScroll - 2,
+      );
     }
 
-    function setTarget(nextTarget) {
-      target = nextTarget;
-      if (rafId === null) {
-        rafId = requestAnimationFrame(animate);
-      }
-    }
-
-    function updateEnabled() {
-      enabled =
-        window.innerWidth > 768 && container.scrollWidth > container.clientWidth + 4;
-      container.classList.toggle("is-overflowing", enabled);
-      if (!enabled) {
-        target = 0;
-        current = 0;
-        container.scrollLeft = 0;
-      }
-    }
-
-    container.addEventListener("mousemove", (e) => {
-      if (!enabled) return;
-      const rect = container.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const clamped = Math.max(0, Math.min(1, x));
-      const maxScroll = container.scrollWidth - container.clientWidth;
-      setTarget(maxScroll * clamped);
+    btnPrev.addEventListener("click", () => {
+      linksContainer.scrollLeft -= STEP;
+    });
+    btnNext.addEventListener("click", () => {
+      linksContainer.scrollLeft += STEP;
     });
 
-    window.addEventListener("resize", updateEnabled, { passive: true });
-    updateEnabled();
+    linksContainer.addEventListener("scroll", updateButtons, { passive: true });
+
+    const ro = new ResizeObserver(() => {
+      if (window.innerWidth > 768) updateButtons();
+    });
+    ro.observe(navbar);
+
+    requestAnimationFrame(() => requestAnimationFrame(updateButtons));
   }
 
-  setupDesktopNavHoverScroll(linksWrap);
+  setupNavScrollArrows(linksWrap, nav);
 
   /* ── Mobile drawer ───────────────────────────────────── */
   const backdrop = document.createElement("div");
