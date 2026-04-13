@@ -481,11 +481,7 @@
           enough to detect.
         </p>
 
-        <p>Despite the minor reduction in MSE, the performance of SS-PD is practically still comparable to
-          NODE-ED-Uncoupled. The issue arises from the fact that the NODE-ED-Uncoupled is already able to learn a decent
-          approximation of the final steady-state CO<sub>2</sub> outlet from the data alone, thereby diminishing the
-          additional
-          value that the physics constraint at t=16 would have otherwise provided.
+        <p>Despite the minor reduction in MSE, the performance of SS-PD is practically still comparable to NODE-ED-Uncoupled. It was previously recognised that the NODE-ED-Uncoupled architecture exhibits inaccuracy in mapping the final state of the trajectory. While the incorporation of governing equations with a better prediction is expected to enhance predictive performance, this improvement is not observed. It is hypothesised that although the model may achieve a better fit at the final time point (t = 16), the trajectory leading to this state may exhibit increased discrepancies at earlier time steps. Consequently, these opposing effects offset one another, resulting in no significant overall improvement in model performance.
         </p>
 
         <p>Meanwhile, the benefit of broader coverage from collocation points is reflected in the SS-C-PD results. The
@@ -501,6 +497,10 @@
           demonstrates that it is not the physics constraint itself that is limiting, but rather the narrow operating
           range over which the physics is applied to and that extending physics enhancement across the entirety of the
           operating space is able to produce meaningful generalisation improvement.
+        </p>
+
+        <p>
+          A possible explanation lies in the limited representation of the three distinct zones (SRZ, IRZ, and PAZ) occurring simultaneously within the column, which is captured in only 6 out of the 30 data points. The majority of the data instead reflects conditions where only one or two zones are present. Consequently, when evaluating test cases involving the coexistence of all three zones, the model exhibits poor predictive performance due to this underrepresentation. The introduction of collocation points addresses this limitation by enriching the dataset with the missing three regime information, thereby enabling improved model training and predictive capability.
         </p>
 
         <div class="report-table-wrap">
